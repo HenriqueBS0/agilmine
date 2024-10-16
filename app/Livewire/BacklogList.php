@@ -32,10 +32,13 @@ class BacklogList extends Component
     private function atualizaTarefas(int $pagina = 1)
     {
         $opcoesBusca = new OpcoesBusca();
-        $opcoesBusca->filtro()->igual('project_id', $this->projeto->getId());
+        $opcoesBusca->filtro()
+            ->igual('project_id', $this->projeto->getId())
+            ->igual('status_id', '*')
+            ->igual('sort', 'id:desc');
         $opcoesBusca->paginacao()
             ->setLimit(self::REGISTROS_PAGINA)
-            ->setOffset(($pagina - 1) * $pagina);
+            ->setOffset((($pagina - 1) * self::REGISTROS_PAGINA));
         $resposta = (new ApiReadmine)->getAll(Tarefa::class, $opcoesBusca);
 
         $this->paginacao->setPaginas($resposta->paginas());

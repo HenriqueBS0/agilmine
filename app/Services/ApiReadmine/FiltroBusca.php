@@ -6,7 +6,7 @@ class FiltroBusca
 {
     private $igual = [];
 
-    public function igual(string $parametro, int $valor): self
+    public function igual(string $parametro, int|string $valor): self
     {
         $this->igual[$parametro] = $valor;
         return $this;

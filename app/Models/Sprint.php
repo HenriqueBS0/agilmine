@@ -37,7 +37,7 @@ class Sprint extends Model
         return Attribute::make(
             get: function ($valor, $atributos) {
                 $datas = [];
-                $dataAtual = new DateTime($atributos['data_inicio']);
+                $dataAtual = (new DateTime($atributos['data_inicio']))->setTime(0, 0, 0, 0);
                 $dataFinal = new DateTime($atributos['data_fim']);
 
                 while ($dataAtual <= $dataFinal) {

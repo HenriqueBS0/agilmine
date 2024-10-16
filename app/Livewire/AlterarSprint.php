@@ -48,14 +48,26 @@ class AlterarSprint extends Component
 
     private function iniciaTarefas()
     {
-        $opcoesBusca = new OpcoesBusca();
-        $opcoesBusca->filtro()->igual('project_id', $this->projeto->getId());
-        $opcoesBusca->paginacao()->setLimit(100);
-        $resposta = (new ApiReadmine)->getAll(Tarefa::class, $opcoesBusca);
+
+        $this->tarefas = [];
+
+        for ($pagina = 1; !isset($resposta) || $pagina <= $resposta->paginas(); $pagina++) {
+            $opcoesBusca = new OpcoesBusca();
+            $opcoesBusca->filtro()
+                ->igual('project_id', $this->projeto->getId())
+                ->igual('status_id', '*')
+                ->igual('sort', 'id:desc');
+            $opcoesBusca->paginacao()
+                ->setLimit(100)
+                ->setOffset((($pagina - 1) * 100));
+            $resposta = (new ApiReadmine)->getAll(Tarefa::class, $opcoesBusca);
+
+            $this->tarefas = array_merge($this->tarefas, $resposta->getData());
+        }
 
         $tarefasUsadas = Sprint::getAllTarefasUtilizadasOutrasSprints($this->projeto->getId(), $this->form->sprint->id);
 
-        $this->tarefas = array_filter($resposta->getData(), function (Tarefa $tarefa) use ($tarefasUsadas) {
+        $this->tarefas = array_filter($this->tarefas, function (Tarefa $tarefa) use ($tarefasUsadas) {
             return !in_array($tarefa->getId(), $tarefasUsadas);
         });
     }

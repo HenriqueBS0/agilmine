@@ -9,6 +9,7 @@ use App\Services\ApiReadmine\Entidades\Projeto;
 use App\Services\ApiReadmine\Entidades\Tarefa;
 use App\Services\ApiReadmine\OpcoesBusca;
 use Date;
+use DateTime;
 use Livewire\Component;
 
 class DetalharSprint extends Component
@@ -47,24 +48,29 @@ class DetalharSprint extends Component
 
     private function iniciaTarefas()
     {
-        $opcoesBusca = new OpcoesBusca();
-        $opcoesBusca->filtro()->igual('project_id', $this->projeto->getId());
-        $opcoesBusca->paginacao()->setLimit(100);
-        $resposta = (new ApiReadmine)->getAll(Tarefa::class, $opcoesBusca);
+        $this->tarefas = [];
 
-        $this->tarefas = array_filter($resposta->getData(), function (Tarefa $tarefa) {
+        for ($pagina = 1; !isset($resposta) || $pagina <= $resposta->paginas(); $pagina++) {
+            $opcoesBusca = new OpcoesBusca();
+            $opcoesBusca->filtro()
+                ->igual('project_id', $this->projeto->getId())
+                ->igual('status_id', '*')
+                ->igual('sort', 'id:desc');
+            $opcoesBusca->paginacao()
+                ->setLimit(100)
+                ->setOffset((($pagina - 1) * 100));
+            $resposta = (new ApiReadmine)->getAll(Tarefa::class, $opcoesBusca);
+
+            $this->tarefas = array_merge($this->tarefas, $resposta->getData());
+        }
+
+        $this->tarefas = array_filter($this->tarefas, function (Tarefa $tarefa) {
             return in_array($tarefa->getId(), $this->sprint->tarefas_id);
         });
 
-        $this->tarefas = array_map(function (Tarefa $tarefa) {
-            $tarefa->setDataConclusao(
-                (new \DateTime())->setTimestamp(mt_rand(
-                    (new \DateTime($this->sprint->data_inicio))->getTimestamp(),
-                    (new \DateTime($this->sprint->data_fim))->getTimestamp()
-                ))
-            );
-            return $tarefa;
-        }, $this->tarefas);
+        usort($this->tarefas, function (Tarefa $tarefaA, Tarefa $tarefaB) {
+            return $tarefaA->getDataConclusao() >= $tarefaB->getDataConclusao();
+        });
     }
 
     private function iniciaProjeto()
@@ -74,30 +80,27 @@ class DetalharSprint extends Component
 
     private function configurarGrafico()
     {
-        $this->sprint->dias;
+
+        $numeroTarefasSprint = count($this->tarefas);
+        $numeroDiasSprit = count($this->sprint->dias);
+
+        $labels = array_map(function (DateTime $dia) {
+            return $dia->format('d/m/Y');
+        }, $this->sprint->dias);
+        $esperado = self::getEsperado($numeroDiasSprit, $numeroTarefasSprint);
+        $realizado = [];
 
         $tarefasNaoConcluidas = $this->tarefas;
-        $tarefasInicial = count($this->tarefas);
-        $totalEsperado = $tarefasInicial;
-        $tarefasEsperadasDia = $tarefasInicial / count($this->sprint->dias);
 
-        $labels = [];
-        $realizado = [];
-        $esperado = [];
+        for ($indiceDia = 0; $indiceDia < $numeroDiasSprit; $indiceDia++) {
 
-        for ($dia = 1; $dia <= count($this->sprint->dias); $dia++) {
-            $indiceDia = $dia - 1;
             $dataDia = $this->sprint->dias[$indiceDia];
-            $labels[] = $dia;
-            $esperado[] = $totalEsperado;
 
             $tarefasNaoConcluidas = array_filter($tarefasNaoConcluidas, function (Tarefa $tarefa) use ($dataDia) {
-                return $tarefa->getDataConclusao() == null || $tarefa->getDataConclusao() > $dataDia;
+                return $tarefa->getDataConclusao() == null || $tarefa->getDataConclusao()->setTime(0, 0, 0, 0) > $dataDia;
             });
 
             $realizado[] = count($tarefasNaoConcluidas);
-
-            $totalEsperado -= $tarefasEsperadasDia;
         }
 
 
@@ -132,6 +135,14 @@ class DetalharSprint extends Component
             ]
         ];
 
+        $realizado = array_map(function ($tarefaNaoConcluidas) use ($numeroTarefasSprint) {
+            return $numeroTarefasSprint - $tarefaNaoConcluidas;
+        }, $realizado);
+
+        $esperado = array_map(function ($tarefaNaoConcluidas) use ($numeroTarefasSprint) {
+            return $numeroTarefasSprint - $tarefaNaoConcluidas;
+        }, $esperado);
+
         $this->configuracaoBurnUp = [
             'type' => 'line',
             'data' => [
@@ -139,14 +150,14 @@ class DetalharSprint extends Component
                 'datasets' => [
                     [
                         'label' => 'Realizado',
-                        'data' => array_reverse($realizado),
+                        'data' => $realizado,
                         'fill' => false,
                         'borderColor' => 'rgb(255, 0, 0)',
                         'tension' => 0.1
                     ],
                     [
                         'label' => 'Planejado',
-                        'data' => array_reverse($esperado),
+                        'data' => $esperado,
                         'fill' => false,
                         'borderColor' => 'rgb(0, 0, 255)',
                         'tension' => 0.1,
@@ -162,6 +173,22 @@ class DetalharSprint extends Component
                 ]
             ]
         ];
+    }
+
+    private static function getEsperado(int $dias, int $tarefas)
+    {
+        $tarefasPorDia = floor($tarefas / ($dias - 1));
+        $tarefasRestantes = $tarefas % ($dias - 1);
+        $tarefasAbertas = $tarefas;
+
+        $esperado = [$tarefasAbertas];
+
+        for ($dia = 0; $dia < ($dias - 1); $dia++) {
+            $tarefasAbertas -= $tarefasPorDia + ($dia < $tarefasRestantes ? 1 : 0);
+            $esperado[] = $tarefasAbertas;
+        }
+
+        return $esperado;
     }
 
     public function render()
