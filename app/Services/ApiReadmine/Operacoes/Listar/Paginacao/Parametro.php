@@ -3,8 +3,9 @@
 namespace App\Services\ApiReadmine\Operacoes\Listar\Paginacao;
 
 use App\Services\ApiReadmine\Operacoes\Listar\Paginacao\Paginacao;
+use App\Services\ApiReadmine\Operacoes\QueryParamProvider;
 
-final class Parametro
+final class Parametro implements QueryParamProvider
 {
     use Paginacao;
 
@@ -53,5 +54,16 @@ final class Parametro
         $this->pagina = $pagina;
         $this->setDesvio(($pagina - 1) * $this->getLimite());
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParametros(): array
+    {
+        return [
+            'offset' => $this->getDesvio(),
+            'limit' => $this->getLimite()
+        ];
     }
 }

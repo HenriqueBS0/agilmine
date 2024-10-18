@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\ApiReadmine\Operacoes\Listar;
+use App\Services\ApiReadmine\Operacoes\QueryParamProvider;
 
 /**
  * Classe responsável pela lógica de ordenação de resultados.
@@ -9,7 +10,7 @@ namespace App\Services\ApiReadmine\Operacoes\Listar;
  *
  * @package App\Services\ApiReadmine\Operacoes\Listar
  */
-class Ordenacao
+class Ordenacao implements QueryParamProvider
 {
     /**
      * Constante representando a ordem decrescente.
@@ -63,12 +64,22 @@ class Ordenacao
     }
 
     /**
-     * Obtém os parâmetros de ordenação definidos.
-     *
-     * @return array Array contendo os parâmetros de ordenação.
+     * {@inheritDoc}
      */
     public function getParametros(): array
     {
-        return $this->parametros;
+        if (count($this->parametros) == 0) {
+            return [];
+        }
+
+        $sort = [];
+
+        foreach ($this->parametros as $parametro => $modo) {
+            $sort[] = $parametro . ($modo == self::DECRESCENTE ? ':desc' : '');
+        }
+
+        return [
+            'sort' => implode(',', $sort)
+        ];
     }
 }

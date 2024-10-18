@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\ApiReadmine\Operacoes\Listar;
+use App\Services\ApiReadmine\Operacoes\QueryParamProvider;
 
 /**
  * Classe responsável pela lógica de filtragem de resultados.
@@ -10,15 +11,12 @@ namespace App\Services\ApiReadmine\Operacoes\Listar;
  *
  * @package App\Services\ApiReadmine\Operacoes\Listar
  */
-class Filtro
+class Filtro implements QueryParamProvider
 {
     private array $igual = [];
     private array $em = [];
-    private array $contem = [];
     private array $entre = [];
-    private array $maior = [];
     private array $maiorIgual = [];
-    private array $menor = [];
     private array $menorIgual = [];
 
     /**
@@ -50,20 +48,6 @@ class Filtro
     }
 
     /**
-     * Aplica um filtro de contém para um parâmetro específico.
-     *
-     * @param string $parametro Nome do parâmetro a ser filtrado.
-     * @param string $valor Valor para o filtro de contém.
-     *
-     * @return static Instância atualizada da classe Filtro.
-     */
-    public function contem(string $parametro, string $valor): static
-    {
-        $this->contem[$parametro] = $valor;
-        return $this;
-    }
-
-    /**
      * Aplica um filtro entre para um parâmetro específico.
      *
      * @param string $parametro Nome do parâmetro a ser filtrado.
@@ -75,20 +59,6 @@ class Filtro
     public function entre(string $parametro, string|int|float $valorInicial, string|int|float $valorFinal): static
     {
         $this->entre[$parametro] = [$valorInicial, $valorFinal];
-        return $this;
-    }
-
-    /**
-     * Aplica um filtro maior que para um parâmetro específico.
-     *
-     * @param string $parametro Nome do parâmetro a ser filtrado.
-     * @param string|int|float $valor Valor para o filtro maior que.
-     *
-     * @return static Instância atualizada da classe Filtro.
-     */
-    public function maior(string $parametro, string|int|float $valor): static
-    {
-        $this->maior[$parametro] = $valor;
         return $this;
     }
 
@@ -107,20 +77,6 @@ class Filtro
     }
 
     /**
-     * Aplica um filtro menor que para um parâmetro específico.
-     *
-     * @param string $parametro Nome do parâmetro a ser filtrado.
-     * @param string|int|float $valor Valor para o filtro menor que.
-     *
-     * @return static Instância atualizada da classe Filtro.
-     */
-    public function menor(string $parametro, string|int|float $valor): static
-    {
-        $this->menor[$parametro] = $valor;
-        return $this;
-    }
-
-    /**
      * Aplica um filtro menor ou igual para um parâmetro específico.
      *
      * @param string $parametro Nome do parâmetro a ser filtrado.
@@ -132,5 +88,32 @@ class Filtro
     {
         $this->menorIgual[$parametro] = $valor;
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParametros(): array
+    {
+        $parametros = [];
+
+        foreach ($this->igual as $parametro => $valor) {
+            $parametros[$parametro] = $valor;
+        }
+        foreach ($this->em as $parametro => $valores) {
+            $parametros[$parametro] = implode(',', $valores);
+        }
+        foreach ($this->entre as $parametro => $valores) {
+            [$valorIncial, $valorFinal] = $valores;
+            $parametros[$parametro] = "><{$valorIncial}|{$valorFinal}";
+        }
+        foreach ($this->maiorIgual as $parametro => $valor) {
+            $parametros[$parametro] = ">={$valor}";
+        }
+        foreach ($this->menorIgual as $parametro => $valor) {
+            $parametros[$parametro] = "<={$valor}";
+        }
+
+        return $parametros;
     }
 }
