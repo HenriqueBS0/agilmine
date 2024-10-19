@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Services\ApiReadmine\Operacoes;
+namespace App\Services\ApiRedmine\Operacoes;
 
 /**
- * Classe Caminho
- *
  * Esta classe é responsável por manipular e substituir parâmetros em um caminho.
  * Ela permite adicionar parâmetros dinâmicos ao caminho inicial e substituí-los posteriormente.
  *
- * @package App\Services\ApiReadmine\Operacoes
  */
-
 class Caminho
 {
     /**
@@ -55,6 +51,6 @@ class Caminho
         foreach ($this->parametros as $nome => $valor) {
             $resultado = str_replace("{" . $nome . "}", (string) $valor, $resultado);
         }
-        return $resultado;
+        return ltrim($resultado, '/');
     }
 }

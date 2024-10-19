@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Services\ApiReadmine\Operacoes\Listar\Paginacao;
+namespace App\Services\ApiRedmine\Operacoes\Listar\Paginacao;
 
+/**
+ * Paginação do retorno de uma listagem de itens
+ */
 class Retorno
 {
     use Paginacao;
@@ -19,6 +22,12 @@ class Retorno
     private int $paginas;
 
     /**
+     * Total de registros
+     * @var int
+     */
+    private int $totalRegistros;
+
+    /**
      * @param int $desvio O valor do desvio.
      * @param int $limite O valor do limite.
      * @param int $total O valor do total de registros
@@ -26,7 +35,7 @@ class Retorno
     public function __construct(
         int $desvio,
         int $limite,
-        private int $totalRegistros
+        int $totalRegistros
     ) {
         $this
             ->setDesvio($desvio)
@@ -64,8 +73,8 @@ class Retorno
      */
     public function pagina(): int
     {
-        if (isset($this->pagina)) {
-            $this->pagina = $this->getDesvio() * $this->getLimite() + 1;
+        if (!isset($this->pagina)) {
+            $this->pagina = $this->getDesvio() / $this->getLimite() + 1;
         }
         return $this->pagina;
     }
@@ -77,7 +86,7 @@ class Retorno
      */
     public function paginas(): int
     {
-        if (isset($this->paginas)) {
+        if (!isset($this->paginas)) {
             $this->paginas = ceil($this->getTotalRegistros() / $this->getLimite());
         }
         return $this->paginas;

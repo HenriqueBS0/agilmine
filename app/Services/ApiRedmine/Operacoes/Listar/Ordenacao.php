@@ -1,41 +1,31 @@
 <?php
 
-namespace App\Services\ApiReadmine\Operacoes\Listar;
-use App\Services\ApiReadmine\Operacoes\QueryParamProvider;
+namespace App\Services\ApiRedmine\Operacoes\Listar;
+use App\Services\ApiRedmine\Operacoes\QueryParamProvider;
 
 /**
  * Classe responsável pela lógica de ordenação de resultados.
  *
  * Esta classe fornece métodos para definir a ordem dos resultados, tanto em ordem crescente quanto em ordem decrescente.
- *
- * @package App\Services\ApiReadmine\Operacoes\Listar
  */
 class Ordenacao implements QueryParamProvider
 {
     /**
      * Constante representando a ordem decrescente.
      */
-    final public const DECRESCENTE = 1;
+    private const DECRESCENTE = 1;
 
     /**
      * Constante representando a ordem crescente.
      */
-    final public const CRESCENTE = 2;
+    private const CRESCENTE = 2;
 
     /**
      * Array armazenando os parâmetros de ordenação.
      *
      * @var array
      */
-    private array $parametros;
-
-    /**
-     * Construtor da classe Ordenacao.
-     */
-    public function __construct()
-    {
-        $this->parametros = [];
-    }
+    private array $parametros = [];
 
     /**
      * Define uma ordem decrescente para um parâmetro específico.

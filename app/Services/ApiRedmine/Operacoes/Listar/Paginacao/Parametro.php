@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Services\ApiReadmine\Operacoes\Listar\Paginacao;
+namespace App\Services\ApiRedmine\Operacoes\Listar\Paginacao;
 
-use App\Services\ApiReadmine\Operacoes\Listar\Paginacao\Paginacao;
-use App\Services\ApiReadmine\Operacoes\QueryParamProvider;
+use App\Services\ApiRedmine\Operacoes\Listar\Paginacao\Paginacao;
+use App\Services\ApiRedmine\Operacoes\QueryParamProvider;
 
+/**
+ * Parametro de paginação para listagens de itens
+ */
 final class Parametro implements QueryParamProvider
 {
     use Paginacao;
 
     /**
-     * Pagina atual
+     * Pagina atual que se deseja buscar
      * @var int
      */
     private int $pagina;
 
     /**
-     * @param int $desvio O valor inicial do desvio.
-     * @param int $limite O valor inicial do limite.
+     * @param int $desvio O valor do desvio.
+     * @param int $limite O valor do limite.
      */
     public function __construct(
         int $desvio,
@@ -35,7 +38,7 @@ final class Parametro implements QueryParamProvider
      */
     public function getPagina(): int
     {
-        if (isset($this->pagina)) {
+        if (!isset($this->pagina)) {
             $this->setPagina($this->getDesvio() * $this->getLimite() + 1);
         }
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\ApiReadmine\Operacoes;
+namespace App\Services\ApiRedmine\Operacoes;
 
 /**
- * Interface para fornecer a uma url.
+ * Interface de objetos que provem parâmetros para uma url.
  */
 interface QueryParamProvider
 {

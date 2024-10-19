@@ -1,80 +1,93 @@
 <?php
 
 namespace App\Services\ApiRedmine\Entidades;
+use App\Services\ApiRedmine\Operacoes\Caminho;
+use App\Services\ApiRedmine\Operacoes\Listar\Paginacao\Parametro as Paginacao;
+use App\Services\ApiRedmine\Operacoes\Listar\Parametros;
 use Livewire\Wireable;
+use Illuminate\Http\Client\Response;
 
 class Projeto implements Wireable
 {
+    /**
+     * Id do projeto
+     * @var int
+     */
     private ?int $id = null;
-    private ?string $nome = null;
-    private ?string $descricao = null;
 
     /**
-     * Obtém o valor do atributo id.
-     *
-     * @return int O valor do atributo id.
+     * Nome do projeto
+     * @var string
      */
+    private ?string $nome = null;
+
+    /**
+     * Descrição do projeto
+     * @var string
+     */
+    private ?string $descricao = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Define o valor do atributo id.
-     *
-     * @param int $id O novo valor para o atributo id.
-     * @return self Para permitir chamadas fluentes.
-     */
     public function setId(?int $id): self
     {
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * Obtém o valor do atributo nome.
-     *
-     * @return string O valor do atributo nome.
-     */
     public function getNome(): ?string
     {
         return $this->nome;
     }
 
-    /**
-     * Define o valor do atributo nome.
-     *
-     * @param string $nome O novo valor para o atributo nome.
-     * @return self Para permitir chamadas fluentes.
-     */
     public function setNome(?string $nome): self
     {
         $this->nome = $nome;
         return $this;
     }
 
-    /**
-     * Obtém o valor do atributo descricao.
-     *
-     * @return string O valor do atributo descricao.
-     */
     public function getDescricao(): ?string
     {
         return $this->descricao;
     }
 
-    /**
-     * Define o valor do atributo descricao.
-     *
-     * @param string $descricao O novo valor para o atributo descricao.
-     * @return self Para permitir chamadas fluentes.
-     */
     public function setDescricao(?string $descricao): self
     {
         $this->descricao = $descricao;
         return $this;
     }
 
+    /**
+     * Retorna objeto de parâmetros para busca de projetos no redmine
+     *
+     * @param int $registrosPorPagina
+     * @return Parametros<Projeto[]>
+     */
+    public static function parametroListar(int $registrosPorPagina = 25): Parametros
+    {
+        $fn = function (Response $response) {
+            return array_map(function ($dados) {
+                $projeto = new Projeto;
+                $projeto->setId($dados['id']);
+                $projeto->setNome($dados['name']);
+                $projeto->setDescricao($dados['description'] ?? null);
+                return $projeto;
+            }, $response->json('projects', []));
+        };
+
+        return new Parametros(
+            new Caminho('/projects.json'),
+            $fn,
+            new Paginacao(0, $registrosPorPagina)
+        );
+    }
+
+    /**
+     * @return {@inheritDoc}
+     */
     public function toLivewire()
     {
         return [
@@ -84,6 +97,9 @@ class Projeto implements Wireable
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static function fromLivewire($value)
     {
         return (new static)

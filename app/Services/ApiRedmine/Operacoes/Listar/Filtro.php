@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Services\ApiReadmine\Operacoes\Listar;
-use App\Services\ApiReadmine\Operacoes\QueryParamProvider;
+namespace App\Services\ApiRedmine\Operacoes\Listar;
+use App\Services\ApiRedmine\Operacoes\QueryParamProvider;
 
 /**
  * Classe responsável pela lógica de filtragem de resultados.
  *
  * Esta classe fornece métodos para aplicar diferentes tipos de filtros aos dados,
- * incluindo iguais, em, contém, entre, maior, maior ou igual, menor e menor ou igual.
- *
- * @package App\Services\ApiReadmine\Operacoes\Listar
+ * incluindo iguais, em, entre, maior ou igual e menor ou igual.
  */
 class Filtro implements QueryParamProvider
 {
