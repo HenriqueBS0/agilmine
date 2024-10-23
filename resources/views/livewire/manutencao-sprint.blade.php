@@ -27,7 +27,7 @@
             wire:model='form.tarefas_id'>
             @foreach ($tarefas as $tarefa)
                 <option @selected(in_array($tarefa->getId(), $form->tarefas_id)) value="{{ $tarefa->getId() }}">{{ $tarefa->getId() }} -
-                    {{ $tarefa->getAssunto() }}</option>
+                    {{ $tarefa->getAssunto() }} | {{ $tarefa->getStatus()->getNome() }}</option>
             @endforeach
         </select>
         <div id="tarefasFeedback" class="invalid-feedback"></div>

@@ -67,7 +67,7 @@ class CriarSprint extends Component
         $tarefasUsadas = Sprint::getAllTarefasUtilizadasOutrasSprints($this->projeto->getId());
 
         $this->tarefas = array_filter($this->tarefas, function (Tarefa $tarefa) use ($tarefasUsadas) {
-            return !in_array($tarefa->getId(), $tarefasUsadas);
+            return !in_array($tarefa->getId(), $tarefasUsadas) && $tarefa->getDataConclusao() == null;
         });
     }
 
