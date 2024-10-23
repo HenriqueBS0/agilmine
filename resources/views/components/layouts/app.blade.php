@@ -13,11 +13,11 @@
 <body class="d-flex flex-column vh-100">
     <div class="nav-container">{{ $navbar }}</div>
     <div class="content-contaienr h-100 d-flex">
-        <div class="sidebar-container bg-info col-3">
-            Sidebar
+        <div class="sidebar-container col-3">
+            {{ $sidebar }}
         </div>
-        <main class="main-content bg-success col overflow-y-scroll">
-            Main
+        <main class="main-content col overflow-y-scroll">
+            {{ $slot }}
         </main>
     </div>
 </body>
