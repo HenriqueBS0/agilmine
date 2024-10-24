@@ -12,7 +12,7 @@
 
 <body class="d-flex flex-column vh-100">
     <div class="nav-container">{{ $navbar }}</div>
-    <div class="content-contaienr h-100 d-flex">
+    <div class="content-container d-flex h-100 overflow-y-auto">
         <div class="sidebar-container col-3">
             {{ $sidebar }}
         </div>
