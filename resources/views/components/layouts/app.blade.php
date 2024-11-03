@@ -7,16 +7,19 @@
 
     <title>{{ $title ?? 'Agilmine' }}</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/scss/app.scss'])
 </head>
 
 <body class="d-flex flex-column vh-100">
     <div class="nav-container">{{ $navbar }}</div>
     <div class="content-container d-flex h-100 overflow-y-auto">
-        <div class="sidebar-container col-3">
+        <div class="sidebar-container col-2">
             {{ $sidebar }}
         </div>
         <main class="main-content col overflow-y-scroll">
+            @if (session()->has('alerta'))
+                <livewire:alerta />
+            @endif
             {{ $slot }}
         </main>
     </div>
