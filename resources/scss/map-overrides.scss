@@ -1,0 +1,5 @@
+$custom-colors: (
+    "destaque": $destaque,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
