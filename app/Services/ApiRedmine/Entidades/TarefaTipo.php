@@ -8,16 +8,16 @@ use App\Services\ApiRedmine\Operacoes\Listar\Parametros;
 use Illuminate\Http\Client\Response;
 use Livewire\Wireable;
 
-class TarefaPrioridade implements Wireable
+class TarefaTipo implements Wireable
 {
     /**
-     * Identificador da prioridade
+     * Identificador
      * @var int
      */
     private ?int $id = null;
 
     /**
-     * Nome da prioridade
+     * Nome
      * @var string
      */
     private ?string $nome = null;
@@ -67,23 +67,23 @@ class TarefaPrioridade implements Wireable
     }
 
     /**
-     * Retorna objeto de parâmetros para busca de Prioridades de tarefa no redmine
+     * Retorna objeto de parâmetros para busca de Tipos de tarefa no redmine
      *
      * @param int $registrosPorPagina
-     * @return Parametros<TarefaPrioridade[]>
+     * @return Parametros<TarefaTipo[]>
      */
     public static function parametroListar(int $registrosPorPagina = 25): Parametros
     {
         $fn = function (Response $response) {
             return array_map(function ($dados) {
-                return (new TarefaPrioridade)
+                return (new TarefaTipo)
                     ->setId($dados['id'])
                     ->setNome($dados['name']);
-            }, $response->json('issue_priorities', []));
+            }, $response->json('trackers', []));
         };
 
         return new Parametros(
-            new Caminho('/enumerations/issue_priorities.json'),
+            new Caminho('/trackers.json'),
             $fn,
             new Paginacao(0, $registrosPorPagina)
         );
