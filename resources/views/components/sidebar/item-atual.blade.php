@@ -1,1 +1,1 @@
-<a class="nav-link active" aria-current="page" href="#">{{ $slot }}</a>
+<a class="btn btn-primary text-start ps-3" aria-current="page">{{ $slot }}</a>
