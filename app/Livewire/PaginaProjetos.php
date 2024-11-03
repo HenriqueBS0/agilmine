@@ -19,7 +19,6 @@ class PaginaProjetos extends Component
     private function setProjetos()
     {
         $this->projetos = ApiRedmine::listar(Projeto::parametroListar(100))->dados();
-        ds($this->projetos);
     }
 
     public function render()

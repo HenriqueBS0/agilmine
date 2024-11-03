@@ -13,17 +13,19 @@
     </x-sidebar>
 </x-slot:sidebar>
 <main class="container mt-3">
-    <div class="row">
+    <div class="row mb-3">
         <h3>Meus Projetos</h3>
     </div>
     <div class="col-12 mb-3">
         <div class="row gap-3">
             @foreach ($projetos as $projeto)
                 <div class="col-12">
-                    <x-pagina-projetos.projeto titulo='{{ $projeto->getNome() }}' href='teste'>
+                    <x-pagina-projetos.projeto titulo='{{ $projeto->getNome() }}' :key="$projeto->getId()"
+                        href="{{ route('pagina-projeto-sprints', ['projetoId' => $projeto->getId()]) }}">
                         {{ $projeto->getDescricao() }}
                     </x-pagina-projetos.projeto>
                 </div>
             @endforeach
         </div>
+    </div>
 </main>
