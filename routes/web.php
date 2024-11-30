@@ -1,12 +1,6 @@
 <?php
 
-use App\Livewire\PaginaProjetoCriarSprint;
-use App\Livewire\PaginaProjetos;
-use App\Livewire\PaginaProjetoSprints;
-use App\Livewire\PaginaSprintAlterar;
-use App\Livewire\PaginaSprintBacklog;
-use App\Livewire\PaginaSprintDetalhar;
-use App\Livewire\PaginaSprintReport;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,10 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', PaginaProjetos::class)->name('pagina-projetos');
-Route::get('projetos/{projetoId}/sprints', PaginaProjetoSprints::class)->name('pagina-projeto-sprints');
-Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
-Route::get('projetos/{projetoId}/sprints/{sprint}', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');
-Route::get('projetos/{projetoId}/sprints/{sprint}/report', PaginaSprintReport::class)->name('pagina-sprint-report');
-Route::get('projetos/{projetoId}/sprints/{sprint}/backlog', PaginaSprintBacklog::class)->name('pagina-sprint-backlog');
-Route::get('projetos/{projetoId}/sprints/{sprint}/alterar', PaginaSprintAlterar::class)->name('pagina-sprint-alterar');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';
