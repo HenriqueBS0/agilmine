@@ -47,6 +47,7 @@ class UserSeeder extends Seeder
                 'name' => 'Rodrigo Curvello',
                 'email' => 'rodrigo.curvello@ifc.edu.br',
                 'password' => bcrypt('rodrigo12345'),
+                'admin' => true
             ],
             [
                 'name' => 'Yohanês Zanghelini',
@@ -61,7 +62,16 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            User::create($user);
+            // Verifica se o usuário já existe
+            $existingUser = User::where('email', $user['email'])->first();
+
+            if ($existingUser) {
+                // Se existir, atualiza apenas o campo admin
+                $existingUser->update(['admin' => $user['admin'] ?? false]);
+            } else {
+                // Se não existir, cria o registro com todos os dados
+                User::create($user);
+            }
         }
     }
 }
