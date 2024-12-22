@@ -17,9 +17,7 @@
             {{ $sidebar }}
         </div>
         <main class="main-content col overflow-y-scroll">
-            @if (session()->has('alerta'))
-                <livewire:alerta />
-            @endif
+            <livewire:alerta />
             {{ $slot }}
         </main>
     </div>

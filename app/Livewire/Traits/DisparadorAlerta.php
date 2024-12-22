@@ -33,5 +33,10 @@ trait DisparadorAlerta
         } else {
             session()->flash('alerta', ['tipo' => $tipo, 'mensagem' => $mensagem]);
         }
+
+        // Disparar evento Livewire para o frontend
+        if (method_exists($this, 'dispatch')) {
+            $this->dispatch('alerta', ['tipo' => $tipo, 'mensagem' => $mensagem]);
+        }
     }
 }
