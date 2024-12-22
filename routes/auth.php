@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Livewire\Home\Usuarios\Pagina as PaginaUsuarios;
 use App\Livewire\PaginaSprintAlterar;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\PaginaProjetoCriarSprint;
@@ -61,10 +63,11 @@ Route::middleware('auth')->group(function () {
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
     Route::get('projetos', PaginaProjetos::class)->name('pagina-projetos');
+    Route::get('usuarios', PaginaUsuarios::class)->middleware([AdminMiddleware::class])->name('pagina-usuarios');
     Route::get('projetos/{projetoId}/sprints', PaginaProjetoSprints::class)->name('pagina-projeto-sprints');
     Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
     Route::get('projetos/{projetoId}/sprints/{sprint}', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');
