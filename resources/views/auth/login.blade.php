@@ -4,12 +4,7 @@
 
 @section('content')<div class="card shadow-sm w-100" style="max-width: 28rem;">
         <div class="card-body">
-            <!-- Session Status -->
-            @if (session('status'))
-                <div class="alert alert-success mb-3" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
+            <livewire:alerta />
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Livewire\Traits\DisparadorAlerta;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
+    use DisparadorAlerta;
+
     /**
      * Display the login view.
      */
@@ -26,6 +29,12 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+
+        if (!Auth::user()->habilitado) {
+            Auth::logout();
+            $this->alertaAtencao(__('messages.account_disabled'));
+            return redirect()->route('login');
+        }
 
         $request->session()->regenerate();
 

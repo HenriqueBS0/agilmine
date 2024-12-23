@@ -57,13 +57,11 @@ class GerenciarUsuariosTest extends TestCase
         $naoAdministrador = User::factory()->create(['admin' => false]);
         $usuario = User::factory()->create();
 
-        Livewire::actingAs($naoAdministrador)
+        $componente = Livewire::actingAs($naoAdministrador)
             ->test(Pagina::class)
-            ->call('atualizarHabilitado', $usuario->id, true)
-            ->assertDispatched('alerta', [
-                "tipo" => TipoAlerta::Perigo->value,
-                "mensagem" => __('messages.permission_denied')
-            ]);
+            ->call('atualizarHabilitado', $usuario->id, true);
+
+        $this->assertAlertaPerigo(__('messages.permission_denied'), $componente);
 
         $this->assertDatabaseHas('users', ['id' => $usuario->id, 'habilitado' => true]);
     }
@@ -72,13 +70,11 @@ class GerenciarUsuariosTest extends TestCase
     {
         $admin = User::factory()->create(['admin' => true]);
 
-        Livewire::actingAs($admin)
+        $componente = Livewire::actingAs($admin)
             ->test(Pagina::class)
-            ->call('atualizarHabilitado', $admin->id, false)
-            ->assertDispatched('alerta', [
-                "tipo" => TipoAlerta::Perigo->value,
-                "mensagem" => __('messages.self_account_disable')
-            ]);
+            ->call('atualizarHabilitado', $admin->id, false);
+
+        $this->assertAlertaPerigo(__('messages.self_account_disable'), $componente);
 
         $this->assertDatabaseHas('users', ['id' => $admin->id, 'habilitado' => true]);
     }
@@ -112,14 +108,11 @@ class GerenciarUsuariosTest extends TestCase
         $naoAdministrador = User::factory()->create(['admin' => false]);
         $usuario = User::factory()->create();
 
-        Livewire::actingAs($naoAdministrador)
+        $componente = Livewire::actingAs($naoAdministrador)
             ->test(Pagina::class)
-            ->call('atualizarAdmin', $usuario->id, true)
-            ->assertDispatched('alerta', [
-                "tipo" => TipoAlerta::Perigo->value,
-                "mensagem" => __('messages.permission_denied')
-            ]);
+            ->call('atualizarAdmin', $usuario->id, true);
 
+        $this->assertAlertaPerigo(__('messages.permission_denied'), $componente);
         $this->assertDatabaseHas('users', ['id' => $usuario->id, 'admin' => false]);
     }
 
@@ -127,13 +120,11 @@ class GerenciarUsuariosTest extends TestCase
     {
         $admin = User::factory()->create(['admin' => true]);
 
-        Livewire::actingAs($admin)
+        $componente = Livewire::actingAs($admin)
             ->test(Pagina::class)
-            ->call('atualizarAdmin', $admin->id, false)
-            ->assertDispatched('alerta', [
-                "tipo" => TipoAlerta::Perigo->value,
-                "mensagem" => __('messages.self_permission_change')
-            ]);
+            ->call('atualizarAdmin', $admin->id, false);
+
+        $this->assertAlertaPerigo(__('messages.self_permission_change'), $componente);
 
         $this->assertDatabaseHas('users', ['id' => $admin->id, 'admin' => true]);
     }

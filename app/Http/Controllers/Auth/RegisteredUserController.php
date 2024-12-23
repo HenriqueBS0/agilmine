@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Livewire\Traits\DisparadorAlerta;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -15,6 +16,9 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
+
+    use DisparadorAlerta;
+
     /**
      * Display the registration view.
      */
@@ -32,7 +36,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -44,8 +48,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        $this->alertaSucesso(__('messages.account_created_successfully'));
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(route('login'));
     }
 }
