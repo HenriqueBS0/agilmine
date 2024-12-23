@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Home\Usuarios;
 
-use App\Livewire\Enums\TipoAlerta;
 use App\Livewire\Home\Usuarios\Pagina;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -137,5 +137,71 @@ class GerenciarUsuariosTest extends TestCase
 
         $response = $this->get(route('pagina-usuarios'));
         $response->assertForbidden();
+    }
+
+    public function testAdminPodeAbrirModalDeConfirmacaoParaGerarSenha()
+    {
+        $admin = User::factory()->create(['admin' => true]);
+        $usuario = User::factory()->create();
+
+        $componente = Livewire::actingAs($admin)
+            ->test(Pagina::class)
+            ->call('confirmarGeracaoSenha', $usuario->id);
+
+        $this->assertAbrirModal('confirmar-geracao-senha', $componente);
+        $componente->assertSet('usuarioSelecionado.id', $usuario->id);
+    }
+
+    public function testAdminPodeGerarNovaSenhaParaUsuario()
+    {
+        $admin = User::factory()->create(['admin' => true]);
+        $usuario = User::factory()->create();
+
+        $senhaAntiga = $usuario->password;
+
+        $componente = Livewire::actingAs($admin)
+            ->test(Pagina::class)
+            ->set('usuarioSelecionado', $usuario)
+            ->call('gerarNovaSenha');
+
+        $this->assertAbrirModal('menasgem-informacao-senha', $componente);
+
+        $componente->assertSee($componente->get('novaSenha'));
+
+        $this->assertNotEquals($senhaAntiga, $usuario->fresh()->password, 'A senha antiga deve ser diferente da atual');
+    }
+
+    public function testNaoAdminNaoPodeGerarNovaSenhaParaUsuario()
+    {
+        $admin = User::factory()->create(['admin' => false]);
+        $usuario = User::factory()->create();
+
+        $componente = Livewire::actingAs($admin)
+            ->test(Pagina::class)
+            ->set('usuarioSelecionado', $usuario)
+            ->call('gerarNovaSenha');
+
+        $this->assertAlertaPerigo(__('messages.permission_denied'), $componente);
+    }
+
+    public function testUsuarioPodeAcessarSistemaComNovaSenha()
+    {
+        $admin = User::factory()->create(['admin' => true]);
+        $usuario = User::factory()->create();
+
+        $component = Livewire::actingAs($admin)
+            ->test(Pagina::class)
+            ->set('usuarioSelecionado', $usuario)
+            ->call('gerarNovaSenha');
+
+        $novaSenha = $component->get('novaSenha');
+
+        // Tenta fazer login com a nova senha
+        $response = $this->post(route('login'), [
+            'email' => $usuario->email,
+            'password' => $novaSenha,
+        ]);
+
+        $response->assertRedirect(route('pagina-projetos'));
     }
 }

@@ -5,7 +5,16 @@
     <x-home.sidebar />
 </x-slot:sidebar>
 <x-main titulo="Usuários">
-    <table class="table">
+    <x-modal-confirmacao id="confirmar-geracao-senha" titulo="Confirmar Geração de Senha"
+        mensagem="Deseja realmente gerar uma nova senha para o usuário {{ $usuarioSelecionado?->name }}?">
+        <x-slot:confirm class="btn btn-warning" wire:click='gerarNovaSenha'>Gerar</x-slot:confirm>
+    </x-modal-confirmacao>
+
+    <x-modal id="menasgem-informacao-senha" titulo="Nova Senha Gerada">
+        <p>Senha <strong>{{ $novaSenha }}</strong> gerada para o usuário {{ $usuarioSelecionado?->name }}</p>
+    </x-modal>
+
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -13,6 +22,7 @@
                 <th scope="col">E-mail</th>
                 <th scope="col">Habilitado</th>
                 <th scope="col">Administrador</th>
+                <th scope="col">Senha</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +38,11 @@
                     <td scope="col">
                         <x-input-switch :checked="$usuario->admin" :disabled="$usuario->id === auth()->id()"
                             wire:input="atualizarAdmin({{ $usuario->id }}, $event.target.checked)" />
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" wire:click="confirmarGeracaoSenha({{ $usuario->id }})">
+                            Gerar
+                        </button>
                     </td>
                 </tr>
             @endforeach

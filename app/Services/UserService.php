@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Gate;
 use Illuminate\Auth\Access\AuthorizationException;
+use Str;
 
 class UserService
 {
@@ -52,5 +53,26 @@ class UserService
 
         $usuario->habilitado = $habilitado;
         return $usuario->save();
+    }
+
+    /**
+     * Gera uma nova senha para o usuário.
+     *
+     * @param User $usuario O usuário a ser atualizado.
+     * @return string nova senha
+     * @throws AuthorizationException
+     */
+    public function gerarNovaSenha(User $usuario)
+    {
+        // Verifica se o usuário autenticado tem permissão para atualizar este modelo
+        if (Gate::denies('update', $usuario)) {
+            throw new AuthorizationException(__('messages.permission_denied'));
+        }
+
+        $novaSenha = Str::random(10);
+        $usuario->password = bcrypt($novaSenha);
+        $usuario->save();
+
+        return $novaSenha;
     }
 }
