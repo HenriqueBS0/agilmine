@@ -35,4 +35,16 @@ class Pagina extends Component
             $this->alertaPerigo($e->getMessage());
         }
     }
+
+    public function atualizarHabilitado($usuarioId, $habilitado, UserService $userService)
+    {
+        $usuario = User::findOrFail($usuarioId);
+
+        try {
+            $userService->atualizarHabilitado($usuario, $habilitado);
+            $this->usuarios = User::all();
+        } catch (\Exception $e) {
+            $this->alertaPerigo($e->getMessage());
+        }
+    }
 }

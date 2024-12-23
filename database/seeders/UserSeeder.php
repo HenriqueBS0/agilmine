@@ -17,47 +17,56 @@ class UserSeeder extends Seeder
                 'name' => 'Bruno Adam Ern',
                 'email' => 'brunoadamern307@hotmail.com',
                 'password' => bcrypt('bruno12345'),
+                'habilitado' => true,
             ],
             [
                 'name' => 'Cristhian Heck',
                 'email' => 'cristhian.heck@ifc.edu.br',
                 'password' => bcrypt('cristhian12345'),
+                'habilitado' => true,
             ],
             [
                 'name' => 'Felipe Caue Machado',
                 'email' => 'fmachad6@gmail.com',
                 'password' => bcrypt('felipe12345'),
+                'habilitado' => true,
             ],
             [
                 'name' => 'Gianluca Matos Klaumann',
                 'email' => 'gianlucamk04@gmail.com',
                 'password' => bcrypt('gianluca12345'),
+                'habilitado' => true,
             ],
             [
                 'name' => 'Lucas Kelim Thiel',
                 'email' => 'lucas.kthiel@gmail.com',
                 'password' => bcrypt('lucas12345'),
+                'habilitado' => true,
             ],
             [
                 'name' => 'Pedro Ryan',
                 'email' => 'pedroryancoelhoiplinski@gmail.com',
                 'password' => bcrypt('pedro12345'),
+                'habilitado' => true,
             ],
             [
                 'name' => 'Rodrigo Curvello',
                 'email' => 'rodrigo.curvello@ifc.edu.br',
                 'password' => bcrypt('rodrigo12345'),
-                'admin' => true
+                'admin' => true,
+                'habilitado' => true,
             ],
             [
                 'name' => 'Yohanês Zanghelini',
                 'email' => 'yzanghelini@gmail.com',
                 'password' => bcrypt('yohanes12345'),
+                'habilitado' => true,
             ],
             [
                 'name' => 'Henrique Borges dos Santos',
                 'email' => 'henrique.10agr@gmail.com',
                 'password' => bcrypt('henrique123'),
+                'habilitado' => true,
             ],
         ];
 

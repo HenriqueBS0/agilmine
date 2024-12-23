@@ -11,6 +11,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Nome</th>
                 <th scope="col">E-mail</th>
+                <th scope="col">Habilitado</th>
                 <th scope="col">Administrador</th>
             </tr>
         </thead>
@@ -20,6 +21,10 @@
                     <td scope="col">{{ $usuario->id }}</td>
                     <td scope="col">{{ $usuario->name }}</td>
                     <td scope="col">{{ $usuario->email }}</td>
+                    <td scope="col">
+                        <x-input-switch :checked="$usuario->habilitado" :disabled="$usuario->id === auth()->id()"
+                            wire:input="atualizarHabilitado({{ $usuario->id }}, $event.target.checked)" />
+                    </td>
                     <td scope="col">
                         <x-input-switch :checked="$usuario->admin" :disabled="$usuario->id === auth()->id()"
                             wire:input="atualizarAdmin({{ $usuario->id }}, $event.target.checked)" />
