@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\ApiRedmine;
+use App\Models\Configuracao;
 use App\Services\ApiRedmine\Operacoes\Listar\Parametros;
 use App\Services\ApiRedmine\Operacoes\Listar\Retorno;
 use Illuminate\Support\Facades\Http;
@@ -28,7 +29,7 @@ class ApiRedmine
 
     private static function getEndpoint(): string
     {
-        return env('API_REDMINE_URL', '');
+        return Configuracao::getValor('redmine_api_url');
     }
 
     private static function getKey(): string

@@ -16,10 +16,19 @@
         <div class="sidebar-container col-2">
             {{ $sidebar }}
         </div>
-        <main class="main-content col overflow-y-scroll">
-            <livewire:alerta />
-            {{ $slot }}
-        </main>
+
+        @isset($main)
+            <main {{ $main->attributes->merge(['class' => 'main-content col overflow-y-scroll']) }}>
+                <livewire:alerta />
+                {{ $slot }}
+            </main>
+        @else
+            <main class="main-content col overflow-y-scroll">
+                <livewire:alerta />
+                {{ $slot }}
+            </main>
+        @endisset
+
     </div>
 </body>
 

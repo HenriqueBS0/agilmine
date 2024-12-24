@@ -4,7 +4,6 @@ namespace Tests\Feature\Home\Usuarios;
 
 use App\Livewire\Home\Usuarios\Pagina;
 use App\Models\User;
-use App\Services\UserService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
