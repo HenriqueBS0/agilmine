@@ -52,6 +52,16 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label for="key_redmine" class="form-label">Key Redmine</label>
+                                        <input type="text" id="key_redmine" name="key_redmine"
+                                            class="form-control @error('key_redmine') is-invalid @enderror"
+                                            value="{{ old('key_redmine', $user->key_redmine) }}" required>
+                                        @error('key_redmine')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                     <button type="submit" class="btn btn-secondary">{{ __('Save') }}</button>
                                 </form>
                             </div>

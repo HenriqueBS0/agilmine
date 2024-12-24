@@ -4,6 +4,7 @@ namespace App\Services\ApiRedmine;
 use App\Models\Configuracao;
 use App\Services\ApiRedmine\Operacoes\Listar\Parametros;
 use App\Services\ApiRedmine\Operacoes\Listar\Retorno;
+use Auth;
 use Illuminate\Support\Facades\Http;
 
 /**
@@ -34,6 +35,6 @@ class ApiRedmine
 
     private static function getKey(): string
     {
-        return env('API_REDMINE_KEY', '');
+        return Auth::user()->key_redmine;
     }
 }
