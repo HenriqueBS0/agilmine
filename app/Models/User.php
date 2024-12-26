@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Services\ApiRedmine\ApiRedmine;
+use App\Services\ApiRedmine\Entidades\Usuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,7 +25,8 @@ class User extends Authenticatable
         'password',
         'admin',
         'habilitado',
-        'key_redmine'
+        'key_redmine',
+        'id_usuario_redmine'
     ];
 
     /**
@@ -47,4 +50,40 @@ class User extends Authenticatable
         'admin' => 'boolean',
         'habilitado' => 'boolean'
     ];
+
+    protected static function booted()
+    {
+        static::updating(function ($user) {
+            if ($user->isDirty('key_redmine')) { // Verifica se 'key_redmine' foi alterado
+                $user->id_usuario_redmine = null; // Limpa o campo 'id_usuario_redmine'
+            }
+        });
+    }
+
+    /**
+     * Obtém o ID do usuário no Redmine.
+     *
+     * @return int|null
+     */
+    public function getRedmineId(): ?int
+    {
+        if ($this->key_redmine === null) {
+            return null;
+        }
+
+        if (is_int($this->id_usuario_redmine)) {
+            return $this->id_usuario_redmine;
+        }
+
+        try {
+            $usuario = ApiRedmine::listar(Usuario::parametroListar())->dados()[0];
+
+            $this->id_usuario_redmine = $usuario->getId();
+            $this->save();
+
+            return $this->id_usuario_redmine;
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
 }
