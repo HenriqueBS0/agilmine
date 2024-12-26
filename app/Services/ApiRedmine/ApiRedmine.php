@@ -35,6 +35,6 @@ class ApiRedmine
 
     private static function getKey(): string
     {
-        return Auth::user()->key_redmine;
+        return Auth::user()->key_redmine ?: '';
     }
 }
