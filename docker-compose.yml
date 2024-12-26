@@ -47,9 +47,39 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    postgres:
+        image: postgres:latest
+        restart: always
+        networks:
+            - sail
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        environment:
+            - 'POSTGRES_PASSWORD=password'
+            - 'POSTGRES_DB=redmine'
+
+    redmine:
+        image: redmine:latest
+        restart: always
+        networks:
+            - sail
+        volumes:
+            - redmine-data:/usr/src/redmine/files
+        ports:
+            - 9934:3000
+        environment:
+            - 'REDMINE_DB_POSTGRES=postgres'
+            - 'REDMINE_DB_DATABASE=redmine'
+            - 'REDMINE_DB_PASSWORD=password'
+
 networks:
     sail:
         driver: bridge
+
 volumes:
     sail-mysql:
+        driver: local
+    postgres-data:
+        driver: local
+    redmine-data:
         driver: local
