@@ -62,7 +62,7 @@ class UserService
      * @return string nova senha
      * @throws AuthorizationException
      */
-    public function gerarNovaSenha(User $usuario)
+    public function gerarNovaSenha(User $usuario): string
     {
         // Verifica se o usuário autenticado tem permissão para atualizar este modelo
         if (Gate::denies('update', $usuario)) {

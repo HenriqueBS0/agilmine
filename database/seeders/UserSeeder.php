@@ -18,36 +18,42 @@ class UserSeeder extends Seeder
                 'email' => 'brunoadamern307@hotmail.com',
                 'password' => bcrypt('bruno12345'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Cristhian Heck',
                 'email' => 'cristhian.heck@ifc.edu.br',
                 'password' => bcrypt('cristhian12345'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Felipe Caue Machado',
                 'email' => 'fmachad6@gmail.com',
                 'password' => bcrypt('felipe12345'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Gianluca Matos Klaumann',
                 'email' => 'gianlucamk04@gmail.com',
                 'password' => bcrypt('gianluca12345'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Lucas Kelim Thiel',
                 'email' => 'lucas.kthiel@gmail.com',
                 'password' => bcrypt('lucas12345'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Pedro Ryan',
                 'email' => 'pedroryancoelhoiplinski@gmail.com',
                 'password' => bcrypt('pedro12345'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Rodrigo Curvello',
@@ -55,32 +61,26 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('rodrigo12345'),
                 'admin' => true,
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Yohanês Zanghelini',
                 'email' => 'yzanghelini@gmail.com',
                 'password' => bcrypt('yohanes12345'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
             [
                 'name' => 'Henrique Borges dos Santos',
                 'email' => 'henrique.10agr@gmail.com',
                 'password' => bcrypt('henrique123'),
                 'habilitado' => true,
+                'key_redmine' => '701418bde932b0b4bbe560ccdf09eb2e33476ff6',
             ],
         ];
 
         foreach ($users as $user) {
-            // Verifica se o usuário já existe
-            $existingUser = User::where('email', $user['email'])->first();
-
-            if ($existingUser) {
-                // Se existir, atualiza apenas o campo admin
-                $existingUser->update(['admin' => $user['admin'] ?? false]);
-            } else {
-                // Se não existir, cria o registro com todos os dados
-                User::create($user);
-            }
+            User::create($user);
         }
     }
 }

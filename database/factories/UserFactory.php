@@ -30,7 +30,9 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'admin' => false,
-            'habilitado' => true
+            'habilitado' => true,
+            'key_redmine' => fake()->randomKey(),
+            'id_usuario_redmine' => fake()->randomNumber(4)
         ];
     }
 
