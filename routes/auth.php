@@ -12,10 +12,11 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Livewire\Home\Configuracoes\Pagina as PaginaConfiguracoes;
 use App\Livewire\Home\Usuarios\Pagina as PaginaUsuarios;
+use App\Livewire\Home\Projetos\Pagina as PaginaProjetos;
+use App\Livewire\Home\ProjetosArquivados\Pagina as PaginaProjetosArquivados;
 use App\Livewire\PaginaSprintAlterar;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\PaginaProjetoCriarSprint;
-use App\Livewire\PaginaProjetos;
 use App\Livewire\PaginaProjetoSprints;
 use App\Livewire\PaginaSprintBacklog;
 use App\Livewire\PaginaSprintDetalhar;
@@ -74,6 +75,8 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
     Route::get('usuarios', PaginaUsuarios::class)->middleware([AdminMiddleware::class])->name('pagina-usuarios');
     Route::get('configuracoes', PaginaConfiguracoes::class)->middleware([AdminMiddleware::class])->name('pagina-configuracoes');
     Route::get('projetos', PaginaProjetos::class)->name('pagina-projetos');
+    Route::get('projetos/arquivados', PaginaProjetosArquivados::class)->name('pagina-projetos-arquivados');
+
     Route::get('projetos/{projetoId}/sprints', PaginaProjetoSprints::class)->name('pagina-projeto-sprints');
     Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
     Route::get('projetos/{projetoId}/sprints/{sprint}', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');

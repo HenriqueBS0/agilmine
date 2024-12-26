@@ -6,5 +6,7 @@ return [
     'self_account_disable' => 'Você não pode desabilitar sua própria conta.',
     'account_disabled' => 'Sua conta está desabilitada. Por favor, entre em contato com o administrador.',
     'account_created_successfully' => 'Conta criada com sucesso! Seu acesso está pendente de habilitação pelo administrador.',
-    'config_saved_successfully' => 'Configuração salva com sucesso.'
+    'config_saved_successfully' => 'Configuração salva com sucesso.',
+    'projeto_arquivado' => 'Projeto :nome arquivado com sucesso.',
+    'projeto_desarquivado' => 'Projeto :nome desarquivado com sucesso.',
 ];
