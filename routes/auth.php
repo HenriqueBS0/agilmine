@@ -14,13 +14,9 @@ use App\Livewire\Home\Configuracoes\Pagina as PaginaConfiguracoes;
 use App\Livewire\Home\Usuarios\Pagina as PaginaUsuarios;
 use App\Livewire\Home\Projetos\Pagina as PaginaProjetos;
 use App\Livewire\Home\ProjetosArquivados\Pagina as PaginaProjetosArquivados;
-use App\Livewire\PaginaSprintAlterar;
+use App\Livewire\Projeto\Report\Pagina as PaginaProjetoReport;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\PaginaProjetoCriarSprint;
 use App\Livewire\PaginaProjetoSprints;
-use App\Livewire\PaginaSprintBacklog;
-use App\Livewire\PaginaSprintDetalhar;
-use App\Livewire\PaginaSprintReport;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -77,10 +73,12 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
     Route::get('projetos', PaginaProjetos::class)->name('pagina-projetos');
     Route::get('projetos/arquivados', PaginaProjetosArquivados::class)->name('pagina-projetos-arquivados');
 
-    Route::get('projetos/{projetoId}/sprints', PaginaProjetoSprints::class)->name('pagina-projeto-sprints');
-    Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
-    Route::get('projetos/{projetoId}/sprints/{sprint}', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');
-    Route::get('projetos/{projetoId}/sprints/{sprint}/report', PaginaSprintReport::class)->name('pagina-sprint-report');
-    Route::get('projetos/{projetoId}/sprints/{sprint}/backlog', PaginaSprintBacklog::class)->name('pagina-sprint-backlog');
-    Route::get('projetos/{projetoId}/sprints/{sprint}/alterar', PaginaSprintAlterar::class)->name('pagina-sprint-alterar');
+    Route::get('projetos/{projeto}/report', PaginaProjetoReport::class)->name('pagina-projeto-report');
+
+
+    // Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
+    // Route::get('projetos/{projetoId}/sprints/{sprint}', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');
+    // Route::get('projetos/{projetoId}/sprints/{sprint}/report', PaginaSprintReport::class)->name('pagina-sprint-report');
+    // Route::get('projetos/{projetoId}/sprints/{sprint}/backlog', PaginaSprintBacklog::class)->name('pagina-sprint-backlog');
+    // Route::get('projetos/{projetoId}/sprints/{sprint}/alterar', PaginaSprintAlterar::class)->name('pagina-sprint-alterar');
 });
