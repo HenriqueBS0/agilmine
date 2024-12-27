@@ -2,23 +2,21 @@
 
 namespace Tests\Support;
 
+use App\Models\User;
+use App\Services\ProjetoService;
 use Http;
 use Tests\Support\Factories\ApiRedmine\MembroFactory;
+use Tests\Support\Factories\ApiRedmine\TarefaFactory;
 use Tests\Support\Factories\ApiRedmine\UsuarioFactory;
 use Tests\Support\Factories\ApiRedmine\ProjetoFactory;
 
 trait FakesApiRedmine
 {
-    /**
-     * Fake the API response for project members.
-     *
-     * @param array $projetos List of projects.
-     * @param array $usuario User data.
-     * @param array $regrasMembroPrincipal Roles for the main member.
-     * @return void
-     */
+
     private function fakeMembros($projetos, $usuario, $regrasMembroPrincipal = [])
     {
+        $membrosProjetos = [];
+
         foreach ($projetos as $projeto) {
             $membroPrincipal = $this->createMembroPrincipal($projeto, $usuario, $regrasMembroPrincipal);
 
@@ -36,17 +34,12 @@ trait FakesApiRedmine
                     'limit' => 25,
                 ])
             ]);
-        }
-    }
 
-    /**
-     * Create the main member for a project.
-     *
-     * @param array $projeto Project data.
-     * @param array $usuario User data.
-     * @param array $regras Roles for the main member.
-     * @return array
-     */
+            $membrosProjetos[$projeto['id']] = $membros;
+        }
+
+        return $membrosProjetos;
+    }
     private function createMembroPrincipal($projeto, $usuario, $regras = [])
     {
 
@@ -62,12 +55,6 @@ trait FakesApiRedmine
         return MembroFactory::make($attributes);
     }
 
-    /**
-     * Fake the API response for projects.
-     *
-     * @param int $numeroProjetos Number of projects to generate.
-     * @return array
-     */
     private function fakeProjetos($numeroProjetos = 5)
     {
         $projetos = ProjetoFactory::collection($numeroProjetos);
@@ -84,12 +71,6 @@ trait FakesApiRedmine
         return $projetos;
     }
 
-    /**
-     * Fake the API response for a user.
-     *
-     * @param array $attributes Attributes to override.
-     * @return array
-     */
     private function fakeUsuario($attributes = [])
     {
         $usuario = UsuarioFactory::make($attributes);
@@ -101,5 +82,57 @@ trait FakesApiRedmine
         ]);
 
         return $usuario;
+    }
+
+    private function fakeTarefas($projetos, $quantidadePorProjeto = 5, $attributes = [])
+    {
+
+        $tarefasPorProjeto = [];
+
+        foreach ($projetos as $projeto) {
+            $tarefas = TarefaFactory::collection(
+                $quantidadePorProjeto,
+                array_merge([
+                    'project' => ['id' => $projeto['id'], 'name' => $projeto['name']],
+                ], $attributes)
+            );
+
+            Http::fake([
+                "http://fabtec.ifc-riodosul.edu.br/projects/{$projeto['id']}/issues.json*" => Http::response([
+                    'issues' => $tarefas,
+                    'total_count' => count($tarefas),
+                    'offset' => 0,
+                    'limit' => 25,
+                ])
+            ]);
+
+            $tarefasPorProjeto[$projeto['id']] = $tarefas;
+        }
+
+        return $tarefasPorProjeto;
+    }
+
+    private function fakeCompleto($regrasUsuarioRedmine = [MembroFactory::ROLE_DEVELOPER])
+    {
+        $usuario = $this->fakeUsuario();
+        $projetos = $this->fakeProjetos(5);
+        $membrosProjetos = $this->fakeMembros($projetos, $usuario, $regrasUsuarioRedmine);
+        $tarefasProjetos = $this->fakeTarefas($projetos, 5);
+
+        $usuarioSistema = User::factory()->create([
+            'key_redmine' => $usuario['api_key'],
+            'id_usuario_redmine' => $usuario['id']
+        ]);
+
+        return [
+            'usuario' =>
+                [
+                    'redmine' => $usuario,
+                    'sistema' => $usuarioSistema
+                ],
+            'projetos' => $projetos,
+            'membrosProjetos' => $membrosProjetos,
+            'tarefasProjetos' => $tarefasProjetos,
+        ];
     }
 }

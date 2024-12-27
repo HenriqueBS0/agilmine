@@ -38,4 +38,15 @@ class Configuracao extends Model
         self::updateOrCreate(['key' => $key], ['value' => $value]);
         cache()->forget("configuracoes_{$key}");
     }
+
+    public static function getRedmineUrlApi(bool $replaceContainer = false)
+    {
+        $url = rtrim(self::getValor(self::KEY_REDMINE_URL_API), '/');
+
+        if ($replaceContainer && $url == 'http://redmine:3000') {
+            $url = 'http://localhost:9934';
+        }
+
+        return $url;
+    }
 }

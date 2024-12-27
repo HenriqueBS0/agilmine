@@ -30,7 +30,7 @@ class ApiRedmine
 
     private static function getEndpoint(): string
     {
-        return Configuracao::getValor('redmine_api_url');
+        return Configuracao::getRedmineUrlApi();
     }
 
     private static function getKey(): string

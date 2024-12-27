@@ -27,6 +27,7 @@ class Projeto extends Model
         'nome',
         'descricao',
         'arquivado',
+        'tarefas'
     ];
 
     /**
@@ -35,11 +36,34 @@ class Projeto extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'arquivado' => 'boolean'
+        'arquivado' => 'boolean',
+        'tarefas' => 'array'
     ];
 
     public function membros(): HasMany
     {
         return $this->hasMany(ProjetoMembro::class, 'projeto_id');
+    }
+
+    /**
+     * Set the tarefas attribute ensuring the IDs are unique.
+     *
+     * @param array $value
+     * @return void
+     */
+    public function setTarefasAttribute(array $value): void
+    {
+        $this->attributes['tarefas'] = json_encode(array_unique($value));
+    }
+
+    /**
+     * Get the tarefas attribute as an array of integers.
+     *
+     * @param string|null $value
+     * @return array
+     */
+    public function getTarefasAttribute($value): array
+    {
+        return $value ? array_map('intval', json_decode($value, true)) : [];
     }
 }

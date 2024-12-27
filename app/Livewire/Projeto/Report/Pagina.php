@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Projeto\Report;
 
-use App\Livewire\Traits\ManipuladorProjeto;
 use App\Models\Projeto;
 use Livewire\Component;
 

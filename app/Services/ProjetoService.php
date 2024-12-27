@@ -8,6 +8,7 @@ use App\Services\ApiRedmine\Entidades\Projeto as DadosProjeto;
 use App\Models\Projeto;
 use App\Models\ProjetoMembro;
 use App\Models\MembroRegra;
+use App\Services\ApiRedmine\Entidades\Tarefa;
 use Auth;
 use Gate;
 
@@ -123,5 +124,61 @@ class ProjetoService
 
         $projeto->arquivado = $arquivar;
         $projeto->save();
+    }
+
+    /**
+     * Retorna as tarefas do projeto
+     * @param \App\Models\Projeto $projeto
+     * @return \App\Services\ApiRedmine\Entidades\Tarefa[]
+     */
+    public function getTarefas(Projeto $projeto): array
+    {
+        Gate::authorize('isMembro', $projeto);
+
+        $tarefas = $this->fetchTarefas($projeto);
+
+        // IDs de tarefas retornados da API Redmine
+        $idTarefasRedmine = array_map(fn(Tarefa $tarefa) => $tarefa->getId(), $tarefas);
+
+        // IDs de tarefas atualmente no banco
+        $idTarefasBanco = $projeto->tarefas;
+
+        // Remove IDs do banco que não estão na lista da API
+        $idTarefasAtualizados = array_intersect($idTarefasBanco, $idTarefasRedmine);
+
+        // Adiciona IDs que estão em Redmine mas não estão no banco
+        $idsAdicionais = array_diff($idTarefasRedmine, $idTarefasBanco);
+        $idTarefasAtualizados = array_merge($idTarefasAtualizados, $idsAdicionais);
+
+        // Atualiza os IDs no banco
+        $projeto->tarefas = $idTarefasAtualizados;
+        $projeto->save();
+
+        // Ordena as tarefas pela ordem dos IDs em idTarefasAtualizados
+        $idPosicoes = array_flip($idTarefasAtualizados); // Mapeia o ID à sua posição
+        usort($tarefas, fn(Tarefa $a, Tarefa $b) => $idPosicoes[$a->getId()] <=> $idPosicoes[$b->getId()]);
+
+        return $tarefas;
+    }
+
+    /**
+     * Busca as tarefas do projeto
+     * @param \App\Models\Projeto $projeto
+     * @return \App\Services\ApiRedmine\Entidades\Tarefa[]
+     */
+    private function fetchTarefas(Projeto $projeto): array
+    {
+        $parametros = Tarefa::parametroListar(100);
+        $parametros->filtro()->igual('project_id', $projeto->id);
+        $parametros->ordenacao()->crescente('id');
+
+        $tarefas = [];
+        $resposta = ApiRedmine::listar($parametros);
+
+        do {
+            $tarefas = array_merge($tarefas, $resposta->dados());
+        } while ($resposta = $resposta->avancar());
+
+        return $tarefas;
     }
 }

@@ -15,8 +15,8 @@ use App\Livewire\Home\Usuarios\Pagina as PaginaUsuarios;
 use App\Livewire\Home\Projetos\Pagina as PaginaProjetos;
 use App\Livewire\Home\ProjetosArquivados\Pagina as PaginaProjetosArquivados;
 use App\Livewire\Projeto\Report\Pagina as PaginaProjetoReport;
+use App\Livewire\Projeto\Backlog\Pagina as PaginaProjetoBacklog;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\PaginaProjetoSprints;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -74,7 +74,7 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
     Route::get('projetos/arquivados', PaginaProjetosArquivados::class)->name('pagina-projetos-arquivados');
 
     Route::get('projetos/{projeto}/report', PaginaProjetoReport::class)->name('pagina-projeto-report');
-
+    Route::get('projetos/{projeto}/backlog', PaginaProjetoBacklog::class)->name('pagina-projeto-backlog');
 
     // Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
     // Route::get('projetos/{projetoId}/sprints/{sprint}', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');
