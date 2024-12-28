@@ -9,6 +9,7 @@ use App\Models\Projeto;
 use App\Models\ProjetoMembro;
 use App\Models\MembroRegra;
 use App\Services\ApiRedmine\Entidades\Tarefa;
+use App\Services\ApiRedmine\Entidades\Versao;
 use Auth;
 use Gate;
 
@@ -177,5 +178,10 @@ class ProjetoService
     public function getMembros(Projeto $projeto)
     {
         return ApiRedmine::listar(Membro::parametroListar($projeto->id, 100))->dados();
+    }
+
+    public function getVercoes(Projeto $projeto)
+    {
+        return ApiRedmine::listar(Versao::parametroListar($projeto->id, 100))->dados();
     }
 }

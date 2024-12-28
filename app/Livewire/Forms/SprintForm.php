@@ -11,10 +11,10 @@ class SprintForm extends Form
     public ?Sprint $sprint;
 
     #[Validate('required|max:100')]
-    public string $nome = '';
+    public string $nome;
 
     #[Validate('required')]
-    public string $resumo = '';
+    public string $resumo;
 
     #[Validate('required|date_format:Y-m-d')]
     public string $data_inicio;
@@ -25,42 +25,46 @@ class SprintForm extends Form
     #[Validate('boolean')]
     public bool $gera_release = false;
 
-    #[Validate('array')]
-    public array $tarefas = [];
-
     #[Validate('required|integer')]
     public int $project_id;
 
-    public function setSprint(Sprint $sprint, bool $setAtributos = true)
+    #[Validate('integer|nullable')]
+    public ?int $versao;
+
+    #[Validate('required_if:gera_release,true|nullable|string')]
+    public ?string $resumo_release;
+
+    public function setSprint(Sprint $sprint)
     {
         $this->sprint = $sprint;
 
         $this->project_id = $sprint->project_id;
-
-        if (!$setAtributos) {
-            return;
-        }
-
         $this->nome = $sprint->nome;
         $this->resumo = $sprint->resumo;
         $this->data_inicio = $sprint->data_inicio->format('Y-m-d');
         $this->data_fim = $sprint->data_fim->format('Y-m-d');
         $this->gera_release = $sprint->gera_release;
-        $this->tarefas = $sprint->tarefas;
+        $this->versao = $sprint->versao;
+        $this->resumo_release = $sprint->resumo_release;
     }
 
     public function store()
     {
         $this->validate();
 
-        $this->sprint = Sprint::create($this->only([
+        if (!$this->gera_release) {
+            $this->resumo_release = null;
+        }
+
+        Sprint::create($this->only([
+            'project_id',
             'nome',
             'resumo',
             'data_inicio',
             'data_fim',
             'gera_release',
-            'tarefas',
-            'project_id'
+            'versao',
+            'resumo_release'
         ]));
     }
 
@@ -68,19 +72,6 @@ class SprintForm extends Form
     {
         $this->validate();
 
-        $this->sprint->update(
-            $this->all()
-        );
-    }
-
-    public function validationAttributes()
-    {
-        return [
-            'nome' => 'Nome',
-            'resumo' => 'Resumo',
-            'data_inicio' => 'Data Inicio',
-            'data_fim' => 'Data Fim',
-            'gera_release' => 'Gera Release',
-        ];
+        $this->sprint->update($this->all());
     }
 }

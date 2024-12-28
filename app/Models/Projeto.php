@@ -59,6 +59,11 @@ class Projeto extends Model
         return $this->hasMany(ProjetoMembro::class, 'projeto_id');
     }
 
+    public function sprints(): HasMany
+    {
+        return $this->hasMany(Sprint::class, 'project_id');
+    }
+
     public function configuracao(): HasOne
     {
         return $this->hasOne(ProjetoConfiguracao::class, 'projeto_id');

@@ -9,4 +9,5 @@ return [
     'config_saved_successfully' => 'Configuração salva com sucesso.',
     'projeto_arquivado' => 'Projeto :nome arquivado com sucesso.',
     'projeto_desarquivado' => 'Projeto :nome desarquivado com sucesso.',
+    'sprint_created_successfully' => 'Sprint ":nome" criada com sucesso.',
 ];

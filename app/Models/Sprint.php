@@ -24,7 +24,9 @@ class Sprint extends Model
         'data_fim',
         'gera_release',
         'tarefas',
-        'project_id'
+        'project_id',
+        'versao',
+        'resumo_release'
     ];
 
     /**
@@ -59,7 +61,7 @@ class Sprint extends Model
     public function setTarefasAttribute($value)
     {
         // Garante que os itens da lista sejam inteiros
-        $this->attributes['tarefas'] = json_encode(array_map('intval', (array) $value));
+        $this->attributes['tarefas'] = json_encode(array_unique(array_map('intval', (array) $value)));
     }
 
     /**
@@ -125,5 +127,10 @@ class Sprint extends Model
         }
 
         return $datas;
+    }
+
+    public function projeto()
+    {
+        return $this->belongsTo(Projeto::class, 'project_id');
     }
 }

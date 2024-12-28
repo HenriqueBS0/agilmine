@@ -1,24 +1,27 @@
-@props(['id', 'monitorErro' => null])
+@props(['id', 'type' => 'text', 'monitorErro' => null])
 
 @php
     use Illuminate\View\ComponentAttributeBag;
 
+    // Separando atributos em container e field
     $containerAttributes = [];
-    $inputAttributes = [];
+    $fieldAttributes = [];
 
     foreach ($attributes as $key => $value) {
         if (str_starts_with($key, 'container-')) {
             $containerAttributes[str_replace('container-', '', $key)] = $value;
         } else {
-            $inputAttributes[$key] = $value;
+            $fieldAttributes[$key] = $value;
         }
     }
 
     $containerAttributes = (new ComponentAttributeBag($containerAttributes))->merge(['id' => "container-{$id}"]);
 
-    $inputAttributes = (new ComponentAttributeBag($inputAttributes))
+    $fieldClasses = $type === 'switch' || $type === 'checkbox' ? 'form-check-input' : 'form-control';
+
+    $fieldAttributes = (new ComponentAttributeBag($fieldAttributes))
         ->class([
-            'form-control',
+            $fieldClasses,
             'is-valid' => isset($feedback) && $feedback->attributes->get('valid', false),
             'is-invalid' =>
                 (isset($feedback) && !$feedback->attributes->get('valid', false)) ||
@@ -27,33 +30,36 @@
         ->merge([
             'id' => $id,
             'aria-describedby' => "feedback-{$id}",
+            'type' => $type === 'switch' || $type === 'checkbox' ? 'checkbox' : $type,
         ]);
 @endphp
 
-
 <div {{ $containerAttributes }}>
-    @if (isset($label))
-        <label {{ $label->attributes->merge(['for' => $id, 'class' => 'form-label']) }}>{{ $label }}</label>
-    @endif
-    <input {{ $inputAttributes }}>
+    @if (in_array($type, ['switch', 'checkbox']))
+        <div @class(['form-check', 'form-switch' => $type === 'switch'])>
+            <input {{ $fieldAttributes }}>
+            @if (isset($label))
+                <label {{ $label->attributes->merge(['for' => $id, 'class' => 'form-check-label']) }}>
+                    {{ $label }}
+                </label>
+            @endif
 
+            <x-input-feedback :id="$id" :monitor-erro="$monitorErro" :feedback="$feedback ?? null" />
 
-    @if (isset($feedback) && is_null($monitorErro))
-        <div
-            {{ $feedback->attributes->class([
-                    'valid-feedback' => $feedback->attributes->get('valid', false),
-                    'invalid-feedback' => !$feedback->attributes->get('valid', false),
-                ])->merge([
-                    'id' => "feedback-{$id}",
-                ]) }}>
-            {{ $feedback }}
         </div>
-    @elseif (!is_null($monitorErro))
-        @error($monitorErro)
-            <div id={{ "feedback-{$id}" }} class="invalid-feedback">
-                {{ $message }}
-            </div>
-        @enderror
-    @endif
+    @else
+        <label {{ $label->attributes->merge(['for' => $id, 'class' => 'form-label']) }}>{{ $label }}</label>
 
+        @if ($type === 'textarea')
+            <textarea {{ $fieldAttributes }}>{{ $slot }}</textarea>
+        @elseif ($type === 'select')
+            <select {{ $fieldAttributes->class(['form-select']) }}>
+                {{ $select }}
+            </select>
+        @else
+            <input {{ $fieldAttributes }} type="{{ $type }}">
+        @endif
+
+        <x-input-feedback :id="$id" :monitor-erro="$monitorErro" :feedback="$feedback ?? null" />
+    @endif
 </div>

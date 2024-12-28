@@ -19,6 +19,8 @@ use App\Livewire\Projeto\Backlog\Pagina as PaginaProjetoBacklog;
 use App\Livewire\Projeto\Kanban\Pagina as PaginaProjetoKanban;
 use App\Livewire\Projeto\Membros\Pagina as PaginaProjetoMembros;
 use App\Livewire\Projeto\Configuracoes\Pagina as PaginaProjetoConfiguracoes;
+use App\Livewire\Projeto\Sprints\Pagina as PaginaProjetoSprints;
+use App\Livewire\Projeto\CriarSprint\Pagina as PaginaProjetoCriarSprint;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -84,6 +86,12 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
         Route::get('/{projeto}/configuracoes', PaginaProjetoConfiguracoes::class)
             ->middleware('can:isGestor,projeto')
             ->name('pagina-projeto-configuracoes');
+        Route::get('/{projeto}/sprints', PaginaProjetoSprints::class)->name('pagina-projeto-sprints');
+
+        Route::get('/{projeto}/criar-sprint', PaginaProjetoCriarSprint::class)
+            ->middleware('can:isGestor,projeto')
+            ->name('pagina-projeto-criar-sprint');
+
     });
 
     // Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
