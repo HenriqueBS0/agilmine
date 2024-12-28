@@ -17,4 +17,11 @@
         active="{{ request()->routeIs('pagina-projeto-membros') }}">
         Membros
     </x-sidebar-item>
+
+    @can('isGestor', $projeto)
+        <x-sidebar-item href="{{ route('pagina-projeto-configuracoes', ['projeto' => $projeto]) }}"
+            active="{{ request()->routeIs('pagina-projeto-configuracoes') }}">
+            Configurações
+        </x-sidebar-item>
+    @endcan
 </x-sidebar>

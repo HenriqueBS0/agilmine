@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Projeto extends Model
 {
@@ -40,9 +41,27 @@ class Projeto extends Model
         'tarefas' => 'array'
     ];
 
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($projeto) {
+            $configuracao = ProjetoConfiguracao::create();
+            $projeto->configuracao_id = $configuracao->id;
+        });
+    }
+
     public function membros(): HasMany
     {
         return $this->hasMany(ProjetoMembro::class, 'projeto_id');
+    }
+
+    public function configuracao(): HasOne
+    {
+        return $this->hasOne(ProjetoConfiguracao::class, 'projeto_id');
     }
 
     /**

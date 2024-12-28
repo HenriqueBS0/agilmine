@@ -17,8 +17,6 @@ class Pagina extends Component
     {
         $this->projeto = $projeto;
         $this->membros = $service->getMembros($projeto);
-
-        ds($this->membros);
     }
 
     public function render()
