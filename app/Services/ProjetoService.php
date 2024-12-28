@@ -16,13 +16,6 @@ class ProjetoService
 {
     public function getProjetos()
     {
-        $projetos = ApiRedmine::listar(DadosProjeto::parametroListar(registrosPorPagina: 100))->dados();
-
-        $this->atualizarProjetos($projetos);
-
-
-        $ids = array_map(fn(DadosProjeto $projeto) => $projeto->getId(), $projetos);
-
         // Pega o ID do usuário logado no Redmine
         $idUsuarioRedmine = Auth::user()->getRedmineId();
 
@@ -31,10 +24,9 @@ class ProjetoService
         }
 
         // Filtra os projetos em que o usuário é membro
-        return Projeto::whereIn('id', $ids)
-            ->whereHas('membros', function ($query) use ($idUsuarioRedmine) {
-                $query->where('membro', $idUsuarioRedmine);
-            });
+        return Projeto::whereHas('membros', function ($query) use ($idUsuarioRedmine) {
+            $query->where('membro', $idUsuarioRedmine);
+        });
     }
 
     /**
@@ -43,7 +35,7 @@ class ProjetoService
      * @param DadosProjeto[] $projetos
      * @return void
      */
-    private function atualizarProjetos(array $projetos)
+    public function atualizarProjetos(array $projetos)
     {
         foreach ($projetos as $projeto) {
             $projetoModel = Projeto::updateOrCreate([

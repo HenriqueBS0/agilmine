@@ -86,6 +86,30 @@ class Projeto implements Wireable
     }
 
     /**
+     * Retorna objeto de parâmetros para busca de projetos no redmine
+     *
+     * @param int $registrosPorPagina
+     * @return Parametros<Projeto>
+     */
+    public static function parametroFind(int $id): Parametros
+    {
+        $fn = function (Response $response) {
+            $dados = $response->json('project');
+
+            return (new Projeto())
+                ->setId($dados['id'])
+                ->setNome($dados['name'])
+                ->setDescricao($dados['description'] ?? null);
+        };
+
+        return new Parametros(
+            new Caminho("/projects/{$id}.json"),
+            $fn,
+            new Paginacao(0, 1)
+        );
+    }
+
+    /**
      * @return {@inheritDoc}
      */
     public function toLivewire()

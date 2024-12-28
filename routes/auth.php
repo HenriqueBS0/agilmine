@@ -16,6 +16,7 @@ use App\Livewire\Home\Projetos\Pagina as PaginaProjetos;
 use App\Livewire\Home\ProjetosArquivados\Pagina as PaginaProjetosArquivados;
 use App\Livewire\Projeto\Report\Pagina as PaginaProjetoReport;
 use App\Livewire\Projeto\Backlog\Pagina as PaginaProjetoBacklog;
+use App\Livewire\Projeto\Kanban\Pagina as PaginaProjetoKanban;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -70,11 +71,14 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
 
     Route::get('usuarios', PaginaUsuarios::class)->middleware([AdminMiddleware::class])->name('pagina-usuarios');
     Route::get('configuracoes', PaginaConfiguracoes::class)->middleware([AdminMiddleware::class])->name('pagina-configuracoes');
-    Route::get('projetos', PaginaProjetos::class)->name('pagina-projetos');
-    Route::get('projetos/arquivados', PaginaProjetosArquivados::class)->name('pagina-projetos-arquivados');
 
-    Route::get('projetos/{projeto}/report', PaginaProjetoReport::class)->name('pagina-projeto-report');
-    Route::get('projetos/{projeto}/backlog', PaginaProjetoBacklog::class)->name('pagina-projeto-backlog');
+    Route::prefix('projetos')->middleware(['sync.projects'])->group(function () {
+        Route::get('/', PaginaProjetos::class)->name('pagina-projetos');
+        Route::get('/arquivados', PaginaProjetosArquivados::class)->name('pagina-projetos-arquivados');
+        Route::get('/{projeto}/report', PaginaProjetoReport::class)->name('pagina-projeto-report');
+        Route::get('/{projeto}/backlog', PaginaProjetoBacklog::class)->name('pagina-projeto-backlog');
+        Route::get('/{projeto}/kanban', PaginaProjetoKanban::class)->name('pagina-projeto-kanban');
+    });
 
     // Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');
     // Route::get('projetos/{projetoId}/sprints/{sprint}', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');
