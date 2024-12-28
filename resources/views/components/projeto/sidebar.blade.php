@@ -13,4 +13,8 @@
         active="{{ request()->routeIs('pagina-projeto-kanban') }}">
         Kanban
     </x-sidebar-item>
+    <x-sidebar-item href="{{ route('pagina-projeto-membros', ['projeto' => $projeto]) }}"
+        active="{{ request()->routeIs('pagina-projeto-membros') }}">
+        Membros
+    </x-sidebar-item>
 </x-sidebar>

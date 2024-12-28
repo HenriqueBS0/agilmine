@@ -173,4 +173,9 @@ class ProjetoService
 
         return $tarefas;
     }
+
+    public function getMembros(Projeto $projeto)
+    {
+        return ApiRedmine::listar(Membro::parametroListar($projeto->id, 100))->dados();
+    }
 }

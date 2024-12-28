@@ -78,6 +78,13 @@ class Membro implements Wireable
         return $this;
     }
 
+    public function perfisToString()
+    {
+        return implode(', ', array_map(function (PerfilProjeto $perfilProjeto) {
+            return $perfilProjeto->getNome();
+        }, $this->getPerfis()));
+    }
+
     /**
      * {@inheritDoc}
      */
