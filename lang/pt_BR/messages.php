@@ -10,4 +10,6 @@ return [
     'projeto_arquivado' => 'Projeto :nome arquivado com sucesso.',
     'projeto_desarquivado' => 'Projeto :nome desarquivado com sucesso.',
     'sprint_created_successfully' => 'Sprint ":nome" criada com sucesso.',
+    'sprint_cancelada' => 'Sprint :nome cancelada com sucesso.',
+    'sprint_restaurada' => 'Sprint :nome restaurada com sucesso.',
 ];

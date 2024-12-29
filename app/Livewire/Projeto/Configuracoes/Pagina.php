@@ -5,6 +5,7 @@ namespace App\Livewire\Projeto\Configuracoes;
 use App\Livewire\Forms\ProjetoConfiguracaoForm;
 use App\Livewire\Traits\DisparadorAlerta;
 use App\Models\Projeto;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Pagina extends Component
@@ -12,6 +13,7 @@ class Pagina extends Component
 
     use DisparadorAlerta;
 
+    #[Locked]
     public Projeto $projeto;
 
     public ProjetoConfiguracaoForm $form;

@@ -5,6 +5,7 @@ namespace App\Livewire\Projeto\Backlog;
 use App\Livewire\Traits\DisparadorAlerta;
 use App\Models\Projeto;
 use App\Services\ProjetoService;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Pagina extends Component
@@ -12,6 +13,7 @@ class Pagina extends Component
 
     use DisparadorAlerta;
 
+    #[Locked]
     public Projeto $projeto;
     public array $tarefas;
 

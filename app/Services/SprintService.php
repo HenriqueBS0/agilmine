@@ -60,8 +60,12 @@ class SprintService
      * @param \App\Services\ApiRedmine\Entidades\Tarefa[] $tarefas
      * @return \App\Models\Enums\SprintStatus
      */
-    public function getStatus($sprint, $tarefas)
+    public function getStatus(Sprint $sprint, $tarefas)
     {
+        if ($sprint->cancelada) {
+            return SprintStatus::CANCELADA;
+        }
+
         $tarefas = $this->getTarefas($sprint, $tarefas);
 
         $todasTarefasFechada = count($this->getTarefasFechadas($sprint, $tarefas)) === count($tarefas);
@@ -86,7 +90,7 @@ class SprintService
         });
     }
 
-    public function getTarefasAbertas($sprint, $tarefas)
+    public function getTarefasAbertas(Sprint $sprint, $tarefas)
     {
         $tarefas = $this->getTarefas($sprint, $tarefas);
 

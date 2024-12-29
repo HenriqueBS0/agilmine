@@ -19,9 +19,16 @@
                 </div>
             </div>
         @endif
-
-        <a href="/sprints/1" class="btn"
-            style="background-color: {{ $corFundo }}; color: {{ $corTexto }}; border-color: {{ $corBorda }}">Ver
-            Detalhes</a>
+    </div>
+    <div class="card-footer">
+        @if ($status->isCancelada())
+            <button class="btn btn-secondary" wire:click="restaurar({{ $sprint->id }})">Restaurar</button>
+        @else
+            <a href="/sprints/1" class="btn"
+                style="background-color: {{ $corFundo }}; color: {{ $corTexto }}; border-color: {{ $corBorda }}">
+                Acessar
+            </a>
+            <button class="btn btn-secondary" wire:click="cancelar({{ $sprint->id }})">Cancelar</button>
+        @endif
     </div>
 </div>

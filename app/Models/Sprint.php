@@ -26,7 +26,8 @@ class Sprint extends Model
         'tarefas',
         'project_id',
         'versao',
-        'resumo_release'
+        'resumo_release',
+        'cancelada'
     ];
 
     /**
@@ -37,7 +38,8 @@ class Sprint extends Model
     protected $casts = [
         'data_inicio' => 'datetime',
         'data_fim' => 'datetime',
-        'tarefas' => 'array', // Usamos um cast para array, mas ajustaremos manualmente para inteiros
+        'tarefas' => 'array',
+        'cancelada' => 'boolean'
     ];
 
     /**

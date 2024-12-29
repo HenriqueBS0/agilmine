@@ -6,6 +6,7 @@ use App\Livewire\Forms\SprintForm;
 use App\Livewire\Traits\DisparadorAlerta;
 use App\Models\Projeto;
 use App\Services\ProjetoService;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Pagina extends Component
@@ -13,6 +14,7 @@ class Pagina extends Component
 
     use DisparadorAlerta;
 
+    #[Locked]
     public Projeto $projeto;
 
     public SprintForm $form;

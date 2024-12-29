@@ -33,4 +33,14 @@ enum SprintStatus: int
     {
         return in_array($this, [self::EM_ANDAMENTO, self::EM_ANDAMENTO_ATRASADA], true);
     }
+
+    /**
+     * Verifica se o status é "Cancelada".
+     *
+     * @return bool
+     */
+    public function isCancelada(): bool
+    {
+        return $this === self::CANCELADA;
+    }
 }

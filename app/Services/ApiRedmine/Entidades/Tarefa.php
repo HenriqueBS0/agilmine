@@ -502,7 +502,10 @@ class Tarefa implements Wireable
         return $parametro;
     }
 
-    public function toArray()
+    /**
+     * {@inheritDoc}
+     */
+    public function toLivewire()
     {
         return [
             'id' => $this->getId(),
@@ -528,14 +531,6 @@ class Tarefa implements Wireable
             'dataAtualizacao' => $this->getDataAtualizacao(),
             'dataConclusao' => $this->getDataConclusao(),
         ];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function toLivewire()
-    {
-        return $this->toArray();
     }
 
     /**

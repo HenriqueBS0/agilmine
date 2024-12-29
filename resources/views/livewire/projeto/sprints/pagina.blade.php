@@ -4,18 +4,32 @@
 <x-slot:sidebar>
     <x-projeto.sidebar :projeto="$projeto" />
 </x-slot:sidebar>
-<x-main titulo="Sprints">
-    @can('isGestor', $projeto)
-        <x-slot:acoes>
-            <a class="btn btn-primary" href="{{ route('pagina-projeto-criar-sprint', ['projeto' => $projeto]) }}">Criar
+<x-main titulo="Sprints" x-data="mainData">
+    <x-slot:acoes>
+        <div>
+            <x-input id="pesquisar" type="text" class="form-control" placeholder="Pesquisar..." x-model="search" />
+        </div>
+        @can('isGestor', $projeto)
+            <a class="btn btn-primary ms-2" href="{{ route('pagina-projeto-criar-sprint', ['projeto' => $projeto]) }}">Criar
                 Sprint</a>
-        </x-slot:acoes>
-    @endcan
+        @endcan
+    </x-slot:acoes>
     <div class="row g-3">
         @foreach ($sprints as $sprint)
-            <div class="col-4">
+            <div class="col-4" x-show="matchesSearch({{ Js::from($sprint) }})">
                 <x-projeto.sprints.card :sprint="$sprint" :tarefas="$tarefas" :vercoes="$vercoes" />
             </div>
         @endforeach
     </div>
 </x-main>
+
+<script>
+    function mainData() {
+        return {
+            search: '',
+            matchesSearch(sprint) {
+                return (sprint.serial + sprint.nome + sprint.resumo).toLowerCase().includes(this.search.toLowerCase());
+            },
+        }
+    }
+</script>

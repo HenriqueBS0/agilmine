@@ -7,7 +7,7 @@
 
 <div id="{{ $id }}" class="h-100 d-flex flex-column" @tarefa-selecionada.window="onTarefaSelecionada($event)"
     x-data="{
-        tarefas: {{ Js::from(array_map(fn($tarefa) => $tarefa->toArray(), $tarefas)) }},
+        tarefas: {{ Js::from(array_map(fn($tarefa) => $tarefa->toLivewire(), $tarefas)) }},
         search: '',
         dragging: null,
         tarefaSobreposta: null,
