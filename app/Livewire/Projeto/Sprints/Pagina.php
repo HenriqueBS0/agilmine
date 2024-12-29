@@ -23,6 +23,9 @@ class Pagina extends Component
         $this->sprints = $projeto->sprints()->get();
         $this->tarefas = $service->getTarefas($projeto);
         $this->vercoes = $service->getVercoes($projeto);
+
+        ds($this->sprints[0]->projeto->configuracao);
+
     }
 
     public function render()

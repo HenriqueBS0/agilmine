@@ -48,7 +48,11 @@
 
         </div>
     @else
-        <label {{ $label->attributes->merge(['for' => $id, 'class' => 'form-label']) }}>{{ $label }}</label>
+        @if (isset($label))
+            <label {{ $label->attributes->merge(['for' => $id, 'class' => 'form-check-label']) }}>
+                {{ $label }}
+            </label>
+        @endif
 
         @if ($type === 'textarea')
             <textarea {{ $fieldAttributes }}>{{ $slot }}</textarea>

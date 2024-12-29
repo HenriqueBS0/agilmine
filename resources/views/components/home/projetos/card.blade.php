@@ -6,7 +6,7 @@
         <p class="card-text">{{ $projeto->descricao }}</p>
     </div>
     <div class="card-footer">
-        <a href="{{ route('pagina-projeto-report', ['projeto' => $projeto]) }}" class="btn btn-primary">Acessar</a>
+        <a href="{{ route('pagina-projeto-sprints', ['projeto' => $projeto]) }}" class="btn btn-primary">Acessar</a>
         @can('isGestor', $projeto)
             <button {{ $arquivar->attributes->merge(['class' => 'btn btn-secondary']) }}>Arquivar</button>
         @endcan

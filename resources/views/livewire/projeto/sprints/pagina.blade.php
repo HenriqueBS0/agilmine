@@ -13,6 +13,9 @@
     @endcan
     <div class="row g-3">
         @foreach ($sprints as $sprint)
+            <div class="col-4">
+                <x-projeto.sprints.card :sprint="$sprint" :tarefas="$tarefas" :vercoes="$vercoes" />
+            </div>
         @endforeach
     </div>
 </x-main>

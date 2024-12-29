@@ -7,9 +7,11 @@
             <div class="col">
                 <h3 class="text-dark">{{ $titulo }}</h3>
             </div>
-            <div class="col d-flex justify-content-end mb-2">
-                {{ $acoes }}
-            </div>
+            @isset($acoes)
+                <div class="col d-flex justify-content-end mb-2">
+                    {{ $acoes }}
+                </div>
+            @endisset
         </div>
     @endif
     {{ $slot }}
