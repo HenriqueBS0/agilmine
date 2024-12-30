@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -98,16 +98,6 @@ class Sprint extends Model
     public function getDataFimAttribute($value)
     {
         return Carbon::parse($value);
-    }
-
-    /**
-     * Determine if the sprint is completed.
-     *
-     * @return bool
-     */
-    public function isConcluida()
-    {
-        return $this->data_fim < now();
     }
 
     /**

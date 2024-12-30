@@ -38,6 +38,31 @@ class SprintService
     }
 
     /**
+     * Retorna as tarefas que podem ser adicionadas a sprint
+     * 
+     * @param Sprint $sprint
+     * @param \App\Services\ApiRedmine\Entidades\Tarefa[] $tarefas
+     * @return \App\Services\ApiRedmine\Entidades\Tarefa[]
+     */
+    public function getTarefasSelecionar(Sprint $sprint, $tarefas)
+    {
+        $tarefaOutrasReleases = $sprint->projeto->sprints()
+            ->where('cancelada', false)
+            ->pluck('tarefas')
+            ->flatten()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        return array_values(array_filter(
+            $tarefas,
+            function (Tarefa $tarefa) use ($tarefaOutrasReleases) {
+                return !in_array($tarefa->getId(), $tarefaOutrasReleases);
+            }
+        ));
+    }
+
+    /**
      * Retorna a versao da sprint
      * @param Sprint $sprint
      * @param \App\Services\ApiRedmine\Entidades\Versao[] $versoes
@@ -74,7 +99,7 @@ class SprintService
             return SprintStatus::CONCLUIDA;
         }
 
-        if ($sprint->data_fim <= now()->endOfDay()) {
+        if ($sprint->data_fim->endOfDay() >= now()->endOfDay()) {
             return SprintStatus::EM_ANDAMENTO;
         }
 
@@ -85,18 +110,18 @@ class SprintService
     {
         $tarefas = $this->getTarefas($sprint, $tarefas);
 
-        return array_filter($tarefas, function (Tarefa $tarefa) {
+        return array_values(array_filter($tarefas, function (Tarefa $tarefa) {
             return $tarefa->getStatus()->getFechada();
-        });
+        }));
     }
 
     public function getTarefasAbertas(Sprint $sprint, $tarefas)
     {
         $tarefas = $this->getTarefas($sprint, $tarefas);
 
-        return array_filter($tarefas, function (Tarefa $tarefa) {
+        return array_values(array_filter($tarefas, function (Tarefa $tarefa) {
             return !$tarefa->getStatus()->getFechada();
-        });
+        }));
     }
 
     public function getProporcaoFeita(Sprint $sprint, $tarefas): float
@@ -107,13 +132,13 @@ class SprintService
             return 100.0;
         }
 
-        return array_reduce(
+        return round(array_reduce(
             $tarefas,
             function ($proporcao, Tarefa $tarefa) {
                 return ($proporcao + $tarefa->getProporcaoFeita()) / 2;
             },
             $tarefas[0]->getProporcaoFeita()
-        );
+        ), 2);
     }
 
     public function getCor(Sprint $sprint, $tarefas)
