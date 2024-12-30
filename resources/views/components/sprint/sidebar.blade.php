@@ -13,6 +13,10 @@
         active="{{ request()->routeIs('pagina-sprint-kanban') }}">
         Kanban
     </x-sidebar-item>
+    <x-sidebar-item href="{{ route('pagina-sprint-eventos', ['sprint' => $sprint]) }}"
+        active="{{ request()->routeIs('pagina-sprint-eventos') || request()->routeIs('pagina-sprint-criar-evento') }}">
+        Eventos
+    </x-sidebar-item>
     <x-sidebar-item href="{{ route('pagina-sprint-detalhar', ['sprint' => $sprint]) }}"
         active="{{ request()->routeIs('pagina-sprint-detalhar') }}">
         Detalhar
