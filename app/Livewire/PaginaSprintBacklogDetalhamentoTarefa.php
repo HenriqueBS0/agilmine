@@ -21,7 +21,7 @@ class PaginaSprintBacklogDetalhamentoTarefa extends Component
 
     public ?array $prioridades = null;
 
-    public ?int $storiePoints = null;
+    public ?int $storyPoints = null;
 
     public ?int $tipo = null;
 
@@ -126,7 +126,7 @@ class PaginaSprintBacklogDetalhamentoTarefa extends Component
         $this->identificador = $tarefa->getId();
         $this->titulo = $tarefa->getTitulo();
         $this->prioridade = $tarefa->getPrioridade()->getId();
-        $this->storiePoints = $tarefa->getPontosHistoria();
+        $this->storyPoints = $tarefa->getPontosHistoria();
         $this->tipo = $tarefa->getTipo()->getId();
         $this->status = $tarefa->getStatus()->getId();
         $this->proporcaoFeita = $tarefa->getProporcaoFeita();
