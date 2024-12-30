@@ -4,7 +4,7 @@ namespace App\Livewire\Report;
 
 use Livewire\Component;
 
-class StoriePointsFechadasXTotal extends Component
+class StoryPointsFechadasXTotal extends Component
 {
     public int $fechadas = 0;
 
@@ -24,6 +24,6 @@ class StoriePointsFechadasXTotal extends Component
 
     public function render()
     {
-        return view('livewire.report.storie-points-fechadas-x-total');
+        return view('livewire.report.story-points-fechadas-x-total');
     }
 }

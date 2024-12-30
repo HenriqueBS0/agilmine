@@ -18,7 +18,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Storie Points: Fechadas x Não Fechadas',
+                        text: 'Story Points: Fechadas x Não Fechadas',
                         align: 'start',
                         font: { weight: 'bold', size: 16 }
                     }
