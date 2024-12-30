@@ -1,17 +1,55 @@
 @props(['id', 'tarefas' => [], 'draggable' => false, 'selecionavel' => false, 'pesquisa' => false])
 
 @php
+    use Livewire\Wireable;
+
     $urlBase = App\Models\Configuracao::getRedmineUrlApi(true) . '/issues/';
+
+    $fnRecursiveToLivewire = function (Wireable $wireable) use (&$fnRecursiveToLivewire) {
+        $attributesEntidade = $wireable->toLivewire();
+
+        foreach ($attributesEntidade as $key => $value) {
+            if ($value instanceof Wireable) {
+                $attributesEntidade[$key] = $fnRecursiveToLivewire($value);
+            } elseif (is_array($value)) {
+                $attributesEntidade[$key] = array_map(function ($item) {
+                    return $item instanceof Wireable ? $fnRecursiveToLivewire($item) : $item;
+                }, $value);
+            }
+        }
+
+        return $attributesEntidade;
+    };
+
+    $arrayTarefas = array_map(fn($tarefa) => $fnRecursiveToLivewire($tarefa), $tarefas);
+
 @endphp
 
 
 <div id="{{ $id }}" class="h-100 d-flex flex-column" @tarefa-selecionada.window="onTarefaSelecionada($event)"
     x-data="{
-        tarefas: {{ Js::from(array_map(fn($tarefa) => $tarefa->toLivewire(), $tarefas)) }},
+        tarefas: {{ Js::from($arrayTarefas) }},
         search: '',
         dragging: null,
         tarefaSobreposta: null,
         tarefaSelecionada: null,
+        totalTarefas() {
+            return this.tarefas.length;
+        },
+        totalHorasEstimadas() {
+            const totalHoras = this.tarefas.reduce((total, tarefa) => {
+                return total + (tarefa.horasEstimadas || 0);
+            }, 0);
+    
+            const horas = Math.floor(totalHoras);
+            const minutos = Math.round((totalHoras - horas) * 60);
+            return `${horas}:${minutos.toString().padStart(2, '0')}`;
+        },
+        totalStoryPoints() {
+            return this.tarefas.reduce((total, tarefa) => {
+                return total + (tarefa.pontosHistoria || 0);
+            }, 0);
+        },
         filteredTarefas() {
             return this.tarefas.filter(tarefa =>
                 (tarefa.id + tarefa.titulo).toLowerCase().includes(this.search.toLowerCase())
@@ -51,7 +89,7 @@
             const tarefasDepois = this.tarefas.map(t => t.id);
     
             if (JSON.stringify(tarefasAntes) !== JSON.stringify(tarefasDepois)) {
-                $dispatch('lista-tarefas-atualizada', { id: '{{ $id }}', tarefas: this.tarefas });
+                $dispatch('lista-tarefas-atualizada', { id: '{{ $id }}', tarefas: this.tarefas, tarefa: tarefa });
             }
     
             event.preventDefault();
@@ -83,9 +121,18 @@
         }
     
     }">
-    @isset($titulo)
-        <span {{ $titulo->attributes->class(['h5']) }}>{{ $titulo }}</span>
-    @endisset
+    <div class="d-flex justify-content-between align-items-center">
+        @isset($titulo)
+            <span {{ $titulo->attributes->class(['h5']) }}>{{ $titulo }}</span>
+        @endisset
+
+        <!-- Totais alinhados à direita -->
+        <div class="text-end flex-grow-1">
+            <span x-html="'<strong>Tarefas:</strong> ' + totalTarefas()"></span>
+            <span x-html="'<strong>Horas Estimadas:</strong> ' + totalHorasEstimadas()"></span>
+            <span x-html="'<strong>Story Points:</strong> ' + totalStoryPoints()"></span>
+        </div>
+    </div>
 
     @if ($pesquisa)
         <x-input id="{{ $id }}-pesquisar" container-class="mt-2 mb-2" type="text" class="form-control"
