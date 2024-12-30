@@ -21,8 +21,14 @@ class SyncRedmineProjectData
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $sprint = $request->route('sprint', false);
+
+        $projeto = $sprint
+            ? $sprint->projeto
+            : $request->route('projeto', false);
+
         try {
-            $projeto = $request->route('projeto', false);
+
             $projetos = $projeto
                 ? [ApiRedmine::listar(Projeto::parametroFind($projeto->id))->dados()]
                 : ApiRedmine::listar(Projeto::parametroListar(100))->dados();
