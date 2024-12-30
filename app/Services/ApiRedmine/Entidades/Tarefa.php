@@ -4,6 +4,7 @@ namespace App\Services\ApiRedmine\Entidades;
 use App\Services\ApiRedmine\Operacoes\Caminho;
 use App\Services\ApiRedmine\Operacoes\Listar\Paginacao\Parametro as Paginacao;
 use App\Services\ApiRedmine\Operacoes\Listar\Parametros;
+use App\Services\MarkdownService;
 use Illuminate\Http\Client\Response;
 use Livewire\Wireable;
 
@@ -156,6 +157,11 @@ class Tarefa implements Wireable
         return $this->descricao;
     }
 
+    public function getDescricaoHtml(): ?string
+    {
+        return (new MarkdownService)->parse($this->getDescricao());
+    }
+
     public function setDescricao(?string $descricao): self
     {
         $this->descricao = $descricao;
@@ -212,14 +218,14 @@ class Tarefa implements Wireable
 
     private static function stringfyHoras(?float $horas): string
     {
-        if (is_null($horas)) {
-            return '00:00';
+        if ($horas == null) {
+            return '00:00:00';
         }
 
         $horasInteiras = (int) $horas;
         $minutos = (int) (($horas - $horasInteiras) * 60);
 
-        return "{$horasInteiras}:{$minutos}";
+        return sprintf('%02d:%02d:00', $horasInteiras, $minutos);
     }
 
     public function setHorasEstimadas(?float $horasEstimadas): self
@@ -481,7 +487,7 @@ class Tarefa implements Wireable
                     }
                 }
 
-                if (isset($dados['closed_on'])) {
+                if (isset($dados['closed_on']) && $tarefa->getStatus()?->getFechada()) {
                     if ($dataConclusao = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $dados['closed_on'])) {
                         $tarefa->setDataConclusao($dataConclusao);
                     }
@@ -511,6 +517,7 @@ class Tarefa implements Wireable
             'id' => $this->getId(),
             'titulo' => $this->getTitulo(),
             'descricao' => $this->getDescricao(),
+            'descricaoHtml' => $this->getDescricaoHtml(),
             'proporcaoFeita' => $this->getProporcaoFeita(),
             'pontosHistoria' => $this->getPontosHistoria(),
             'horasEstimadas' => $this->getHorasEstimadas(),
