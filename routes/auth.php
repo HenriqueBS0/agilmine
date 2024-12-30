@@ -24,6 +24,7 @@ use App\Livewire\Projeto\CriarSprint\Pagina as PaginaProjetoCriarSprint;
 use App\Livewire\Sprint\Report\Pagina as PaginaSprintReport;
 use App\Livewire\Sprint\Backlog\Pagina as PaginaSprintBacklog;
 use App\Livewire\Sprint\Kanban\Pagina as PaginaSprintKanban;
+use App\Livewire\Sprint\Detalhar\Pagina as PaginaSprintDetalhar;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -101,5 +102,6 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
         Route::get('/report', PaginaSprintReport::class)->name('pagina-sprint-report');
         Route::get('/backlog', PaginaSprintBacklog::class)->name('pagina-sprint-backlog');
         Route::get('/kanban', PaginaSprintKanban::class)->name('pagina-sprint-kanban');
+        Route::get('/detalhar', PaginaSprintDetalhar::class)->name('pagina-sprint-detalhar');
     });
 });

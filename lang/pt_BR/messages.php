@@ -12,4 +12,5 @@ return [
     'sprint_created_successfully' => 'Sprint ":nome" criada com sucesso.',
     'sprint_cancelada' => 'Sprint :nome cancelada com sucesso.',
     'sprint_restaurada' => 'Sprint :nome restaurada com sucesso.',
+    'sprint_update_successfully' => 'Sprint ":nome" alterada com sucesso.',
 ];
