@@ -20,15 +20,21 @@
             </div>
         @endif
     </div>
-    <div class="card-footer">
-        @if ($status->isCancelada())
-            <button class="btn btn-secondary" wire:click="restaurar({{ $sprint->id }})">Restaurar</button>
-        @else
-            <a href="/sprints/1" class="btn"
-                style="background-color: {{ $corFundo }}; color: {{ $corTexto }}; border-color: {{ $corBorda }}">
-                Acessar
-            </a>
-            <button class="btn btn-secondary" wire:click="cancelar({{ $sprint->id }})">Cancelar</button>
-        @endif
-    </div>
+    @if (!($status->isCancelada() && Gate::denies('isGestor', $sprint->projeto)))
+        <div class="card-footer">
+            @if ($status->isCancelada())
+                @can('isGestor', $sprint->projeto)
+                    <button class="btn btn-secondary" wire:click="restaurar({{ $sprint->id }})">Restaurar</button>
+                @endcan
+            @else
+                <a href="{{ route('pagina-sprint-report', ['sprint' => $sprint]) }}" class="btn"
+                    style="background-color: {{ $corFundo }}; color: {{ $corTexto }}; border-color: {{ $corBorda }}">
+                    Acessar
+                </a>
+                @can('isGestor', $sprint->projeto)
+                    <button class="btn btn-secondary" wire:click="cancelar({{ $sprint->id }})">Cancelar</button>
+                @endcan
+            @endif
+        </div>
+    @endif
 </div>

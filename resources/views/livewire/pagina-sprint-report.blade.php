@@ -15,6 +15,6 @@
         <div class="col-6"><livewire:report.burn-up :$sprint :$tarefas /></div>
         <div class="col-6"><livewire:report.tempo-estimado-x-gasto :$tarefas /></div>
         <div class="col-3"><livewire:report.tarefas-fechadas-x-total :$tarefas /></div>
-        <div class="col-3"><livewire:report.storie-points-fechadas-x-total :$tarefas /></div>
+        <div class="col-3"><livewire:report.story-points-fechadas-x-total :$tarefas /></div>
     </div>
 </main>

@@ -21,6 +21,8 @@ use App\Livewire\Projeto\Membros\Pagina as PaginaProjetoMembros;
 use App\Livewire\Projeto\Configuracoes\Pagina as PaginaProjetoConfiguracoes;
 use App\Livewire\Projeto\Sprints\Pagina as PaginaProjetoSprints;
 use App\Livewire\Projeto\CriarSprint\Pagina as PaginaProjetoCriarSprint;
+use App\Livewire\Sprint\Report\Pagina as PaginaSprintReport;
+use App\Livewire\Sprint\Backlog\Pagina as PaginaSprintBacklog;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -77,6 +79,7 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
     Route::get('configuracoes', PaginaConfiguracoes::class)->middleware([AdminMiddleware::class])->name('pagina-configuracoes');
 
     Route::prefix('projetos')->middleware(['sync.projects'])->group(function () {
+
         Route::get('/', PaginaProjetos::class)->name('pagina-projetos');
         Route::get('/arquivados', PaginaProjetosArquivados::class)->name('pagina-projetos-arquivados');
         Route::get('/{projeto}/report', PaginaProjetoReport::class)->name('pagina-projeto-report');
@@ -91,7 +94,11 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
         Route::get('/{projeto}/criar-sprint', PaginaProjetoCriarSprint::class)
             ->middleware('can:isGestor,projeto')
             ->name('pagina-projeto-criar-sprint');
+    });
 
+    Route::prefix('/sprint/{sprint}')->middleware(['sync.projects', 'can:isAtiva,sprint'])->group(function () {
+        Route::get('/report', PaginaSprintReport::class)->name('pagina-sprint-report');
+        Route::get('/backlog', PaginaSprintBacklog::class)->name('pagina-sprint-backlog');
     });
 
     // Route::get('projetos/{projetoId}/sprints/criar', PaginaProjetoCriarSprint::class)->name('pagina-projeto-criar-sprint');

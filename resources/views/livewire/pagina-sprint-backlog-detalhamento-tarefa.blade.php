@@ -46,7 +46,7 @@
                     <x-input-text containerClass="col-11" label="Titulo" id="titulo" model="titulo" :disabled=true />
                     <x-input-select containerClass="col-2" label="Prioridade" id="prioridade" model="prioridade"
                         :disabled=true :options="$prioridades" />
-                    <x-input-number containerClass="col-2" label="Storie Points" id="storiePoints" model="storiePoints"
+                    <x-input-number containerClass="col-2" label="Story Points" id="storyPoints" model="storyPoints"
                         :disabled=true />
                     <x-input-select containerClass="col-4" label="Tipo" id="tipo" model="tipo" :disabled=true
                         :options="$tipos" />
@@ -96,7 +96,6 @@
             </div>
         </div>
         <div class="card-footer">
-            <button class="btn btn-sm text-bg-primary border-0" disabled><i class="bi bi-floppy"></i> Salvar</button>
             @if ($identificador)
                 <a class="btn btn-sm btn-primary border-0" target="_blank"
                     href="http://fabtec.ifc-riodosul.edu.br/issues/{{ $identificador }}"><i
