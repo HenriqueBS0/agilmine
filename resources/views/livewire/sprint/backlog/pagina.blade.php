@@ -10,12 +10,12 @@
     </div>
     <div class="row flex-grow-1 h-100 overflow-auto">
         <div class="col-6 h-100">
-            <x-lista-tarefas id="tarefas-sprint" :tarefas="$tarefasSprint" pesquisa :draggable="Gate::allows('isGestor', $sprint->projeto)" :selecionavel="Gate::allows('isGestor', $sprint->projeto)">
+            <x-lista-tarefas id="tarefas-sprint" :tarefas="$tarefasSprint" pesquisa :draggable="Gate::allows('isGestor', $sprint->projeto)" selecionavel>
                 <x-slot:titulo>Tarefas Sprint</x-slot:titulo>
             </x-lista-tarefas>
         </div>
         <div class="col-6 h-100">
-            <x-lista-tarefas id="tarefas-projeto" :tarefas="$tarefasProjeto" pesquisa :draggable="Gate::allows('isGestor', $sprint->projeto)" :selecionavel="Gate::allows('isGestor', $sprint->projeto)">
+            <x-lista-tarefas id="tarefas-projeto" :tarefas="$tarefasProjeto" pesquisa :draggable="Gate::allows('isGestor', $sprint->projeto)" selecionavel>
                 <x-slot:titulo>Tarefas Projeto</x-slot:titulo>
             </x-lista-tarefas>
         </div>
