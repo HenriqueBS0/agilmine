@@ -14,12 +14,12 @@ class SprintEvento extends Model
         'sprint_id',
         'tipo',
         'descricao',
-        'membros',
+        'participantes',
         'data_hora',
     ];
 
     protected $casts = [
-        'membros' => 'array',
+        'participantes' => 'array',
         'data_hora' => 'datetime',
         'tipo' => EventoTipo::class,
     ];

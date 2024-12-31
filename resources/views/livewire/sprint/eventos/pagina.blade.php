@@ -30,9 +30,11 @@
                     <td scope="col">{{ $evento->getDescricaoTipo() }}</td>
                     <td scope="col">{{ $evento->data_hora->format('d/m/y - H:i') }}</td>
                     <td scope="col">
-                        <a class="btn btn-info btn-sm">
+                        <a class="btn btn-info btn-sm"
+                            href="{{ route('pagina-sprint-acessar-evento', ['sprint' => $sprint, 'evento' => $evento]) }}">
                             <span>Acessar</span>
-                            <i class="bi bi-eye"></i>
+                            <i class="bi
+                            bi-eye"></i>
                         </a>
                     </td>
                     @can('isGestor', $sprint)

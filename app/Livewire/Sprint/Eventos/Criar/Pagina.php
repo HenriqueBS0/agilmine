@@ -29,6 +29,7 @@ class Pagina extends Component
 
     public function save()
     {
+
         $this->authorize('isGestor', $this->sprint);
 
         $this->form->store();

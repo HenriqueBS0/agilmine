@@ -16,6 +16,7 @@ class Form extends Component
     public SprintEventoForm $form;
     public bool $disabilitado;
     public ?string $cancelar;
+    public ?string $voltar;
     public $membros;
     public $tipos;
 
@@ -28,11 +29,13 @@ class Form extends Component
         ProjetoService $projetoService,
         SprintService $sprintService,
         ?string $cancelar = null,
+        ?string $voltar = null,
         bool $disabilitado = false,
     ) {
         $this->form = $form;
         $this->disabilitado = $disabilitado;
         $this->cancelar = $cancelar;
+        $this->voltar = $voltar;
         $this->membros = $projetoService->getMembros($sprint->projeto);
         $this->tipos = $sprintService->getTiposEventoDisponiveis($sprint, $form->evento ?? null);
     }

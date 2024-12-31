@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('sprint_id')->constrained('sprints')->onDelete('cascade')->comment('ID da sprint associada');
             $table->unsignedTinyInteger('tipo')->comment('Tipo do evento (baseado no enum EventoTipo)');
             $table->text('descricao')->comment('Descrição do evento');
-            $table->json('membros')->comment('IDs dos membros participantes');
+            $table->json('participantes')->comment('IDs dos membros participantes');
             $table->dateTime('data_hora')->comment('Data e hora do evento');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('sprint_events');
+        Schema::dropIfExists('sprint_eventos');
     }
 };

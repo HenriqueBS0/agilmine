@@ -28,6 +28,7 @@ use App\Livewire\Sprint\Detalhar\Pagina as PaginaSprintDetalhar;
 use App\Livewire\Sprint\Eventos\Pagina as PaginaSprintEventos;
 use App\Livewire\Sprint\Eventos\Criar\Pagina as PaginaSprintEventoCriar;
 use App\Livewire\Sprint\Eventos\Alterar\Pagina as PaginaSprintEventoAlterar;
+use App\Livewire\Sprint\Eventos\Acessar\Pagina as PaginaSprintEventoAcessar;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -110,6 +111,8 @@ Route::middleware(['auth', 'check.user.status'])->group(function () {
         Route::get('/criar-evento', PaginaSprintEventoCriar::class)
             ->middleware('can:isGestor,sprint')
             ->name('pagina-sprint-criar-evento');
+        Route::get('/acessar-evento/{evento}', PaginaSprintEventoAcessar::class)
+            ->name('pagina-sprint-acessar-evento');
         Route::get('/alterar-evento/{evento}', PaginaSprintEventoAlterar::class)
             ->middleware('can:isGestor,sprint')
             ->name('pagina-sprint-alterar-evento');

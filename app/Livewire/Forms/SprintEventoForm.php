@@ -15,13 +15,13 @@ class SprintEventoForm extends Form
     public int $sprint_id;
 
     #[Validate('required|integer|in:1,2,3,4,5')]
-    public int $tipo;
+    public ?int $tipo;
 
     #[Validate('required|string')]
     public string $descricao;
 
     #[Validate('required|array')]
-    public array $membros = [];
+    public array $participantes = [];
 
     #[Validate('required|date_format:Y-m-d\TH:i')]
     public string $data_hora;
@@ -33,7 +33,7 @@ class SprintEventoForm extends Form
         $this->sprint_id = $evento->sprint->id;
         $this->tipo = $evento->tipo->value; // Obtém o valor numérico do enum
         $this->descricao = $evento->descricao;
-        $this->membros = $evento->membros;
+        $this->participantes = $evento->participantes;
         $this->data_hora = $evento->data_hora->format('Y-m-d\TH:i');
     }
 
@@ -45,7 +45,7 @@ class SprintEventoForm extends Form
             'sprint_id' => $this->sprint_id,
             'tipo' => EventoTipo::from($this->tipo),
             'descricao' => $this->descricao,
-            'membros' => $this->membros,
+            'participantes' => $this->participantes,
             'data_hora' => $this->data_hora,
         ]);
     }
@@ -58,7 +58,7 @@ class SprintEventoForm extends Form
             'sprint_id' => $this->sprint_id,
             'tipo' => EventoTipo::from($this->tipo),
             'descricao' => $this->descricao,
-            'membros' => $this->membros,
+            'participantes' => $this->participantes,
             'data_hora' => $this->data_hora,
         ]);
     }

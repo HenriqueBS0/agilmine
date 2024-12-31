@@ -8,7 +8,7 @@
                         container-class="col-6" :disabled="$disabilitado">
                         <x-slot:label>Tipo</x-slot:label>
                         <x-slot:select>
-                            <option>Selecione</option>
+                            <option value="">Selecione</option>
                             @foreach ($tipos as $tipo)
                                 <option value="{{ $tipo }}">{{ $tipo->getDescricao() }}</option>
                             @endforeach
@@ -29,17 +29,16 @@
                 <h5 class="card-title">
                     <span>Participantes</span>
                 </h5>
-                <div class="row">
-                    <div class="row">
-                        @foreach ($membros as $membro)
-                            <x-input value="{{ $membro->getUsuario()->getId() }}" wire:model="form.membros"
-                                container-class="col-3" id="membro-{{ $membro->getUsuario()->getId() }}" type="switch"
-                                :disabled="$disabilitado">
-                                <x-slot:label>{{ $membro->getUsuario()->getNome() }}</x-slot:label>
-                            </x-input>
-                        @endforeach
-                    </div>
+                <div @class(['row', 'is-invalid' => $errors->has('form.participantes')])>
+                    @foreach ($membros as $membro)
+                        <x-input value="{{ $membro->getUsuario()->getId() }}" wire:model="form.participantes"
+                            container-class="col-3" id="membro-{{ $membro->getUsuario()->getId() }}" type="switch"
+                            :disabled="$disabilitado">
+                            <x-slot:label>{{ $membro->getUsuario()->getNome() }}</x-slot:label>
+                        </x-input>
+                    @endforeach
                 </div>
+                <x-input-feedback id="participantes" monitor-erro="form.participantes" />
             </div>
         </div>
     </div>
@@ -49,7 +48,7 @@
                 <h5 class="card-title">
                     <span>Ata</span>
                 </h5>
-                <x-editor style="height: 400px" id="descricao" monitor-erro="form.descricao" :options="['readOnly' => $disabilitado]">
+                <x-editor style="min-height: 350px" id="descricao" monitor-erro="form.descricao" :options="['readOnly' => $disabilitado]">
                     {!! $form->descricao ?? null !!}
                 </x-editor>
 
@@ -67,6 +66,9 @@
             <a class="btn btn-secondary" href="{{ $cancelar }}">Cancelar</a>
         @endisset
 
+        @isset($voltar)
+            <a class="btn btn-primary" href="{{ $voltar }}">Voltar</a>
+        @endisset
     </div>
 </form>
 @script
