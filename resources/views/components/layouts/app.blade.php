@@ -8,6 +8,8 @@
     <title>{{ $title ?? 'Agilmine' }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/scss/app.scss'])
+    @stack('estilos')
+    @stack('scripts')
 </head>
 
 <body class="d-flex flex-column vh-100">

@@ -13,4 +13,6 @@ return [
     'sprint_cancelada' => 'Sprint :nome cancelada com sucesso.',
     'sprint_restaurada' => 'Sprint :nome restaurada com sucesso.',
     'sprint_update_successfully' => 'Sprint ":nome" alterada com sucesso.',
+    'sprint_event_created_successfully' => 'Evento de sprint criado com sucesso.',
+    'sprint_update_created_successfully' => 'Evento de sprint alterado com sucesso.',
 ];

@@ -125,4 +125,9 @@ class Sprint extends Model
     {
         return $this->belongsTo(Projeto::class, 'project_id');
     }
+
+    public function eventos()
+    {
+        return $this->hasMany(SprintEvento::class);
+    }
 }
