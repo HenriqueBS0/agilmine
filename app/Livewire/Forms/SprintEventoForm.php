@@ -30,7 +30,7 @@ class SprintEventoForm extends Form
     {
         $this->evento = $evento;
 
-        $this->sprint_id = $evento->sprint_id;
+        $this->sprint_id = $evento->sprint->id;
         $this->tipo = $evento->tipo->value; // Obtém o valor numérico do enum
         $this->descricao = $evento->descricao;
         $this->membros = $evento->membros;

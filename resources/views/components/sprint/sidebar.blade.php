@@ -14,7 +14,7 @@
         Kanban
     </x-sidebar-item>
     <x-sidebar-item href="{{ route('pagina-sprint-eventos', ['sprint' => $sprint]) }}"
-        active="{{ request()->routeIs('pagina-sprint-eventos') || request()->routeIs('pagina-sprint-criar-evento') }}">
+        active="{{ request()->routeIs(['pagina-sprint-eventos', 'pagina-sprint-criar-evento', 'pagina-sprint-alterar-evento', 'pagina-sprint-visualizar-evento']) }}">
         Eventos
     </x-sidebar-item>
     <x-sidebar-item href="{{ route('pagina-sprint-detalhar', ['sprint' => $sprint]) }}"

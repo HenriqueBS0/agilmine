@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Enums\EventoTipo;
 use App\Models\Enums\SprintStatus;
 use App\Models\Sprint;
+use App\Models\SprintEvento;
 use App\Services\ApiRedmine\Entidades\Tarefa;
 
 class SprintService
@@ -158,7 +159,7 @@ class SprintService
         return $cores[$this->getStatus($sprint, $tarefas)->value];
     }
 
-    public function getTiposEventoDisponiveis(Sprint $sprint)
+    public function getTiposEventoDisponiveis(Sprint $sprint, ?SprintEvento $evento = null)
     {
         // Sempre disponíveis
         $disponiveis = [
@@ -166,8 +167,14 @@ class SprintService
             EventoTipo::SEMANAL,
         ];
 
+        $eventos = $sprint->eventos();
+
+        if ($evento) {
+            $eventos = $eventos->whereNot('id', $evento->id);
+        }
+
         // Verificar se planejamento, revisão ou retrospectiva já existem
-        $eventosExistentes = $sprint->eventos->pluck('tipo')->toArray();
+        $eventosExistentes = $eventos->pluck('tipo')->toArray();
 
         if (!in_array(EventoTipo::PLANEJAMENTO, $eventosExistentes)) {
             $disponiveis[] = EventoTipo::PLANEJAMENTO;

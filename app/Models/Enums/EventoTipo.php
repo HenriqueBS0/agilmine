@@ -21,7 +21,7 @@ enum EventoTipo: int
             self::PLANEJAMENTO => 'Planejamento',
             self::DIARIA => 'Diária',
             self::SEMANAL => 'Semanal',
-            self::REVISAO => 'Revisao',
+            self::REVISAO => 'Revisão',
             self::RETROSPECTIVA => 'Retrospectiva',
         };
     }

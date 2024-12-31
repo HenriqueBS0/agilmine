@@ -14,8 +14,7 @@ use Illuminate\View\Component;
 class Form extends Component
 {
     public SprintEventoForm $form;
-    public string $titulo;
-    public bool $isGestor;
+    public bool $disabilitado;
     public ?string $cancelar;
     public $membros;
     public $tipos;
@@ -28,15 +27,14 @@ class Form extends Component
         Sprint $sprint,
         ProjetoService $projetoService,
         SprintService $sprintService,
-        string $titulo,
-        ?string $cancelar = null
+        ?string $cancelar = null,
+        bool $disabilitado = false,
     ) {
         $this->form = $form;
-        $this->titulo = $titulo;
-        $this->isGestor = Gate::allows('isGestor', $sprint);
+        $this->disabilitado = $disabilitado;
         $this->cancelar = $cancelar;
         $this->membros = $projetoService->getMembros($sprint->projeto);
-        $this->tipos = $sprintService->getTiposEventoDisponiveis($sprint);
+        $this->tipos = $sprintService->getTiposEventoDisponiveis($sprint, $form->evento ?? null);
     }
 
     /**

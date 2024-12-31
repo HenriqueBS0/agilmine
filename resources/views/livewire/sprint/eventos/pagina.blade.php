@@ -18,7 +18,9 @@
                 <th scope="col">Tipo</th>
                 <th scope="col">Data - Horario</th>
                 <th scope="col" style="width: 100px">Acessar</th>
-                <th scope="col" style="width: 100px">Alterar</th>
+                @can('isGestor', $sprint)
+                    <th scope="col" style="width: 100px">Alterar</th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -33,12 +35,15 @@
                             <i class="bi bi-eye"></i>
                         </a>
                     </td>
-                    <td scope="col">
-                        <a class="btn btn-warning btn-sm">
-                            <span>Alterar</span>
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                    </td>
+                    @can('isGestor', $sprint)
+                        <td scope="col">
+                            <a class="btn btn-warning btn-sm"
+                                href="{{ route('pagina-sprint-alterar-evento', ['sprint' => $sprint, 'evento' => $evento]) }}">
+                                <span>Alterar</span>
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>
