@@ -6,9 +6,7 @@ use Parsedown;
 
 class MarkdownService
 {
-    protected $parsedown;
-
-    public function __construct()
+    public function __construct(private Parsedown $parsedown)
     {
         $this->parsedown = new Parsedown;
     }

@@ -25,8 +25,13 @@ class ProjetoService
      */
     public function getProjetos()
     {
+
+        /** @var \App\Models\User $user */
+
+        $user = Auth::user();
+
         // Pega o ID do usuário logado no Redmine
-        $idUsuarioRedmine = $this->userService->getRedmineId(Auth::user());
+        $idUsuarioRedmine = $this->userService->getRedmineId($user);
 
         if (!$idUsuarioRedmine) {
             return Projeto::whereIn('id', []); // Retorna vazio se o usuário não tiver ID do Redmine
@@ -79,7 +84,13 @@ class ProjetoService
 
     public function getMembros(Projeto $projeto)
     {
-        return $this->fetchRedmine->membros($projeto->id);
+        $membros = [];
+
+        foreach ($this->fetchRedmine->membros($projeto->id) as $membro) {
+            $membros[$membro->getUsuario()->getId()] = $membro;
+        }
+
+        return $membros;
     }
 
     public function getVercoes(Projeto $projeto)

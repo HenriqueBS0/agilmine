@@ -10,6 +10,14 @@ use Livewire\Wireable;
 
 class Tarefa implements Wireable
 {
+
+    private MarkdownService $markdownService;
+
+    public function __construct()
+    {
+        $this->markdownService = app(MarkdownService::class);
+    }
+
     /**
      * Identificador da tarefa
      * @var int
@@ -165,7 +173,7 @@ class Tarefa implements Wireable
 
     public function getDescricaoHtml(): ?string
     {
-        return (new MarkdownService)->parse($this->getDescricao());
+        return $this->markdownService->parse($this->getDescricao());
     }
 
     public function setDescricao(?string $descricao): self
