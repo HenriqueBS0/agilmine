@@ -3,10 +3,6 @@
 namespace App\View\Components\Sprint\Backlog;
 
 use App\Models\Sprint;
-use App\Services\ApiRedmine\ApiRedmine;
-use App\Services\ApiRedmine\Entidades\TarefaPrioridade;
-use App\Services\ApiRedmine\Entidades\TarefaStatus;
-use App\Services\ApiRedmine\Entidades\TarefaTipo;
 use App\Services\ProjetoService;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -20,9 +16,9 @@ class TarefaMembros extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(Sprint $sprint)
+    public function __construct(Sprint $sprint, ProjetoService $service)
     {
-        $this->membros = (new ProjetoService)->getMembros($sprint->projeto);
+        $this->membros = $service->getMembros($sprint->projeto);
     }
 
     /**
