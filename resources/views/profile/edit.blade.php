@@ -16,9 +16,9 @@
     <div class="min-vh-100">
         <x-navbar>
             <x-slot:breadcrumb>
-                <x-navbar.breadcrumb>
-                    <x-navbar.breadcrumb.item-atual>Perfil</x-navbar.breadcrumb.item-atual>
-                </x-navbar.breadcrumb>
+                <x-breadcrumb class="m-0">
+                    <x-breadcrumb-item active>Perfil</x-breadcrumb-item>
+                </x-breadcrumb>
             </x-slot:breadcrumb>
         </x-navbar>
 
