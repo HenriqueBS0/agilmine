@@ -14,6 +14,21 @@ class SprintPolicy
         return Gate::forUser($user)->allows('isGestor', $sprint->projeto);
     }
 
+    public function isMetricaMembroAtiva(User $user, Sprint $sprint)
+    {
+        return Gate::forUser($user)->allows('isMetricaMembroAtiva', $sprint->projeto);
+    }
+
+    public function isMetricaHorasAtiva(User $user, Sprint $sprint)
+    {
+        return Gate::forUser($user)->allows('isMetricaHorasAtiva', $sprint->projeto);
+    }
+
+    public function isMetricaStoryPointsAtiva(User $user, Sprint $sprint)
+    {
+        return Gate::forUser($user)->allows('isMetricaStoryPointsAtiva', $sprint->projeto);
+    }
+
     /**
      * Determine se a ação pode ser realizada na sprint que não está cancelada.
      *

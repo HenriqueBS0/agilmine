@@ -10,6 +10,10 @@ use App\Services\ApiRedmine\Entidades\Tarefa;
 
 class SprintService
 {
+    public function __construct(private TarefaService $tarefaService, private DataTimeUtil $dataTimeUtil)
+    {
+    }
+
     /**
      * Retorna as tarefas da sprint
      * 
@@ -19,24 +23,9 @@ class SprintService
      */
     public function getTarefas(Sprint $sprint, $tarefas)
     {
-        // Obtem os IDs das tarefas na ordem definida na sprint
-        $ordemTarefas = $sprint->tarefas;
-
-        // Mapeia as tarefas recebidas por ID para facilitar a ordenação
-        $tarefasMap = [];
-        foreach ($tarefas as $tarefa) {
-            $tarefasMap[$tarefa->getId()] = $tarefa;
-        }
-
-        // Filtra e ordena as tarefas conforme a ordem da sprint
-        $tarefasOrdenadas = [];
-        foreach ($ordemTarefas as $idTarefa) {
-            if (isset($tarefasMap[$idTarefa])) {
-                $tarefasOrdenadas[] = $tarefasMap[$idTarefa];
-            }
-        }
-
-        return $tarefasOrdenadas;
+        $tarefas = $this->tarefaService->filtraTarefasContidasNoArray($tarefas, $sprint->tarefas);
+        $tarefas = $this->tarefaService->ordenaTarefasArrayIds($tarefas, $sprint->tarefas);
+        return $tarefas;
     }
 
     /**
@@ -56,21 +45,17 @@ class SprintService
             ->values()
             ->toArray();
 
-        return array_values(array_filter(
-            $tarefas,
-            function (Tarefa $tarefa) use ($tarefaOutrasReleases) {
-                return !in_array($tarefa->getId(), $tarefaOutrasReleases);
-            }
-        ));
+        return $this->tarefaService->filtraTarefasNaoContidasNoArray($tarefas, $tarefaOutrasReleases);
     }
 
     /**
      * Retorna a versao da sprint
+     * 
      * @param Sprint $sprint
      * @param \App\Services\ApiRedmine\Entidades\Versao[] $versoes
      * @return ?\App\Services\ApiRedmine\Entidades\Versao
      */
-    public function getVersao($sprint, $versoes)
+    public function getVersao(Sprint $sprint, $versoes)
     {
         foreach ($versoes as $versao) {
             if ($versao->getId() == $sprint->versao) {
@@ -83,6 +68,7 @@ class SprintService
 
     /**
      * Retorna o Status da sprint
+     * 
      * @param Sprint $sprint
      * @param \App\Services\ApiRedmine\Entidades\Tarefa[] $tarefas
      * @return \App\Models\Enums\SprintStatus
@@ -111,19 +97,7 @@ class SprintService
     public function getTarefasFechadas(Sprint $sprint, $tarefas)
     {
         $tarefas = $this->getTarefas($sprint, $tarefas);
-
-        return array_values(array_filter($tarefas, function (Tarefa $tarefa) {
-            return $tarefa->getStatus()->getFechada();
-        }));
-    }
-
-    public function getTarefasAbertas(Sprint $sprint, $tarefas)
-    {
-        $tarefas = $this->getTarefas($sprint, $tarefas);
-
-        return array_values(array_filter($tarefas, function (Tarefa $tarefa) {
-            return !$tarefa->getStatus()->getFechada();
-        }));
+        return $this->tarefaService->filtraTarefasStatusFechada($tarefas);
     }
 
     public function getProporcaoFeita(Sprint $sprint, $tarefas): float
@@ -189,5 +163,37 @@ class SprintService
         }
 
         return $disponiveis;
+    }
+
+    public function dias(Sprint $sprint)
+    {
+        /** @var \Illuminate\Support\Carbon $dataIncial  */
+        $dataIncial = clone $sprint->data_inicio;
+
+        /** @var \Illuminate\Support\Carbon $dataFinal  */
+        $dataFinal = clone $sprint->data_fim;
+
+        $dataIncial->startOfDay();
+
+        $dataFinal->endOfDay();
+
+        return $this->dataTimeUtil->gerarDiasUteis($dataIncial, $dataFinal);
+    }
+
+    public function diasPercorridos(Sprint $sprint)
+    {
+        $dias = [];
+
+        $hoje = now()->startOfDay();
+
+        foreach ($this->dias($sprint) as $dia) {
+            if ($dia >= $hoje) {
+                break;
+            }
+
+            $dias[] = $dia;
+        }
+
+        return $dias;
     }
 }

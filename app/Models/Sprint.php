@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Support\Carbon;
-use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -98,27 +97,6 @@ class Sprint extends Model
     public function getDataFimAttribute($value)
     {
         return Carbon::parse($value);
-    }
-
-    /**
-     * @return DateTime[]
-     */
-    public function getDias(): array
-    {
-        $dataAtual = clone $this->data_inicio;
-        $dataAtual->setTime(0, 0, 0, 0);
-
-        $datas = [];
-
-        while ($dataAtual <= $this->data_fim) {
-            if ($dataAtual->format('N') <= 5) {
-                $datas[] = clone $dataAtual;
-            }
-
-            $dataAtual->modify('+1 day');
-        }
-
-        return $datas;
     }
 
     public function projeto()

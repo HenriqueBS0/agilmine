@@ -41,6 +41,17 @@ class ProjetoConfiguracao extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'metrica_usuario' => 'boolean',
+        'metrica_horas' => 'boolean',
+        'metrica_story_points' => 'boolean',
+    ];
+
+    /**
      * Get the project associated with this configuration.
      */
     public function project()
