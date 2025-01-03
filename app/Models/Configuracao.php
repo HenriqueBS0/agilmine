@@ -9,7 +9,8 @@ class Configuracao extends Model
 {
     use HasFactory;
 
-    public const string KEY_REDMINE_URL_API = 'redmine_api_url';
+    public const KEY_REDMINE_URL_API = 'redmine_api_url';
+    public const KEY_REDMINE_KEY_ADM_API = 'redmine_api_key_adm';
 
     /**
      * The table associated with the model.
@@ -48,5 +49,21 @@ class Configuracao extends Model
         }
 
         return $url;
+    }
+
+    /**
+     * Retorna a chave administrativa da API do Redmine.
+     */
+    public static function getRedmineAdmKey(): ?string
+    {
+        return self::getValor(self::KEY_REDMINE_KEY_ADM_API);
+    }
+
+    /**
+     * Atualiza a chave administrativa da API do Redmine.
+     */
+    public static function setRedmineAdmKey(string $keyAdm): void
+    {
+        self::setValor(self::KEY_REDMINE_KEY_ADM_API, $keyAdm);
     }
 }

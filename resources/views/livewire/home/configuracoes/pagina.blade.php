@@ -13,6 +13,9 @@
                 <x-input id='url' class="mb-3" wire:model="redmineUrl">
                     <x-slot:label>URL</x-slot:label>
                 </x-input>
+                <x-input id='key' class="mb-3" wire:model="redmineAdmKey">
+                    <x-slot:label>Key com nível administrativo</x-slot:label>
+                </x-input>
                 <button type="button" class="btn btn-primary" wire:click="salvarConfiguracoesRedmine">Salvar</button>
             </div>
         </div>

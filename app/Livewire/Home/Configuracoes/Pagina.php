@@ -13,9 +13,14 @@ class Pagina extends Component
     use DisparadorAlerta;
     public $redmineUrl = '';
 
+    public $redmineAdmKey = '';
+
+    // public $redmineKey = 
+
     public function mount()
     {
-        $this->redmineUrl = Configuracao::getValor(Configuracao::KEY_REDMINE_URL_API);
+        $this->redmineUrl = Configuracao::getRedmineUrlApi();
+        $this->redmineAdmKey = Configuracao::getRedmineAdmKey();
     }
 
     public function render()
@@ -27,6 +32,7 @@ class Pagina extends Component
     {
         try {
             $service->atualizarUrlRedmine($this->redmineUrl);
+            $service->atualizarKeyAdmRedmine($this->redmineAdmKey);
             $this->alertaSucesso(__('messages.config_saved_successfully'));
         } catch (\Throwable $th) {
             $this->alertaPerigo($th->getMessage());
