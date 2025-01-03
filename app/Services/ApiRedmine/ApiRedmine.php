@@ -23,7 +23,7 @@ class ApiRedmine
         $resposta = Http::withUrlParameters([
             'endpoint' => self::getEndpoint(),
             'caminho' => $parametros->caminho()->resolver()
-        ])->get('{+endpoint}/{+caminho}', array_merge($parametros->getParametros(), ['key' => self::getKey()]));
+        ])->get('{+endpoint}/{+caminho}', $parametros->getParametros());
 
         return new Retorno($parametros, $resposta);
     }
@@ -31,10 +31,5 @@ class ApiRedmine
     private static function getEndpoint(): string
     {
         return Configuracao::getRedmineUrlApi();
-    }
-
-    private static function getKey(): string
-    {
-        return Auth::user()->key_redmine ?: '';
     }
 }

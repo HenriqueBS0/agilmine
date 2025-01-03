@@ -7,7 +7,6 @@ use App\Livewire\Traits\DisparadorModal;
 use App\Models\User;
 use App\Services\UserService;
 use Livewire\Component;
-use Str;
 
 class Pagina extends Component
 {

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Contracts\FetchRedmineInterface;
 use App\Models\User;
 use Gate;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -9,6 +10,10 @@ use Str;
 
 class UserService
 {
+    public function __construct(private FetchRedmineInterface $fetchRedmine)
+    {
+    }
+
     /**
      * Atualiza o status de admin de um usuário.
      *
@@ -74,5 +79,30 @@ class UserService
         $usuario->save();
 
         return $novaSenha;
+    }
+
+    /**
+     * Obtém o ID do usuário no Redmine.
+     *
+     * @return int|null
+     */
+    public function getRedmineId(User $usuario): ?int
+    {
+        if ($usuario->key_redmine === null) {
+            return null;
+        }
+
+        if (is_int($usuario->id_usuario_redmine)) {
+            return $usuario->id_usuario_redmine;
+        }
+
+        try {
+            $usuario->id_usuario_redmine = $this->fetchRedmine->usuario()->getId();
+            $usuario->save();
+
+            return $usuario->id_usuario_redmine;
+        } catch (\Throwable $th) {
+            return null;
+        }
     }
 }

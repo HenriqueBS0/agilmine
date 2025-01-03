@@ -44,7 +44,7 @@ class Retorno
 
         $this->setPaginacao(new Paginacao(
             $response->json('offset', 0),
-            $response->json('limit', 0),
+            $response->json('limit', 1),
             $response->json('total_count', 0)
         ));
 

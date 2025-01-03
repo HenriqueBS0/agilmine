@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Sprint\Backlog;
 
+use App\Contracts\FetchRedmineInterface;
 use App\Services\ApiRedmine\ApiRedmine;
 use App\Services\ApiRedmine\Entidades\TarefaPrioridade;
 use App\Services\ApiRedmine\Entidades\TarefaStatus;
@@ -22,11 +23,11 @@ class TarefaIdentificacao extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(private FetchRedmineInterface $fetchRedmine)
     {
-        $this->prioridades = ApiRedmine::listar(TarefaPrioridade::parametroListar())->dados();
-        $this->tipos = ApiRedmine::listar(TarefaTipo::parametroListar())->dados();
-        $this->status = ApiRedmine::listar(TarefaStatus::parametroListar())->dados();
+        $this->prioridades = $this->fetchRedmine->prioridadesTarefa();
+        $this->tipos = $this->fetchRedmine->tiposTarefa();
+        $this->status = $this->fetchRedmine->statusTarefa();
     }
 
     /**

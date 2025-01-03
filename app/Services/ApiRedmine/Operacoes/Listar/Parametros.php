@@ -13,6 +13,8 @@ use Illuminate\Http\Client\Response;
  */
 class Parametros implements QueryParamProvider
 {
+    private string $key = '';
+
     /**
      * Define onde o recurso está na api
      * @var Caminho
@@ -60,6 +62,17 @@ class Parametros implements QueryParamProvider
         $this->setPaginacao($paginacao);
         $this->setOrdenacao(new Ordenacao);
         $this->setFiltro(new Filtro);
+    }
+
+    public function setKey(string $key)
+    {
+        $this->key = $key;
+        return $this;
+    }
+
+    private function getKey()
+    {
+        return ['key' => $this->key];
     }
 
     private function setFuncaoTratarRetorno(mixed $fn): static
@@ -125,6 +138,7 @@ class Parametros implements QueryParamProvider
             $this->paginacao()->getParametros(),
             $this->ordenacao()->getParametros(),
             $this->filtro()->getParametros(),
+            $this->getKey()
         );
     }
 }

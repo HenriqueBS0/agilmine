@@ -47,6 +47,12 @@ class Tarefa implements Wireable
     private ?float $horasGastas = null;
 
     /**
+     * Campo Selecionado do Pontos de História
+     * @var int
+     */
+    private ?int $pontosHistoriaCampoSelecionado = 0;
+
+    /**
      * Valor de complexidade da história
      * @var int
      */
@@ -176,6 +182,17 @@ class Tarefa implements Wireable
     public function setProporcaoFeita(?float $proporcaoFeita): self
     {
         $this->proporcaoFeita = $proporcaoFeita;
+        return $this;
+    }
+
+    public function getPontosHistoriaCampoSelecionado(): ?int
+    {
+        return $this->pontosHistoriaCampoSelecionado;
+    }
+
+    public function setPontosHistoriaCampoSelecionado(?int $pontosHistoriaCampoSelecionado): self
+    {
+        $this->pontosHistoriaCampoSelecionado = $pontosHistoriaCampoSelecionado;
         return $this;
     }
 
@@ -448,7 +465,7 @@ class Tarefa implements Wireable
                 if (isset($dados['custom_fields'])) {
                     foreach ($dados['custom_fields'] as $campoCustomizado) {
                         if ($campoCustomizado['id'] == 2) {//Pontos de história
-                            $tarefa->setPontosHistoria($campoCustomizado['value'] ?: null);
+                            $tarefa->setPontosHistoriaCampoSelecionado($campoCustomizado['value'] ?: null);
                         }
                         if ($campoCustomizado['id'] == 3) {//Descritor
                             $tarefa->setDescritor((new Usuario)->setId((int) $campoCustomizado['value']));
