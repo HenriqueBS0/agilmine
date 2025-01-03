@@ -10,6 +10,11 @@
             <strong>Versão:</strong> {{ is_null($versao) ? '' : $versao->getNome() }}<br>
             <strong>Tarefas Fechadas/Total:</strong> {{ $totalTarefasFechadas }}/{{ $totalTarefas }}<br>
             <strong>Resumo:</strong> {{ $sprint->resumo }}<br>
+            @if ($sprint->gera_release)
+                <strong>Resumo Release:</strong> {{ $sprint->resumo_release }}<br>
+            @endif
+
+
         </p>
         @if ($status->isEmAndamento())
             <div class="progress" style="height: 20px; margin: 16px 0;">
