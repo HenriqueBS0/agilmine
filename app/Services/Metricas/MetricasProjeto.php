@@ -62,6 +62,13 @@ class MetricasProjeto
         return count($sprints);
     }
 
+    public function numeroReleases()
+    {
+        return count($this->sprintService->filtraSprintsGeramRelease(
+            $this->getSprintsProjeto()
+        ));
+    }
+
     private function getSprintsProjeto()
     {
         return $this->projetoService->getSprintsMetricas($this->projeto)->get()->all();

@@ -29,7 +29,7 @@ class MetricasSprint
         return $this;
     }
 
-    public function velocidadeMediaPorDia()
+    public function velocidadeMediaPorSemana()
     {
         $numeroDiasPercorridos = $this->numeroDiasPercorridos();
 
@@ -37,7 +37,9 @@ class MetricasSprint
             return 0;
         }
 
-        return $this->tarefas()->storyPointsFechadas() / $numeroDiasPercorridos;
+        $semanas = ceil($numeroDiasPercorridos / 5);
+
+        return $this->tarefas()->storyPointsFechadas() / $semanas;
     }
 
     public function velocidade()

@@ -205,7 +205,7 @@ class SprintService
      * @param SprintStatus[] $status - Status que vai filtrar
      * @return Sprint[]
      */
-    public function filtraSprintsPelosStatus(array $sprints, array $tarefas, array $status)
+    public function filtraSprintsPelosStatus(array $sprints, array $tarefas, array $status): array
     {
         return array_values(array_filter(
             $sprints,
@@ -218,5 +218,37 @@ class SprintService
                 return in_array($statusSprint, $status);
             }
         ));
+    }
+
+    /**
+     * Filtra as sprints que geram release
+     * 
+     * @param Sprint[] $sprints
+     * @return Sprint[]
+     */
+    public function filtraSprintsGeramRelease(array $sprints): array
+    {
+        return array_values(array_filter(
+            $sprints,
+            function (Sprint $sprint) {
+                return $sprint->gera_release;
+            }
+        ));
+    }
+
+    /**
+     * Retorna um array com a identificação das sprints (serial - nome)
+     * 
+     * @param Sprint[] $sprints
+     * @return string[] 
+     */
+    public function mapIdentificacaoSprints(array $sprints)
+    {
+        return array_map(
+            function (Sprint $sprint) {
+                return "{$sprint->serial} - {$sprint->nome}";
+            },
+            $sprints
+        );
     }
 }

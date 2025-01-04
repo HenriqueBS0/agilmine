@@ -9,7 +9,7 @@
         <x-report.secao titulo="Velocidade" class="col-2">
             <x-report.velocidade :$sprint :$tarefas :pequeno="false"></x-report.velocidade>
         </x-report.secao>
-        <x-report.secao titulo="Velocidade Média/Dia" class="col-3">
+        <x-report.secao titulo="Velocidade Média/Semana" class="col-3">
             <x-report.velocidade-media :$sprint :$tarefas :pequeno="false" />
         </x-report.secao>
     @endcan
@@ -32,7 +32,7 @@
 <div class="row g-2 mb-2">
     @can('isMetricaHorasAtiva', $sprint)
         <x-report.secao titulo="Tempo (Horas) Gasto x Estimado" class="col-4">
-            <x-report.tempo-estimado-tempo-gasto id="tempo-gasto-estimado" :$tarefas />
+            <x-report.tempo-estimado-tempo-gasto id="tempo-gasto-estimado" :sprints="[$sprint]" :$tarefas />
         </x-report.secao>
     @endcan
     <x-report.secao titulo="Tarefas Fechadas x Abertas" class="col-2">

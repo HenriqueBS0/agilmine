@@ -34,6 +34,11 @@ class LineChart extends Component
             'options' => [
                 'plugins' => [
                     'datalabels' => false
+                ],
+                'scales' => [
+                    'y' => [
+                        'beginAtZero' => true
+                    ]
                 ]
             ]
         ], $options);

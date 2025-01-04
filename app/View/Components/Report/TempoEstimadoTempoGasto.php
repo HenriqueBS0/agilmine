@@ -2,7 +2,9 @@
 
 namespace App\View\Components\Report;
 
+use App\Services\Metricas\MetricasSprint;
 use App\Services\Metricas\MetricasTarefas;
+use App\Services\SprintService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -21,41 +23,50 @@ class TempoEstimadoTempoGasto extends Component
     public function __construct(
         public string $id,
         array $tarefas,
-        MetricasTarefas $metrica
+        array $sprints,
+        SprintService $sprintService,
+        MetricasSprint $metrica
     ) {
-        $metrica->setTarefas($tarefas);
+        $this->labels = $sprintService->mapIdentificacaoSprints($sprints);
 
-        $this->labels = ['Horas'];
+        $dataEstimado = [];
 
-        $this->datasets = [
-            [
-                'label' => 'Estimado',
-                'data' => [$metrica->horasEstimadas()],
-                'backgroundColor' => [
-                    'css-var:--bs-primary-bg-subtle'
-                ],
-                'borderColor' => [
-                    'css-var:--bs-primary'
-                ],
-                'datalabels' => [
-                    'color' => 'css-var:--bs-primary-text-emphasis'
-                ],
-                'borderWidth' => 1
+        $dataGasto = [];
+
+        foreach ($sprints as $sprint) {
+            $metrica->setSprint($sprint)->setTarefas($tarefas);
+            $dataEstimado[] = $metrica->tarefas()->horasEstimadas();
+            $dataGasto[] = $metrica->tarefas()->horasGastas();
+        }
+
+        $this->datasets[] = [
+            'label' => 'Estimado',
+            'data' => $dataEstimado,
+            'backgroundColor' => [
+                'css-var:--bs-primary-bg-subtle'
             ],
-            [
-                'label' => 'Gasto',
-                'data' => [$metrica->horasGastas()],
-                'backgroundColor' => [
-                    'css-var:--bs-destaque-bg-subtle'
-                ],
-                'borderColor' => [
-                    'css-var:--bs-destaque'
-                ],
-                'datalabels' => [
-                    'color' => 'css-var:--bs-destaque-text-emphasis'
-                ],
-                'borderWidth' => 1
-            ]
+            'borderColor' => [
+                'css-var:--bs-primary'
+            ],
+            'datalabels' => [
+                'color' => 'css-var:--bs-primary-text-emphasis'
+            ],
+            'borderWidth' => 1
+        ];
+
+        $this->datasets[] = [
+            'label' => 'Gasto',
+            'data' => $dataGasto,
+            'backgroundColor' => [
+                'css-var:--bs-destaque-bg-subtle'
+            ],
+            'borderColor' => [
+                'css-var:--bs-destaque'
+            ],
+            'datalabels' => [
+                'color' => 'css-var:--bs-destaque-text-emphasis'
+            ],
+            'borderWidth' => 1
         ];
 
         $this->options = [

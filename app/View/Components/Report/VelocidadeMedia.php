@@ -12,7 +12,7 @@ class VelocidadeMedia extends Component
 {
     public $valor;
 
-    public $legenda = "Velocidade Média (Story Points Tarefas Fechadas/Dia)";
+    public $legenda = "Velocidade Média (Story Points Tarefas Fechadas/Semana)";
 
     public $icone = "speedometer2";
 
@@ -21,7 +21,7 @@ class VelocidadeMedia extends Component
      */
     public function __construct(Sprint $sprint, array $tarefas, MetricasSprint $metrica)
     {
-        $this->valor = round($metrica->setSprint($sprint)->setTarefas($tarefas)->velocidadeMediaPorDia());
+        $this->valor = round($metrica->setSprint($sprint)->setTarefas($tarefas)->velocidadeMediaPorSemana());
     }
 
     /**

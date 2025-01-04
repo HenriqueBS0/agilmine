@@ -37,8 +37,9 @@ class Sprint extends Model
     protected $casts = [
         'data_inicio' => 'datetime',
         'data_fim' => 'datetime',
+        'gera_release' => 'boolean',
         'tarefas' => 'array',
-        'cancelada' => 'boolean'
+        'cancelada' => 'boolean',
     ];
 
     /**
