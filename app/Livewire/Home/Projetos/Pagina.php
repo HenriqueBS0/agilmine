@@ -12,11 +12,31 @@ class Pagina extends Component
 
     use DisparadorAlerta;
 
-    public $projetos;
+    public array $projetos;
+
+    public array $tarefas = [];
 
     public function mount(ProjetoService $service)
     {
-        $this->projetos = $service->getProjetos()->where('arquivado', false)->get();
+        $this->projetos = $service->getProjetos()->where('arquivado', false)->get()->all();
+        $this->setTarefasProjetos($service, $this->projetos);
+    }
+
+    /**
+     * Busca as tarefas dos projetos e define na classe
+     * 
+     * @param \App\Services\ProjetoService $service
+     * @param Projeto[] $projetos
+     * @return void
+     */
+    private function setTarefasProjetos(ProjetoService $service, array $projetos)
+    {
+        foreach ($projetos as $projeto) {
+            $this->tarefas = array_merge(
+                $this->tarefas,
+                $service->getTarefas($projeto)
+            );
+        }
     }
 
     public function arquivar($projetoId, ProjetoService $service)
@@ -27,7 +47,7 @@ class Pagina extends Component
 
         $service->arquivamento($projeto, true);
 
-        $this->projetos = $service->getProjetos()->where('arquivado', false)->get();
+        $this->projetos = $service->getProjetos()->where('arquivado', false)->get()->all();
 
         $this->alertaSucesso(__('messages.projeto_arquivado', ['nome' => $projeto->nome]));
     }

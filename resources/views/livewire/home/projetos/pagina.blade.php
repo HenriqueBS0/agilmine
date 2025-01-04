@@ -5,10 +5,11 @@
     <x-home.sidebar />
 </x-slot:sidebar>
 <x-main titulo="Projetos">
+    <x-home.projetos.metricas :$projetos :$tarefas />
     <div class="row g-3">
         @foreach ($projetos as $projeto)
             <div class="col-4">
-                <x-home.projetos.card class="h-100" :projeto="$projeto">
+                <x-home.projetos.card class="h-100" :$projeto :$tarefas>
                     <x-slot:arquivar wire:click='arquivar({{ $projeto->id }})'></x-slot:arquivar>
                 </x-home.projetos.card>
             </div>

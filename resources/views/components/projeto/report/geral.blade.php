@@ -8,15 +8,15 @@
         </x-report.secao>
     @endcan
     <x-report.secao titulo="Sprints" class="col-2">
-        <x-report.sprints-projeto :pequeno="false" :$projeto />
+        <x-report.sprints-projetos :pequeno="false" :projetos="[$projeto]" />
     </x-report.secao>
     <x-report.secao titulo="Sprints Concluidas" class="col-2">
-        <x-report.sprints-concluidas-projeto :pequeno="false" :$projeto :$tarefas />
+        <x-report.sprints-concluidas-projetos :pequeno="false" :projetos="[$projeto]" :$tarefas />
     </x-report.secao>
     <x-report.secao titulo="Sprints Em Andamento" class="col-2">
-        <x-report.sprints-em-andamento-projeto :pequeno="false" :$projeto :$tarefas />
+        <x-report.sprints-em-andamento-projetos :pequeno="false" :projetos="[$projeto]" :$tarefas />
     </x-report.secao>
     <x-report.secao titulo="Releases" class="col-2">
-        <x-report.releases-projeto :pequeno="false" :$projeto :$tarefas />
+        <x-report.releases-projetos :pequeno="false" :projetos="[$projeto]" :$tarefas />
     </x-report.secao>
 </div>
