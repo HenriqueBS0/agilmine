@@ -16,7 +16,7 @@
     </x-slot:acoes>
     <div class="row g-3">
         @foreach ($sprints as $sprint)
-            <div class="col-4" x-show="matchesSearch({{ Js::from($sprint) }})">
+            <div class="col-4 h-100" x-show="matchesSearch({{ Js::from($sprint) }})">
                 <x-projeto.sprints.card :sprint="$sprint" :tarefas="$tarefas" :vercoes="$vercoes" />
             </div>
         @endforeach

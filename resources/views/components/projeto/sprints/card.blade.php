@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card h-100">
     <div class="card-header" style="background-color: {{ $corFundo }}; color: {{ $corTexto }}">
         {{ $tipo }}: {{ $status->getDescricao() }}
     </div>
