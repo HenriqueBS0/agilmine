@@ -22,11 +22,13 @@ class ImportadorProjeto
 
     private function pegarAtualizarProjeto(ProjetoDados $projeto): Projeto
     {
-        return Projeto::updateOrCreate([
-            'id' => $projeto->getId(),
-            'nome' => $projeto->getNome(),
-            'descricao' => $projeto->getDescricao()
-        ]);
+        return Projeto::updateOrCreate(
+            ['id' => $projeto->getId()],
+            [
+                'nome' => $projeto->getNome(),
+                'descricao' => $projeto->getDescricao()
+            ]
+        );
     }
 
     /**
@@ -44,6 +46,10 @@ class ImportadorProjeto
         // Processa cada membro
         foreach ($membros as $membro) {
             $projetoMembro = ProjetoMembro::updateOrCreate(
+                [
+                    'projeto_id' => $projeto->id,
+                    'membro' => $membro->getUsuario()->getId()
+                ],
                 [
                     'projeto_id' => $projeto->id,
                     'membro' => $membro->getUsuario()->getId(),

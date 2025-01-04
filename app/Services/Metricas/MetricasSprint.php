@@ -31,7 +31,13 @@ class MetricasSprint
 
     public function velocidadeMediaPorDia()
     {
-        return $this->tarefas()->storyPointsFechadas() / $this->numeroDiasPercorridos();
+        $numeroDiasPercorridos = $this->numeroDiasPercorridos();
+
+        if ($numeroDiasPercorridos <= 0) {
+            return 0;
+        }
+
+        return $this->tarefas()->storyPointsFechadas() / $numeroDiasPercorridos;
     }
 
     public function velocidade()

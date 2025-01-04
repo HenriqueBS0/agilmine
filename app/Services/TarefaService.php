@@ -200,7 +200,7 @@ class TarefaService
         $tarefasContidasNoArray = $this->filtraTarefasContidasNoArray($tarefas, $ids);
         $tarefasNaoContidasNoArray = $this->filtraTarefasNaoContidasNoArray($tarefas, $ids);
 
-        $idPosicoes = array_flip($ids);
+        $idPosicoes = array_flip(array_values($ids));
 
         usort($tarefasContidasNoArray, fn(Tarefa $a, Tarefa $b) => $idPosicoes[$a->getId()] <=> $idPosicoes[$b->getId()]);
 
@@ -216,12 +216,12 @@ class TarefaService
      */
     public function filtraTarefasNaoContidasNoArray(array $tarefas, array $ids)
     {
-        return array_filter(
+        return array_values(array_filter(
             $tarefas,
             function (Tarefa $tarefa) use ($ids) {
                 return !in_array($tarefa->getId(), $ids);
             }
-        );
+        ));
     }
 
     /**
@@ -233,12 +233,12 @@ class TarefaService
      */
     public function filtraTarefasContidasNoArray(array $tarefas, array $ids)
     {
-        return array_filter(
+        return array_values(array_filter(
             $tarefas,
             function (Tarefa $tarefa) use ($ids) {
                 return in_array($tarefa->getId(), $ids);
             }
-        );
+        ));
     }
 
     /**
@@ -250,12 +250,12 @@ class TarefaService
      */
     public function filtraTarefasDesenvolvedor($tarefas, Usuario $desenvolvedor)
     {
-        return array_filter(
+        return array_values(array_filter(
             $tarefas,
             function (Tarefa $tarefa) use ($desenvolvedor) {
                 return $tarefa->getDesenvolvedor()?->getId() === $desenvolvedor->getId();
             }
-        );
+        ));
     }
 
     /**
@@ -267,14 +267,14 @@ class TarefaService
      */
     public function filtraTarefasDataConclusaoMenorIgual($tarefas, Carbon $data)
     {
-        return array_filter(
+        return array_values(array_filter(
             self::filtraTarefasStatusFechada($tarefas),
             function (Tarefa $tarefa) use ($data) {
                 $dataConclusao = Carbon::parse($tarefa->getDataConclusao());
                 $dataConclusao->setTime(0, 0, 0, 0);
                 return $dataConclusao <= $data;
             }
-        );
+        ));
     }
 
     /**
@@ -286,11 +286,11 @@ class TarefaService
      */
     public function filtraTarefasStatusFechada(array $tarefas, bool $fechada = true)
     {
-        return array_filter(
+        return array_values(array_filter(
             $tarefas,
             function (Tarefa $tarefa) use ($fechada) {
                 return $tarefa->getStatus()->getFechada() === $fechada;
             }
-        );
+        ));
     }
 }

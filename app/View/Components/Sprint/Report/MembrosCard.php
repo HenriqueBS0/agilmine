@@ -48,17 +48,14 @@ class MembrosCard extends Component
         $this->storyPointsFechadas = $metrica->tarefas()->storyPointsFechadas();
     }
 
-    /**
-     * 
-     */
     private function getTarefasMembro(Membro $membro, $tarefas)
     {
-        return array_filter(
+        return array_values(array_filter(
             $tarefas,
             function (Tarefa $tarefa) use ($membro) {
                 return $tarefa->getDesenvolvedor()->getId() === $membro->getUsuario()->getId();
             }
-        );
+        ));
     }
 
     /**

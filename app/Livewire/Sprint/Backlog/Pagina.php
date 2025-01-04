@@ -40,12 +40,12 @@ class Pagina extends Component
     public function removerTarefa($tarefa)
     {
         $this->authorize('isGestor', $this->sprint->projeto);
-        $this->sprint->tarefas = array_filter(
+        $this->sprint->tarefas = array_values(array_filter(
             $this->sprint->tarefas,
             function ($tarefaSprint) use ($tarefa) {
                 return $tarefaSprint !== $tarefa;
             }
-        );
+        ));
         $this->sprint->save();
     }
 }
