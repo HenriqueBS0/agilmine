@@ -84,6 +84,10 @@ class MetricasSprint
 
     public function tarefasFechadasPorDiaEstimado()
     {
+        if ($this->numeroDias() == 0) {
+            return [];
+        }
+
         $quantidadeEstimadaPorDia = $this->tarefas->numero() / $this->numeroDias();
 
         $numero = [];

@@ -82,6 +82,35 @@ class ProjetoService
         return $tarefas;
     }
 
+    /**
+     * Retorna as tarefas do projeto
+     * 
+     * @param Projeto $projeto
+     * @param \App\Services\ApiRedmine\Entidades\Tarefa[] $tarefas
+     * @return \App\Services\ApiRedmine\Entidades\Tarefa[]
+     */
+    public function filtraTarefasProjeto(Projeto $projeto, $tarefas)
+    {
+        $tarefas = $this->tarefaService->filtraTarefasContidasNoArray($tarefas, $projeto->tarefas);
+        $tarefas = $this->tarefaService->ordenaTarefasArrayIds($tarefas, $projeto->tarefas);
+        return $tarefas;
+    }
+
+    /**
+     * Retorna os projetos não arquivados
+     * @param Projeto[] $projetos
+     * @return Projeto[]
+     */
+    public function filtraProjetosNaoArquivados(array $projetos)
+    {
+        return array_values(array_filter(
+            $projetos,
+            function (Projeto $projeto) {
+                return !$projeto->arquivado;
+            }
+        ));
+    }
+
     public function getMembros(Projeto $projeto)
     {
         $membros = [];
