@@ -3,10 +3,10 @@
         <x-report.projetos :pequeno="false" :$projetos :$tarefas />
     </x-report.secao>
     <x-report.secao titulo="Horas Estimasdas" class="col-2">
-        <x-report.horas-estimadas :pequeno="false" :$projetos :$tarefas />
+        <x-report.horas-estimadas :pequeno="false" :tarefas="$tarefasProjetosMetricaHoras" />
     </x-report.secao>
     <x-report.secao titulo="Horas Trabalhas" class="col-2">
-        <x-report.horas-trabalhadas :pequeno="false" :$projetos :$tarefas />
+        <x-report.horas-trabalhadas :pequeno="false" :tarefas="$tarefasProjetosMetricaHoras" />
     </x-report.secao>
     <x-report.secao titulo="Sprints" class="col-2">
         <x-report.sprints-projetos :pequeno="false" :$projetos />

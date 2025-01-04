@@ -111,6 +111,22 @@ class ProjetoService
         ));
     }
 
+    /**
+     * Retorna os projetos com metrica horas ativa
+     * 
+     * @param Projeto[] $projetos
+     * @return Projeto[]
+     */
+    public function filtraProjetosMetricaHorasAtiva(array $projetos)
+    {
+        return array_values(array_filter(
+            $projetos,
+            function (Projeto $projeto) {
+                return Gate::allows('isMetricaHorasAtiva', $projeto);
+            }
+        ));
+    }
+
     public function getMembros(Projeto $projeto)
     {
         $membros = [];

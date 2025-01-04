@@ -87,36 +87,6 @@ class MetricasProjeto
         return count($this->projetoService->filtraProjetosNaoArquivados($projetos));
     }
 
-    public function horasEstimadasProjetos(array $projetos, array $tarefas)
-    {
-        $horas = 0;
-
-        foreach ($this->projetoService->filtraProjetosNaoArquivados($projetos) as $projeto) {
-            if (Gate::denies('isMetricaHorasAtiva', $projeto)) {
-                continue;
-            }
-
-            $horas += $this->setProjeto($projeto)->setTarefas($tarefas)->tarefas()->horasEstimadas();
-        }
-
-        return $horas;
-    }
-
-    public function horasTrabalhadasProjetos(array $projetos, array $tarefas)
-    {
-        $horas = 0;
-
-        foreach ($this->projetoService->filtraProjetosNaoArquivados($projetos) as $projeto) {
-            if (Gate::denies('isMetricaHorasAtiva', $projeto)) {
-                continue;
-            }
-
-            $horas += $this->setProjeto($projeto)->setTarefas($tarefas)->tarefas()->horasGastas();
-        }
-
-        return $horas;
-    }
-
     public function sprintsProjetos(array $projetos)
     {
         $numero = 0;
