@@ -196,4 +196,27 @@ class SprintService
 
         return $dias;
     }
+
+    /**
+     * Filtra as sprints pelo Status
+     * 
+     * @param Sprint[] $sprints - Sprints
+     * @param Tarefa[] $tarefasSprints - Todas as tarefas das sprints
+     * @param SprintStatus[] $status - Status que vai filtrar
+     * @return Sprint[]
+     */
+    public function filtraSprintsPelosStatus(array $sprints, array $tarefas, array $status)
+    {
+        return array_values(array_filter(
+            $sprints,
+            function (Sprint $sprint) use ($status, $tarefas) {
+                $statusSprint = $this->getStatus(
+                    $sprint,
+                    $this->getTarefas($sprint, $tarefas)
+                );
+
+                return in_array($statusSprint, $status);
+            }
+        ));
+    }
 }

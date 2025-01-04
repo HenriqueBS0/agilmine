@@ -97,4 +97,15 @@ class ProjetoService
     {
         return $this->fetchRedmine->vercoes($projeto->id);
     }
+
+    /**
+     * Retorna as sprints aptas a gerar métricas
+     * 
+     * @param \App\Models\Projeto $projeto
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function getSprintsMetricas(Projeto $projeto)
+    {
+        return $projeto->sprints()->where('cancelada', false);
+    }
 }
