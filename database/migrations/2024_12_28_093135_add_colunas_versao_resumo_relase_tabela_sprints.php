@@ -23,9 +23,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('sprints', function (Blueprint $table) {
-            // Removendo a constraint
-            $table->dropCheck('check_resumo_release');
-
             // Removendo as colunas adicionadas
             $table->dropColumn('versao');
             $table->dropColumn('resumo_release');

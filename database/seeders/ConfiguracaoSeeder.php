@@ -15,5 +15,9 @@ class ConfiguracaoSeeder extends Seeder
         Configuracao::updateOrCreate(['key' => 'redmine_api_url'], [
             'value' => 'http://fabtec.ifc-riodosul.edu.br',
         ]);
+
+        Configuracao::updateOrCreate(['key' => 'redmine_api_key_adm'], [
+            'value' => '',
+        ]);
     }
 }
