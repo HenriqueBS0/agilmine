@@ -19,7 +19,7 @@ class SprintForm extends Form
     #[Validate('required|date_format:Y-m-d')]
     public string $data_inicio;
 
-    #[Validate('required|date_format:Y-m-d|after_or_equal:data_inicio')]
+    #[Validate('required|date_format:Y-m-d|after:data_inicio')]
     public string $data_fim;
 
     #[Validate('boolean')]
@@ -29,7 +29,7 @@ class SprintForm extends Form
     public int $project_id;
 
     #[Validate('integer|nullable')]
-    public ?int $versao;
+    public ?int $versao = null;
 
     #[Validate('required_if:gera_release,true|nullable|string')]
     public ?string $resumo_release;
