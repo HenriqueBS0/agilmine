@@ -2,26 +2,25 @@
 
 namespace App\View\Components\Report;
 
-use App\Models\Projeto;
 use App\Services\Metricas\MetricasProjeto;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ReleasesProjeto extends Component
+class SprintsProjetos extends Component
 {
     public $valor;
 
-    public $legenda = "Releases";
+    public $legenda = "Sprints";
 
-    public $icone = "check-circle";
+    public $icone = "arrow-repeat";
 
     /**
      * Create a new component instance.
      */
-    public function __construct(Projeto $projeto, MetricasProjeto $metrica)
+    public function __construct(MetricasProjeto $metrica, array $projetos = [])
     {
-        $this->valor = $metrica->setProjeto($projeto)->numeroReleases();
+        $this->valor = $metrica->sprintsProjetos($projetos);
     }
 
     /**

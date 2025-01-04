@@ -8,20 +8,20 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SprintsProjeto extends Component
+class SprintsConcluidasProjetos extends Component
 {
     public $valor;
 
-    public $legenda = "Sprints";
+    public $legenda = "Sprints Concluídas";
 
-    public $icone = "flag";
+    public $icone = "check-circle";
 
     /**
      * Create a new component instance.
      */
-    public function __construct(Projeto $projeto, MetricasProjeto $metrica)
+    public function __construct(array $tarefas, MetricasProjeto $metrica, array $projetos = [])
     {
-        $this->valor = $metrica->setProjeto($projeto)->numeroSprints();
+        $this->valor = $metrica->sprintsProjetosConcluidas($projetos, $tarefas);
     }
 
     /**

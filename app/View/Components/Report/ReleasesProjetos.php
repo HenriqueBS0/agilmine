@@ -2,27 +2,26 @@
 
 namespace App\View\Components\Report;
 
-use App\Services\DataTimeUtil;
+use App\Models\Projeto;
 use App\Services\Metricas\MetricasProjeto;
-use App\Services\Metricas\MetricasTarefas;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class HorasTrabalhadas extends Component
+class ReleasesProjetos extends Component
 {
     public $valor;
 
-    public $legenda = "Horas Trabalhadas";
+    public $legenda = "Releases";
 
-    public $icone = "stopwatch";
+    public $icone = "cloud-upload";
 
     /**
      * Create a new component instance.
      */
-    public function __construct(array $tarefas, MetricasTarefas $metrica, DataTimeUtil $dataTimeUtil)
+    public function __construct(MetricasProjeto $metrica, array $projetos = [])
     {
-        $this->valor = $dataTimeUtil->horasFloatToString($metrica->setTarefas($tarefas)->horasGastas());
+        $this->valor = $metrica->releasesProjetos($projetos);
     }
 
     /**
