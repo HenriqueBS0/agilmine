@@ -44,33 +44,43 @@ A proposta visa superar as limitações do 🛠️ Redmine, como a ausência de 
 
 ## ⚙️ Configuração e Instalação
 
-1️⃣ Clone o repositório:
+1️⃣ **Clone o repositório:**
    ```bash
    git clone <url-do-repositorio>
    ```
 
-2️⃣ Instale as dependências:
+2️⃣ **Instale as dependências do Composer:**
    ```bash
    composer install
-   npm install
    ```
 
-3️⃣ Configure o arquivo `.env` com os dados do banco e a URL da API do 🛠️ Redmine.
-
-4️⃣ Execute as migrações e seeders:
+3️⃣ **Crie o arquivo `.env`:**
    ```bash
-   php artisan migrate --seed
+   cp .env.example .env
    ```
 
-5️⃣ Inicie o servidor de desenvolvimento:
+4️⃣ **Inicie os contêineres do Laravel Sail:**
    ```bash
-   php artisan serve
+   ./vendor/bin/sail up -d
    ```
 
-6️⃣ **Credenciais do Administrador do Redmine:**
-   - Após a configuração, o sistema Redmine estará disponível com um usuário administrador padrão:
-     - **Usuário:** `admin`
-     - **Senha:** `12345678`
+5️⃣ **Gere a chave da aplicação:**
+   ```bash
+   ./vendor/bin/sail artisan key:generate
+   ```
+
+6️⃣ **Execute as migrações e seeders:**
+   ```bash
+   ./vendor/bin/sail artisan migrate --seed
+   ```
+
+7️⃣ **Acesse o sistema:**
+   - **Agilmine:** [http://localhost:8080](http://localhost:8080)
+     - **Usuário administrador:** `admin@email.com`
+     - **Senha:** `1a2s3d4f`
+   - **Redmine:** [http://localhost:9934](http://localhost:9934)
+     - **Usuário administrador:** `admin`
+     - **Senha:** `1a2s3d4f`
 
 ## ✅ Testes
 
