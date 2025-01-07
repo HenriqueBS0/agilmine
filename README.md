@@ -48,20 +48,29 @@ A proposta visa superar as limitações do 🛠️ Redmine, como a ausência de 
    ```bash
    git clone <url-do-repositorio>
    ```
+
 2️⃣ Instale as dependências:
    ```bash
    composer install
    npm install
    ```
+
 3️⃣ Configure o arquivo `.env` com os dados do banco e a URL da API do 🛠️ Redmine.
+
 4️⃣ Execute as migrações e seeders:
    ```bash
    php artisan migrate --seed
    ```
+
 5️⃣ Inicie o servidor de desenvolvimento:
    ```bash
    php artisan serve
    ```
+
+6️⃣ **Credenciais do Administrador do Redmine:**
+   - Após a configuração, o sistema Redmine estará disponível com um usuário administrador padrão:
+     - **Usuário:** `admin`
+     - **Senha:** `12345678`
 
 ## ✅ Testes
 
