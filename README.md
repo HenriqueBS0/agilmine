@@ -58,18 +58,17 @@ A proposta visa superar as limitações do 🛠️ Redmine, como a ausência de 
    ```bash
    cp .env.example .env
    ```
+4️⃣ **Gere a chave da aplicação:**
+   ```bash
+   php artisan key:generate
+   ```
 
-4️⃣ **Inicie os contêineres do Laravel Sail:**
+6️⃣ **Inicie os contêineres do Laravel Sail:**
    ```bash
    ./vendor/bin/sail up -d
    ```
 
-5️⃣ **Gere a chave da aplicação:**
-   ```bash
-   ./vendor/bin/sail artisan key:generate
-   ```
-
-6️⃣ **Execute as migrações e seeders:**
+5️⃣ **Execute as migrações e seeders:**
    ```bash
    ./vendor/bin/sail artisan migrate --seed
    ```
