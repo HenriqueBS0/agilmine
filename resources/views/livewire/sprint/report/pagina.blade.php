@@ -46,4 +46,10 @@
     </style>
 @endpushonce
 
-@vite('resources/js/components/sprint-report.js')
+@script
+    <script>
+        document.getElementById('download').addEventListener('click', () => {
+            window.print();
+        });
+    </script>
+@endscript

@@ -1,4 +1,8 @@
 {
+  "_lodash-CmFMvF3r.js": {
+    "file": "assets/lodash-CmFMvF3r.js",
+    "name": "lodash"
+  },
   "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff": {
     "file": "assets/bootstrap-icons-BOrJxbIo.woff",
     "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff"
@@ -14,13 +18,34 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DkafPIzV.js",
+    "file": "assets/app-CF6tM1_e.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
   },
+  "resources/js/components/input-editor.js": {
+    "file": "assets/input-editor-BteEjWqp.js",
+    "name": "input-editor",
+    "src": "resources/js/components/input-editor.js",
+    "isEntry": true,
+    "imports": [
+      "_lodash-CmFMvF3r.js"
+    ],
+    "css": [
+      "assets/input-editor-BolGq3rj.css"
+    ]
+  },
+  "resources/js/components/report-chart.js": {
+    "file": "assets/report-chart-DmB_3JC4.js",
+    "name": "report-chart",
+    "src": "resources/js/components/report-chart.js",
+    "isEntry": true,
+    "imports": [
+      "_lodash-CmFMvF3r.js"
+    ]
+  },
   "resources/scss/app.scss": {
-    "file": "assets/app-BvN-wNRz.css",
+    "file": "assets/app-gvFM13ah.css",
     "src": "resources/scss/app.scss",
     "isEntry": true
   }
