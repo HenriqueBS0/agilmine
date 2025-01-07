@@ -42,10 +42,12 @@ class Retorno
         $this->setParametros($parametros);
         $this->setResponse($response);
 
+        $totalCount = $response->json('total_count', 1);
+
         $this->setPaginacao(new Paginacao(
             $response->json('offset', 0),
-            $response->json('limit', 1),
-            $response->json('total_count', 0)
+            $response->json('limit', max(1, $totalCount)),
+            $totalCount
         ));
 
         $this->setDados(call_user_func($parametros->getFuncaoTratarRetorno(), $response));

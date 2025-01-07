@@ -48,9 +48,8 @@ class Projeto extends Model
     {
         parent::boot();
 
-        static::creating(function ($projeto) {
-            $configuracao = ProjetoConfiguracao::create();
-            $projeto->configuracao_id = $configuracao->id;
+        static::created(function (Projeto $projeto) {
+            ProjetoConfiguracao::create(['projeto_id' => $projeto->id]);
         });
     }
 

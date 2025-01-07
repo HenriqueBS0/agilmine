@@ -44,7 +44,7 @@ class SyncRedmineProjectData
             }
 
         } catch (\Throwable $th) {
-            $this->alertaPerigo($th->getMessage());
+            $this->alertaPerigo($th->getMessage(), true);
         } finally {
             return $next($request);
         }

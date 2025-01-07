@@ -26,9 +26,7 @@ class Configuracao extends Model
      */
     public static function getValor(string $key): ?string
     {
-        return cache()->rememberForever("configuracoes_{$key}", function () use ($key) {
-            return self::where('key', $key)->value('value');
-        });
+        return self::where('key', $key)->value('value');
     }
 
     /**
@@ -37,7 +35,6 @@ class Configuracao extends Model
     public static function setValor(string $key, string $value): void
     {
         self::updateOrCreate(['key' => $key], ['value' => $value]);
-        cache()->forget("configuracoes_{$key}");
     }
 
     public static function getRedmineUrlApi(bool $replaceContainer = false)

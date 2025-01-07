@@ -5,7 +5,10 @@ namespace App\Livewire\Projeto\Sprints;
 use App\Livewire\Traits\DisparadorAlerta;
 use App\Models\Projeto;
 use App\Models\Sprint;
+use App\Services\ApiRedmine\Entidades\Tarefa;
 use App\Services\ProjetoService;
+use App\Services\SprintService;
+use App\Services\TarefaService;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -16,8 +19,10 @@ class Pagina extends Component
     #[Locked]
     public Projeto $projeto;
 
+    #[Locked]
     public array $tarefas;
 
+    #[Locked]
     public array $vercoes;
 
     public $sprints;
@@ -47,9 +52,14 @@ class Pagina extends Component
         $this->sprints = $this->projeto->sprints;
     }
 
-    public function restaurar(Sprint $sprint)
+    public function restaurar(Sprint $sprint, SprintService $sprintService, TarefaService $tarefaService)
     {
         $this->authorize('isGestor', $this->projeto);
+
+        $tarefas = $sprintService->getTarefasSelecionar($sprint, $this->tarefas);
+        $tarefas = $sprintService->getTarefas($sprint, $tarefas);
+
+        $sprint->tarefas = array_map(fn(Tarefa $t) => $t->getId(), $tarefas);
 
         $sprint->cancelada = false;
         $sprint->save();
