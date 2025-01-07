@@ -70,7 +70,7 @@ A proposta visa superar as limitações do 🛠️ Redmine, como a ausência de 
 
 5️⃣ **Execute as migrações e seeders:**
    ```bash
-   ./vendor/bin/sail artisan migrate --seed
+   ./vendor/bin/sail artisan migrate:refresh --seed
    ```
 
 7️⃣ **Acesse o sistema:**
