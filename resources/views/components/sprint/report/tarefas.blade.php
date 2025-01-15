@@ -21,9 +21,9 @@
                             </a>
                         </td>
                         <td scope="col">{{ $tarefa->getTitulo() }}</td>
-                        <td scope="col">{{ $tarefa->getDescritor()->getNome() }}</td>
-                        <td scope="col">{{ $tarefa->getDesenvolvedor()->getNome() }}</td>
-                        <td scope="col">{{ $tarefa->getTestador()->getNome() }}</td>
+                        <td scope="col">{{ $tarefa->getDescritor()?->getNome() }}</td>
+                        <td scope="col">{{ $tarefa->getDesenvolvedor()?->getNome() }}</td>
+                        <td scope="col">{{ $tarefa->getTestador()?->getNome() }}</td>
                     </tr>
                 @endforeach
             </tbody>

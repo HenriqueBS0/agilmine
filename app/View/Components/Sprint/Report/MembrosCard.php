@@ -53,7 +53,7 @@ class MembrosCard extends Component
         return array_values(array_filter(
             $tarefas,
             function (Tarefa $tarefa) use ($membro) {
-                return $tarefa->getDesenvolvedor()->getId() === $membro->getUsuario()->getId();
+                return $tarefa->getDesenvolvedor()?->getId() === $membro->getUsuario()->getId();
             }
         ));
     }

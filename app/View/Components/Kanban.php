@@ -29,7 +29,7 @@ class Kanban extends Component
         $tarefasFiltradas = [];
 
         foreach ($tarefas as $tarefa) {
-            if ($tarefa->getStatus()->getId() == $situacao) {
+            if ($tarefa->getStatus()?->getId() == $situacao) {
                 $tarefasFiltradas[] = $tarefa;
             }
         }

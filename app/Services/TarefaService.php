@@ -64,20 +64,20 @@ class TarefaService
             $membros[$projeto] = $membrosProjeto;
         }
 
-        if (isset($membros[$projeto][$tarefa->getAutor()->getId()])) {
-            $tarefa->setAutor($membros[$projeto][$tarefa->getAutor()->getId()]->getUsuario());
+        if (isset($membros[$projeto][$tarefa->getAutor()?->getId()])) {
+            $tarefa->setAutor($membros[$projeto][$tarefa->getAutor()?->getId()]->getUsuario());
         }
 
-        if (isset($membros[$projeto][$tarefa->getDesenvolvedor()->getId()])) {
-            $tarefa->setDesenvolvedor($membros[$projeto][$tarefa->getDesenvolvedor()->getId()]->getUsuario());
+        if (isset($membros[$projeto][$tarefa->getDesenvolvedor()?->getId()])) {
+            $tarefa->setDesenvolvedor($membros[$projeto][$tarefa->getDesenvolvedor()?->getId()]->getUsuario());
         }
 
-        if (isset($membros[$projeto][$tarefa->getDescritor()->getId()])) {
-            $tarefa->setDescritor($membros[$projeto][$tarefa->getDescritor()->getId()]->getUsuario());
+        if (isset($membros[$projeto][$tarefa->getDescritor()?->getId()])) {
+            $tarefa->setDescritor($membros[$projeto][$tarefa->getDescritor()?->getId()]->getUsuario());
         }
 
-        if (isset($membros[$projeto][$tarefa->getTestador()->getId()])) {
-            $tarefa->setTestador($membros[$projeto][$tarefa->getTestador()->getId()]->getUsuario());
+        if (isset($membros[$projeto][$tarefa->getTestador()?->getId()])) {
+            $tarefa->setTestador($membros[$projeto][$tarefa->getTestador()?->getId()]->getUsuario());
         }
 
         return $tarefa;
@@ -128,8 +128,8 @@ class TarefaService
             }
         }
 
-        if (isset($prioridades[$tarefa->getPrioridade()->getId()])) {
-            $tarefa->setPrioridade($prioridades[$tarefa->getPrioridade()->getId()]);
+        if (isset($prioridades[$tarefa->getPrioridade()?->getId()])) {
+            $tarefa->setPrioridade($prioridades[$tarefa->getPrioridade()?->getId()]);
         }
 
         return $tarefa;
@@ -153,8 +153,8 @@ class TarefaService
             }
         }
 
-        if (isset($tipos[$tarefa->getTipo()->getId()])) {
-            $tarefa->setTipo($tipos[$tarefa->getTipo()->getId()]);
+        if (isset($tipos[$tarefa->getTipo()?->getId()])) {
+            $tarefa->setTipo($tipos[$tarefa->getTipo()?->getId()]);
         }
 
         return $tarefa;
@@ -178,8 +178,8 @@ class TarefaService
             }
         }
 
-        if (isset($status[$tarefa->getStatus()->getId()])) {
-            $tarefa->setStatus($status[$tarefa->getStatus()->getId()]);
+        if (isset($status[$tarefa->getStatus()?->getId()])) {
+            $tarefa->setStatus($status[$tarefa->getStatus()?->getId()]);
         }
 
         return $tarefa;
@@ -289,7 +289,7 @@ class TarefaService
         return array_values(array_filter(
             $tarefas,
             function (Tarefa $tarefa) use ($fechada) {
-                return $tarefa->getStatus()->getFechada() === $fechada;
+                return $tarefa->getStatus()?->getFechada() === $fechada;
             }
         ));
     }
