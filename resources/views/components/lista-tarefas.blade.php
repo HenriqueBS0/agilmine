@@ -1,4 +1,4 @@
-@props(['id', 'tarefas' => [], 'draggable' => false, 'selecionavel' => false, 'pesquisa' => false])
+@props(['id', 'projeto', 'tarefas' => [], 'draggable' => false, 'selecionavel' => false, 'pesquisa' => false])
 
 @php
     use Livewire\Wireable;
@@ -129,8 +129,12 @@
         <!-- Totais alinhados à direita -->
         <div class="text-end flex-grow-1">
             <span x-html="'<strong>Tarefas:</strong> ' + totalTarefas()"></span>
-            <span x-html="'<strong>Horas Estimadas:</strong> ' + totalHorasEstimadas()"></span>
-            <span x-html="'<strong>Story Points:</strong> ' + totalStoryPoints()"></span>
+            @can('isMetricaHorasAtiva', $projeto)
+                <span x-html="'<strong>Horas Estimadas:</strong> ' + totalHorasEstimadas()"></span>
+            @endcan
+            @can('isMetricaStoryPointsAtiva', $projeto)
+                <span x-html="'<strong>Story Points:</strong> ' + totalStoryPoints()"></span>
+            @endcan
         </div>
     </div>
 
@@ -140,8 +144,12 @@
     @endif
 
     <div class="h-100 flex-grow-1 border overflow-y-auto bg-light"
-        @if ($draggable) @dragenter="onDragEnter($event)"
-        @dragover="onDragOver($event)" @dragleave="onDragLeave($event)" @drop="onDragDrop($event)" @endif>
+        @can('isGestor', $projeto)
+            @dragenter="onDragEnter($event)"
+            @dragover="onDragOver($event)" 
+            @dragleave="onDragLeave($event)" 
+            @drop="onDragDrop($event)"
+        @endcan>
         <ul class="list-group list-group-flush">
             <template x-for="tarefa in filteredTarefas()" :key="tarefa.id">
                 <li :class="{

@@ -11,10 +11,9 @@
 ])
 
 @if ($pequeno)
-    <div {{ $container?->attributes->class(['btn btn position-relative']) }} @class(['btn position-relative' => !$container])
-        title="{{ $legenda }}">
-        <i {{ $icon?->attributes->class(['bi bi-' . $icone . ' position-relative fs-5']) }}
-            @class(['bi bi-' . $icone . ' position-relative fs-5' => !$icon])></i>
+    <div {{ $container?->attributes->class(['btn btn-sm btn position-relative fs-6']) }}
+        @class(['btn position-relative' => !$container]) title="{{ $legenda }}">
+        <i {{ $icon?->attributes->class(['bi bi-' . $icone . ' position-relative']) }} @class(['bi bi-' . $icone . ' position-relative' => !$icon])></i>
         <span
             {{ $badge?->attributes->class(['position-absolute top-0 start-100 translate-middle badge rounded-pill']) }}
             @class([
