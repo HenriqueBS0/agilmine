@@ -17,6 +17,9 @@
         <x-projeto.report.geral :$projeto :$tarefas />
         <x-projeto.report.cronogramas :$projeto :$tarefas />
         <x-projeto.report.metricas :$projeto :$tarefas />
+        @can('isMetricaMembroAtiva', $projeto)
+            <x-report.membros :$projeto :$tarefas :$membros />
+        @endcan
     </div>
 </x-main>
 

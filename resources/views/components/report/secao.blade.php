@@ -1,14 +1,18 @@
-@props(['titulo', 'card' => null, 'body' => null, 'title' => null, 'noBreak' => true])
+@props(['titulo', 'content', 'card' => null, 'body' => null, 'title' => null, 'noBreak' => true])
 
 <div {{ $attributes->class(['no-break' => $noBreak]) }}>
-    <div {{ $card?->attributes->class(['card']) }} @class(['card' => !$card])>
-        <div {{ $body?->attributes->class(['card-body']) }} @class(['card-body' => !$body])>
-            <h5 {{ $title?->attributes->class(['card-title']) }} @class(['card-title' => !$title])>
-                {{ $titulo }}
-            </h5>
-            {{ $slot }}
+    @if (isset($content))
+        {{ $content }}
+    @else
+        <div {{ $card?->attributes->class(['card']) }} @class(['card' => !$card])>
+            <div {{ $body?->attributes->class(['card-body']) }} @class(['card-body' => !$body])>
+                <h5 {{ $title?->attributes->class(['card-title']) }} @class(['card-title' => !$title])>
+                    {{ $titulo }}
+                </h5>
+                {{ $slot }}
+            </div>
         </div>
-    </div>
+    @endif
 </div>
 
 @pushOnce('estilos')

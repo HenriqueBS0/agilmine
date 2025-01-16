@@ -6,7 +6,6 @@ use App\Models\Enums\SprintStatus;
 use App\Models\Projeto;
 use App\Services\ProjetoService;
 use App\Services\SprintService;
-use Gate;
 
 class MetricasProjeto
 {

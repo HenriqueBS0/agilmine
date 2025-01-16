@@ -6,6 +6,7 @@ use App\Contracts\FetchRedmineInterface;
 use App\Models\Configuracao;
 use App\Services\ApiRedmine\ApiRedmine;
 use App\Services\ApiRedmine\Entidades\CampoCustomizado;
+use App\Services\ApiRedmine\Entidades\LancamentoHora;
 use App\Services\ApiRedmine\Entidades\Membro;
 use App\Services\ApiRedmine\Entidades\Projeto;
 use App\Services\ApiRedmine\Entidades\Tarefa;
@@ -130,6 +131,20 @@ class FetchRedmine implements FetchRedmineInterface
     public function statusTarefa(): array
     {
         $parametro = TarefaStatus::parametroListar()->setKey(self::getKeyAdmin());
+        $retorno = ApiRedmine::listar($parametro);
+        return self::all($retorno);
+    }
+
+    /**
+     * Retorna os lançamentos de horas no projeto
+     * 
+     * @param int $projeto
+     * @return array
+     */
+    public function lancamentosHorasProjeto(int $projeto): array
+    {
+        $parametro = LancamentoHora::parametroListar(50)->setKey(self::getKeyUser());
+        $parametro->filtro()->igual('project_id', $projeto);
         $retorno = ApiRedmine::listar($parametro);
         return self::all($retorno);
     }

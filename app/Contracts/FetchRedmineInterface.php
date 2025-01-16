@@ -11,6 +11,7 @@ use App\Services\ApiRedmine\Entidades\TarefaStatus;
 use App\Services\ApiRedmine\Entidades\TarefaTipo;
 use App\Services\ApiRedmine\Entidades\Usuario;
 use App\Services\ApiRedmine\Entidades\Versao;
+use App\Services\ApiRedmine\Entidades\LancamentoHora;
 
 interface FetchRedmineInterface
 {
@@ -80,6 +81,14 @@ interface FetchRedmineInterface
      * @return TarefaStatus[]
      */
     public function statusTarefa(): array;
+
+    /**
+     * Retorna os lançamentos de horas no projeto
+     * 
+     * @param int $projeto
+     * @return LancamentoHora[]
+     */
+    public function lancamentosHorasProjeto(int $projeto): array;
 
     /**
      * Retorna os campos customizados

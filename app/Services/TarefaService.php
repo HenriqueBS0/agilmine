@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\FetchRedmineInterface;
+use App\Services\ApiRedmine\Entidades\Membro;
 use App\Services\ApiRedmine\Entidades\Tarefa;
 use App\Services\ApiRedmine\Entidades\Usuario;
 use Illuminate\Support\Carbon;
@@ -38,6 +39,7 @@ class TarefaService
         $tarefa = self::preencherPrioridade($tarefa);
         $tarefa = self::preencherTipo($tarefa);
         $tarefa = self::preencherStatus($tarefa);
+        $tarefa = self::preencherLancamentosHoras($tarefa);
 
         return $tarefa;
     }
@@ -185,6 +187,39 @@ class TarefaService
         return $tarefa;
     }
 
+    /**
+     * Preenche os lançamentos de horas na tarefa
+     * @param Tarefa $tarefa
+     * @return Tarefa
+     */
+    private function preencherLancamentosHoras(Tarefa $tarefa)
+    {
+        static $lancamentos = [];
+
+        $projeto = $tarefa->getProjeto()->getId();
+
+        if (!isset($lancamentos[$projeto])) {
+            $lancamentosProjeto = [];
+
+            foreach ($this->fetchRedmine->lancamentosHorasProjeto($projeto) as $lancamento) {
+                $lancamentosProjeto[$lancamento->getId()] = $lancamento;
+            }
+
+            $lancamentos[$projeto] = $lancamentosProjeto;
+        }
+
+        foreach ($lancamentos[$projeto] as $lancamento) {
+            if ($lancamento->getTarefa()->getId() === $tarefa->getId()) {
+                $tarefa->setLancamentosHoras(array_merge(
+                    $tarefa->getLancamentosHoras(),
+                    [$lancamento]
+                ));
+            }
+        }
+
+        return $tarefa;
+    }
+
 
     /**
      * Ordena as tarefas pelo id usando o array de ids.
@@ -245,15 +280,37 @@ class TarefaService
      * Retorna as tarefas que são do desenvolvedor
      * 
      * @param Tarefa[] $tarefas
-     * @param Carbon $data
+     * @param Membro $desenvolvedor
      * @return Tarefa[]
      */
-    public function filtraTarefasDesenvolvedor($tarefas, Usuario $desenvolvedor)
+    public function filtraTarefasMembroDesenvolvedor($tarefas, Membro $membro)
     {
         return array_values(array_filter(
             $tarefas,
-            function (Tarefa $tarefa) use ($desenvolvedor) {
-                return $tarefa->getDesenvolvedor()?->getId() === $desenvolvedor->getId();
+            function (Tarefa $tarefa) use ($membro) {
+                return $tarefa->getDesenvolvedor()?->getId() === $membro->getUsuario()->getId();
+            }
+        ));
+    }
+
+    /**
+     * Retorna todas as tarefas em que o Membro é participante
+     * 
+     * @param Tarefa[] $tarefa
+     * @param Membro $membro
+     * @return array
+     */
+    public function filtraTarefasMembroParticipante($tarefas, Membro $membro): array
+    {
+        return array_values(array_filter(
+            $tarefas,
+            function (Tarefa $tarefa) use ($membro) {
+                return in_array($membro->getUsuario()->getId(), [
+                    $tarefa->getAutor()?->getId(),
+                    $tarefa->getDesenvolvedor()?->getId(),
+                    $tarefa->getDescritor()?->getId(),
+                    $tarefa->getTestador()?->getId(),
+                ]);
             }
         ));
     }

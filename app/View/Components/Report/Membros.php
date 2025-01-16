@@ -1,8 +1,8 @@
 <?php
 
-namespace App\View\Components\Sprint\Report;
+namespace App\View\Components\Report;
 
-use App\Models\Sprint;
+use App\Models\Projeto;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -13,7 +13,7 @@ class Membros extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public Sprint $sprint, public array $tarefas, public array $membros)
+    public function __construct(public Projeto $projeto, public array $tarefas, public array $membros)
     {
     }
 
@@ -22,6 +22,6 @@ class Membros extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sprint.report.membros');
+        return view('components.report.membros');
     }
 }

@@ -144,6 +144,12 @@ class Tarefa implements Wireable
      */
     private ?\DateTime $dataConclusao = null;
 
+    /**
+     * Lançamentos de horas na tarefa
+     * @var LancamentoHora[]
+     */
+    private array $lancamentosHoras = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -399,6 +405,17 @@ class Tarefa implements Wireable
     public function setDataConclusao(?\DateTime $dataConclusao): self
     {
         $this->dataConclusao = $dataConclusao;
+        return $this;
+    }
+
+    public function getLancamentosHoras(): array
+    {
+        return $this->lancamentosHoras;
+    }
+
+    public function setLancamentosHoras(array $lancamentosHoras): self
+    {
+        $this->lancamentosHoras = $lancamentosHoras;
         return $this;
     }
 

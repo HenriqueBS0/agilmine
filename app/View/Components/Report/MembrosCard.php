@@ -1,8 +1,8 @@
 <?php
 
-namespace App\View\Components\Sprint\Report;
+namespace App\View\Components\Report;
 
-use App\Models\Sprint;
+use App\Models\Projeto;
 use App\Services\ApiRedmine\Entidades\Membro;
 use App\Services\ApiRedmine\Entidades\Tarefa;
 use App\Services\DataTimeUtil;
@@ -30,7 +30,7 @@ class MembrosCard extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public Sprint $sprint,
+        public Projeto $projeto,
         public Membro $membro,
         array $tarefas,
         MetricasMembro $metrica,
@@ -38,14 +38,14 @@ class MembrosCard extends Component
     ) {
         $metrica->setMembro($membro)->setTarefas($tarefas);
 
-        $this->numeroTarefas = $metrica->tarefas()->numero();
-        $this->numeroTarefasFechadas = $metrica->tarefas()->numeroFechadas();
+        $this->numeroTarefas = $metrica->tarefasDesenvolvedor()->numero();
+        $this->numeroTarefasFechadas = $metrica->tarefasDesenvolvedor()->numeroFechadas();
 
-        $this->horasEstimadas = $dataTimeUtil->horasFloatToString($metrica->tarefas()->horasEstimadas());
-        $this->horasGastas = $dataTimeUtil->horasFloatToString($metrica->tarefas()->horasGastas());
+        $this->horasEstimadas = $dataTimeUtil->horasFloatToString($metrica->tarefasDesenvolvedor()->horasEstimadas());
+        $this->horasGastas = $dataTimeUtil->horasFloatToString($metrica->lancamentosHoras()->horasLancadas());
 
-        $this->storyPoints = $metrica->tarefas()->storyPoints();
-        $this->storyPointsFechadas = $metrica->tarefas()->storyPointsFechadas();
+        $this->storyPoints = $metrica->tarefasDesenvolvedor()->storyPoints();
+        $this->storyPointsFechadas = $metrica->tarefasDesenvolvedor()->storyPointsFechadas();
     }
 
     private function getTarefasMembro(Membro $membro, $tarefas)
@@ -63,6 +63,6 @@ class MembrosCard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sprint.report.membros-card');
+        return view('components.report.membros-card');
     }
 }

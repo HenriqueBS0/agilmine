@@ -4,6 +4,7 @@ namespace App\Services\Metricas;
 
 use App\Services\ApiRedmine\Entidades\Membro;
 use App\Services\TarefaService;
+use App\Services\LancamentosHorasService;
 
 class MetricasMembro
 {
@@ -11,7 +12,9 @@ class MetricasMembro
 
     public function __construct(
         private TarefaService $tarefaService,
-        private MetricasTarefas $tarefas
+        private LancamentosHorasService $lancamentosHorasService,
+        private MetricasTarefas $metricasTarefasDesenvolvedor,
+        private MetricasLancamentosHoras $metricasLancamentosHoras
     ) {
     }
 
@@ -23,16 +26,28 @@ class MetricasMembro
 
     public function setTarefas(array $tarefas)
     {
-        $this->tarefas->setTarefas(
-            $this->tarefaService->filtraTarefasDesenvolvedor(
+        $this->metricasTarefasDesenvolvedor->setTarefas(
+            $this->tarefaService->filtraTarefasMembroDesenvolvedor(
                 $tarefas,
-                $this->membro->getUsuario()
+                $this->membro
+            )
+        );
+
+        $this->metricasLancamentosHoras->setLancamentos(
+            $this->lancamentosHorasService->filtraLancamentosHorasMembro(
+                $this->lancamentosHorasService->getLancamentosHorasTarefas($tarefas),
+                $this->membro
             )
         );
     }
 
-    public function tarefas()
+    public function tarefasDesenvolvedor()
     {
-        return $this->tarefas;
+        return $this->metricasTarefasDesenvolvedor;
+    }
+
+    public function lancamentosHoras()
+    {
+        return $this->metricasLancamentosHoras;
     }
 }

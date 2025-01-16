@@ -13,10 +13,13 @@ class Pagina extends Component
 
     public array $tarefas;
 
+    public array $membros;
+
     public function mount(Projeto $projeto, ProjetoService $service)
     {
         $this->projeto = $projeto;
         $this->tarefas = $service->getTarefas($projeto);
+        $this->membros = $service->getMembros($projeto);
     }
     public function render()
     {

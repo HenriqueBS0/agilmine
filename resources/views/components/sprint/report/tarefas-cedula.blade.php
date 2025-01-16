@@ -1,5 +1,5 @@
 @props(['tarefa'])
 
-<td scope="col" @style([
-    'background-color: var(--bs-destaque-bg-subtle);' => $tarefa->getStatus()?->getFechada(),
+<td scope="col" @class([
+    'table-secondary' => $tarefa->getStatus()?->getFechada(),
 ])>{{ $slot }}</td>

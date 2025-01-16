@@ -17,7 +17,7 @@
         <x-sprint.report.tarefas :$tarefas />
         <x-sprint.report.metricas :$sprint :$tarefas />
         @can('isMetricaMembroAtiva', $sprint)
-            <x-sprint.report.membros :$sprint :$tarefas :$membros />
+            <x-report.membros :projeto="$sprint->projeto" :$tarefas :$membros />
         @endcan
     </div>
 </x-main>
