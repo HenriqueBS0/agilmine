@@ -1,4 +1,4 @@
-@props(['id', 'projeto', 'tarefas' => [], 'draggable' => false, 'selecionavel' => false, 'pesquisa' => false])
+@props(['id', 'projeto', 'tarefas' => [], 'selecionavel' => false, 'pesquisa' => false])
 
 @php
     use Livewire\Wireable;
@@ -156,9 +156,11 @@
                     'active': tarefaSelecionada?.id === tarefa.id,
                     'list-group-item list-group-item-action': true
                 }"
-                    @if ($draggable) draggable="true" @dragstart="onDragStart($event, tarefa)"
+                    @can('isGestor', $projeto)
+                draggable="true" @dragstart="onDragStart($event, tarefa)"
                     @dragend="onDragEnd($event)" @dragenter="onDragEnter($event, tarefa)"
-                    @dragleave="onDragLeave($event, tarefa)" @endif
+                    @dragleave="onDragLeave($event, tarefa)"
+            @endcan
                     @if ($selecionavel) @click="onClickTarefa(tarefa)"> @endif <div
                     class="d-flex justify-content-between align-items-center">
                     <span x-text="tarefa.id + ' - ' + tarefa.titulo"></span>
