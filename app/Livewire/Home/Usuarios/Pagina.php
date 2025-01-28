@@ -66,6 +66,10 @@ class Pagina extends Component
             return;
         }
 
+        if ($this->usuarioSelecionado->email === 'admin@email.com') {
+            return;
+        }
+
         try {
             $this->novaSenha = $userService->gerarNovaSenha($this->usuarioSelecionado);
             $this->usuarios = User::all();
