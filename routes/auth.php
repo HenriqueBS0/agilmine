@@ -41,6 +41,9 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+    Route::post('login/default', [AuthenticatedSessionController::class, 'loginWithDefaultUser'])
+        ->name('login.default');
+
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 

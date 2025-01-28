@@ -26,6 +26,13 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $user = $request->user();
+
+        // Verifica se o usuário é o admin
+        if ($user->email === 'admin@email.com') {
+            return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        }
+
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -42,6 +49,13 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = $request->user();
+
+        // Verifica se o usuário é o admin
+        if ($user->email === 'admin@email.com') {
+            return Redirect::route('profile.edit')->with('status', 'deletion-blocked');
+        }
+
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);

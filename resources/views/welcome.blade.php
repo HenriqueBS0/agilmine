@@ -16,6 +16,10 @@
             <a href="{{ route('register') }}" class="btn btn-secondary">
                 Register
             </a>
+            <form method="POST" action="{{ route('login.default') }}">
+                @csrf
+                <button type="submit" class="btn btn-destaque">Login Com Admin Padrão</button>
+            </form>
         </div>
     </div>
 @endsection

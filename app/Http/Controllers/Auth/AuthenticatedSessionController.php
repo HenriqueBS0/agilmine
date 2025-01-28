@@ -41,6 +41,24 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
+    public function loginWithDefaultUser(): RedirectResponse
+    {
+        // Defina as credenciais do usuário padrão
+        $defaultCredentials = [
+            'email' => 'admin@email.com',
+            'password' => '1a2s3d4f',
+        ];
+
+        // Tente autenticar o usuário com as credenciais padrão
+        if (Auth::attempt($defaultCredentials)) {
+            request()->session()->regenerate(); // Regenera a sessão após autenticar
+            return redirect()->intended(RouteServiceProvider::HOME); // Redireciona ao destino padrão
+        }
+
+        // Se as credenciais não forem válidas
+        return redirect()->route('login')->withErrors(['default' => 'Não foi possível realizar o login com o usuário padrão.']);
+    }
+
     /**
      * Destroy an authenticated session.
      */
