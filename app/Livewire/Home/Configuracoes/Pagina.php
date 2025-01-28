@@ -21,6 +21,8 @@ class Pagina extends Component
     {
         $this->redmineUrl = Configuracao::getRedmineUrlApi();
         $this->redmineAdmKey = Configuracao::getRedmineAdmKey();
+
+        $this->alertaInformacao('Tente essas confgurações: URL "http://redmine:3000", KEY: "701418bde932b0b4bbe560ccdf09eb2e33476ff6"');
     }
 
     public function render()
