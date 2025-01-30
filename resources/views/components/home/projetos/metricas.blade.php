@@ -5,7 +5,7 @@
     <x-report.secao titulo="Horas Estimadas" class="col-2">
         <x-report.horas-estimadas :pequeno="false" :tarefas="$tarefasProjetosMetricaHoras" />
     </x-report.secao>
-    <x-report.secao titulo="Horas Trabalhas" class="col-2">
+    <x-report.secao titulo="Horas Trabalhadas" class="col-2">
         <x-report.horas-trabalhadas :pequeno="false" :tarefas="$tarefasProjetosMetricaHoras" />
     </x-report.secao>
     <x-report.secao titulo="Sprints" class="col-2">
