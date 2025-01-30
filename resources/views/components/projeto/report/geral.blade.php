@@ -1,6 +1,6 @@
 <div class="row g-2 mb-2">
     @can('isMetricaHorasAtiva', $projeto)
-        <x-report.secao titulo="Horas Estimasdas" class="col-2">
+        <x-report.secao titulo="Horas Estimadas" class="col-2">
             <x-report.horas-estimadas :pequeno="false" :$tarefas />
         </x-report.secao>
         <x-report.secao titulo="Horas Trabalhas" class="col-2">
